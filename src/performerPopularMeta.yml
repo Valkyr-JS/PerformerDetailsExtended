@@ -1,0 +1,9 @@
+name: Performer Popular Meta
+description: Displays metadata about frequent scene partners, most prominent tags, etc., on performer pages.
+url: https://github.com/Valkyr-JS/stash-plugins
+version: 0.1.0
+ui:
+  javascript:
+    - performerPopularMeta.js
+  css:
+    - performerPopularMeta.css
