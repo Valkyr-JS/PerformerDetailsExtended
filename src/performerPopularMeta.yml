@@ -5,5 +5,3 @@ version: 0.1.0
 ui:
   javascript:
     - performerPopularMeta.js
-  css:
-    - performerPopularMeta.css

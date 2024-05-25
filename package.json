@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "description": "Displays metadata about frequent scene partners, most prominent tags, etc., on performer pages.",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npm run compile:ts && npm run copy:yml",
+    "compile:ts": "tsc",
+    "copy:yml": "node -e \"require('fs').cpSync('./src/performerPopularMeta.yml', './dist/performerPopularMeta.yml', {recursive: true});\""
   },
   "repository": {
     "type": "git",
