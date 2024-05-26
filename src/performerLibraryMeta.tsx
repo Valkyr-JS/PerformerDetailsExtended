@@ -97,7 +97,7 @@
     performerID: StashGQLPerformer["id"],
     gender?: StashGQLGenderEnum
   ) => {
-    // Get all partners from each scene, excluding this one
+    // Create an array of performer data from all scenes
     const partners: {
       count: number;
       gender: StashGQLPerformer["gender"];
@@ -115,6 +115,7 @@
           const perfomersIndex = partners.findIndex(
             (ptnr) => ptnr.id === pf.id
           );
+
           if (perfomersIndex !== -1) {
             // Increase the performer count
             partners[perfomersIndex].count++;
@@ -146,6 +147,54 @@
       return genderedPartner
         ? `${genderedPartner.name} (${genderedPartner.count})`
         : null;
+    }
+  };
+
+  const getMostCommonTags = (scenes: StashGQLScene[], tagCount: number = 3) => {
+    // Create an array of tag data from all scenes
+    const tags: {
+      count: number;
+      id: StashGQLTag["id"];
+      name: StashGQLTag["name"];
+    }[] = [];
+
+    // Check each scene
+    scenes.forEach((sc) => {
+      // Check each tag in the scene
+      sc.tags.forEach((tag) => {
+        // Check if the tag already exists in the array
+        const tagIndex = tags.findIndex((t) => t.id === tag.id);
+
+        if (tagIndex !== -1) {
+          // Increase the tag count
+          tags[tagIndex].count++;
+        } else {
+          // Add the tag to the array
+          tags.push({
+            id: tag.id,
+            count: 1,
+            name: tag.name,
+          });
+        }
+      });
+    });
+
+    // Sort count from highest to lowest
+    tags.sort((a, b) => b.count - a.count);
+
+    console.log(tags);
+
+    // Return the tags with the highest overall count, up to the tagCount
+    if (tags.length) {
+      const maxTags = tags.length < tagCount ? tags.length : tagCount;
+      let tagString = "";
+      for (let i = 0; i < maxTags; i++) {
+        tagString +=
+          (i === 0 ? "" : ", ") + `${tags[i].name} (${tags[i].count})`;
+      }
+      return tagString;
+    } else {
+      return null;
     }
   };
 
@@ -202,6 +251,7 @@
           DEV_ONLY_PERFOMER_ID.toString(),
           "NON_BINARY"
         ),
+        mostCommonTags: getMostCommonTags(qScenes.data.findScenes.scenes, 5),
       };
       console.log("Performer Library Meta:", pluginData);
     }

@@ -76,7 +76,7 @@ interface StashGQLPerformer {
   scene_count: number;
   scenes: StashGQLScene[];
   stash_ids: StashGQLStashID[];
-  tags: StashGQLTags[];
+  tags: StashGQLTag[];
   updated_at: Date;
 
   birthdate?: string;
@@ -109,6 +109,7 @@ interface StashGQLScene {
   /** Formatted YYYY-MM-DD */
   date: string;
   performers: StashGQLPerformer[];
+  tags: StashGQLTag[];
 }
 
 interface StashGQLStashID {
@@ -116,7 +117,10 @@ interface StashGQLStashID {
   stash_id: string;
 }
 
-interface StashGQLTags {}
+interface StashGQLTag {
+  id: string;
+  name: string;
+}
 
 enum StashGQLCircumisedEnum {
   CUT = 0,
