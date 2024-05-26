@@ -1,5 +1,10 @@
-declare interface IPluginApi {
+interface Window {
+  PluginApi: IPluginApi;
+}
+
+interface IPluginApi {
   React: typeof React;
+  ReactDOM: typeof ReactDOM,
   GQL: any;
   Event: {
     addEventListener: (
