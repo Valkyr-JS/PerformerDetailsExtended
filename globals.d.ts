@@ -9,7 +9,7 @@ interface IPluginApi {
     useFindPerformerQuery({ variables: { id: number } }): {
       data: {
         findPerformer: {
-          scenes: StashGQLScenes[];
+          scenes: StashGQLScene[];
         };
       };
     };
@@ -74,7 +74,7 @@ interface StashGQLPerformer {
   performer_count: number;
   name: string;
   scene_count: number;
-  scenes: StashGQLScenes[];
+  scenes: StashGQLScene[];
   stash_ids: StashGQLStashID[];
   tags: StashGQLTags[];
   updated_at: Date;
@@ -105,7 +105,9 @@ interface StashGQLPerformer {
   weight?: number;
 }
 
-interface StashGQLScenes {
+interface StashGQLScene {
+  /** Formatted YYYY-MM-DD */
+  date: string;
   performers: StashGQLPerformer[];
 }
 
