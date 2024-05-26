@@ -5,3 +5,49 @@ version: 0.1.0
 ui:
   javascript:
     - performerPopularMeta.js
+
+settings:
+  libraryCareerActive:
+    displayName: Show "Library Career Length"
+    description: Display the start and end years of the performer's career according to scenes in your library.
+    type: BOOLEAN
+
+  partnerActive:
+    displayName: Show "Most Frequent Partner"
+    description: Display the performer's most frequent scene partner in your library.
+    type: BOOLEAN
+
+  partnerBreakdown:
+    displayName: Breakdown "Most Frequent Partner" by sex
+    description: Display the performer's most frequent partner for each sex, instead of their most frequent partner overall.
+    type: BOOLEAN
+
+  partnerCount:
+    displayName: Include "Most Frequent Partner" scene count
+    description: Display the number of scenes the performer has with their most frequent partner alongside their name.
+    type: BOOLEAN
+
+  studioActive:
+    displayName: Show "Most Featured On"
+    description: Display the studio that the performer appears in most in your library.
+    type: BOOLEAN
+
+  studioIncludeParent:
+    displayName: Include parent studios in "Most Featured On"
+    description: Parent studios will be included in the calculation of the performer's most featured on studio.
+    type: BOOLEAN
+
+  studioUseBlacklist:
+    displayName: '"Most Featured On" blacklist'
+    description: A comma-separated list of studio names that should be blacklisted from "Most Featured On".
+    type: STRING
+
+  tagsActive:
+    displayName: Show "Most Common Tags"
+    description: Display the tags that appear most on the performer's scenes in your library.
+    type: BOOLEAN
+
+  tagsBlacklist:
+    displayName: '"Most Common Tags" blacklist'
+    description: A comma-separated list of tag names that should be blacklisted from "Most Featured On".
+    type: STRING
