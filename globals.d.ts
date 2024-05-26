@@ -123,11 +123,10 @@ enum StashGQLCircumisedEnum {
   UNCUT,
 }
 
-enum StashGQLGenderEnum {
-  MALE = 0,
-  FEMALE,
-  TRANSGENDER_MALE,
-  TRANSGENDER_FEMALE,
-  INTERSEX,
-  NON_BINARY,
-}
+type StashGQLGenderEnum =
+  | "MALE"
+  | "FEMALE"
+  | "TRANSGENDER_MALE"
+  | "TRANSGENDER_FEMALE"
+  | "INTERSEX"
+  | "NON_BINARY";

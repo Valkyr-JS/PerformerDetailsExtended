@@ -69,6 +69,61 @@
     return `${years.oldest} - ${years.latest}`;
   };
 
+  /** Get the performer's most frequest scene partner based on scenes in the user's library. Returns a string formatted as "Name (count)" */
+  const getMostFrequentPartner = (
+    scenes: StashGQLScene[],
+    performerID: StashGQLPerformer["id"],
+    gender?: StashGQLGenderEnum
+  ) => {
+    // Get all partners from each scene, excluding this one
+    const partners: {
+      count: number;
+      gender: StashGQLPerformer["gender"];
+      id: StashGQLPerformer["id"];
+      name: StashGQLPerformer["name"];
+    }[] = [];
+
+    // Check each scene
+    scenes.forEach((sc) => {
+      // Check each performer in the scene
+      sc.performers.forEach((pf) => {
+        // Check this is not the featured performer
+        if (pf.id !== performerID) {
+          // Check if the performer already exists in the array
+          const perfomersIndex = partners.findIndex(
+            (ptnr) => ptnr.id === pf.id
+          );
+          if (perfomersIndex !== -1) {
+            // Increase the performer count
+            partners[perfomersIndex].count++;
+          } else {
+            // Add the performer to the array
+            partners.push({
+              id: pf.id,
+              count: 1,
+              gender: pf.gender,
+              name: pf.name,
+            });
+          }
+        }
+      });
+    });
+
+    // Sort count from highest to lowest
+    partners.sort((a, b) => b.count - a.count);
+    console.log(partners);
+
+    if (typeof gender === "undefined") {
+      // Return the performer with the highest overall count
+      return `${partners[0].name} (${partners[0].count})`;
+    } else {
+      const genderedPartner = partners.find((ptnr) => ptnr.gender === gender);
+      return genderedPartner
+        ? `${genderedPartner.name} (${genderedPartner.count})`
+        : null;
+    }
+  };
+
   /* -------------------------------------------------------------------------- */
   /*                               PluginApi patch                              */
   /* -------------------------------------------------------------------------- */
@@ -79,7 +134,7 @@
    * !https://github.com/stashapp/stash/issues/4880
    */
   PluginApi.patch.before("MainNavBar.UtilityItems", function (props: any) {
-    const DEV_ONLY_PERFOMER_ID = 107;
+    const DEV_ONLY_PERFOMER_ID = 32;
 
     const qPerformer = GQL.useFindPerformerQuery({
       variables: {
@@ -104,6 +159,25 @@
       const pluginData = {
         libraryCareerLength: getLibraryCareerLength(
           qScenes.data.findScenes.scenes
+        ),
+        mostFrequentPartner: getMostFrequentPartner(
+          qScenes.data.findScenes.scenes,
+          DEV_ONLY_PERFOMER_ID.toString()
+        ),
+        mostFrequentMalePartner: getMostFrequentPartner(
+          qScenes.data.findScenes.scenes,
+          DEV_ONLY_PERFOMER_ID.toString(),
+          "MALE"
+        ),
+        mostFrequentFemalePartner: getMostFrequentPartner(
+          qScenes.data.findScenes.scenes,
+          DEV_ONLY_PERFOMER_ID.toString(),
+          "FEMALE"
+        ),
+        mostFrequentNonbinaryPartner: getMostFrequentPartner(
+          qScenes.data.findScenes.scenes,
+          DEV_ONLY_PERFOMER_ID.toString(),
+          "NON_BINARY"
         ),
       };
       console.log("Performer Library Meta:", pluginData);
