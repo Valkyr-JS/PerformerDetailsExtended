@@ -1,22 +1,22 @@
 {
-  "name": "plugin-performer-popular-meta",
+  "name": "plugin-performer-library-meta",
   "version": "0.1.0",
-  "description": "Displays metadata about frequent scene partners, most prominent tags, etc., on performer pages.",
+  "description": "Displays metadata about frequent scene partners, most prominent tags, etc. in your library, on performer pages.",
   "scripts": {
     "build": "npm run compile:ts && npm run copy:yml",
     "compile:ts": "tsc",
-    "copy:yml": "node -e \"require('fs').cpSync('./src/performerPopularMeta.yml', './dist/performerPopularMeta.yml', {recursive: true});\""
+    "copy:yml": "node -e \"require('fs').cpSync('./src/performerLibraryMeta.yml', './dist/performerLibraryMeta.yml', {recursive: true});\""
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Valkyr-JS/plugin-performer-popular-meta.git"
+    "url": "git+https://github.com/Valkyr-JS/plugin-performer-library-meta.git"
   },
   "author": "Valkyr-JS",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/Valkyr-JS/plugin-performer-popular-meta/issues"
+    "url": "https://github.com/Valkyr-JS/plugin-performer-library-meta/issues"
   },
-  "homepage": "https://github.com/Valkyr-JS/plugin-performer-popular-meta#readme",
+  "homepage": "https://github.com/Valkyr-JS/plugin-performer-library-meta#readme",
   "devDependencies": {
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
