@@ -109,12 +109,19 @@ interface StashGQLScene {
   /** Formatted YYYY-MM-DD */
   date: string;
   performers: StashGQLPerformer[];
+  studio: StashGQLStudio;
   tags: StashGQLTag[];
 }
 
 interface StashGQLStashID {
   endpoint: string;
   stash_id: string;
+}
+
+interface StashGQLStudio {
+  id: string;
+  name: string;
+  parent_studio?: StashGQLStudio;
 }
 
 interface StashGQLTag {

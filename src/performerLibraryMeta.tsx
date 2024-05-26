@@ -66,7 +66,7 @@
   /* -------------------------------------------------------------------------- */
 
   /** Get the performer's career length based on scenes in the user's library.
-   * Returns a string formatted as YYYY - YYYY. */
+   * Returns a string formatted as "YYYY - YYYY". */
   const getLibraryCareerLength = (scenes: StashGQLScene[]) => {
     const dates = {
       oldest: scenes[0],
@@ -91,7 +91,8 @@
     return `${years.oldest} - ${years.latest}`;
   };
 
-  /** Get the performer's most frequest scene partner based on scenes in the user's library. Returns a string formatted as "Name (count)" */
+  /** Get the performer's most frequest scene partner based on scenes in the
+   * user's library. Returns a string formatted as "Name (count)" */
   const getMostFrequentPartner = (
     scenes: StashGQLScene[],
     performerID: StashGQLPerformer["id"],
@@ -150,6 +151,10 @@
     }
   };
 
+  /**
+   * Get the most common tags in scenes the performer is featured in. Returns a
+   * string formatted as "Tag name A (count), Tag name B (count)..." etc.
+   */
   const getMostCommonTags = (scenes: StashGQLScene[], tagCount: number = 3) => {
     // Create an array of tag data from all scenes
     const tags: {
@@ -182,8 +187,6 @@
     // Sort count from highest to lowest
     tags.sort((a, b) => b.count - a.count);
 
-    console.log(tags);
-
     // Return the tags with the highest overall count, up to the tagCount
     if (tags.length) {
       const maxTags = tags.length < tagCount ? tags.length : tagCount;
@@ -196,6 +199,38 @@
     } else {
       return null;
     }
+  };
+
+  /** Get the performer's most featured studio based on scenes in the user's
+   * library. Returns a string formatted as "Studio (count)"  */
+  const getMostFrequentStudio = (scenes: StashGQLScene[]) => {
+    // Create an array of studio data from all scenes
+    const studios: {
+      count: number;
+      id: StashGQLStudio["id"];
+      name: StashGQLStudio["name"];
+    }[] = [];
+
+    // Check each scene
+    scenes.forEach((sc) => {
+      // Check if the scene studio already exists in the array
+      const studiosIndex = studios.findIndex((st) => st.id === sc.studio.id);
+
+      if (studiosIndex !== -1) {
+        // Increase the studio's count
+        studios[studiosIndex].count++;
+      } else {
+        studios.push({ id: sc.studio.id, count: 1, name: sc.studio.name });
+      }
+    });
+
+    // Sort count from highest to lowest
+    studios.sort((a, b) => b.count - a.count);
+
+    console.log(studios);
+
+    // Return the studio with the highest overall count
+    return studios.length ? `${studios[0].name} (${studios[0].count})` : null;
   };
 
   /* -------------------------------------------------------------------------- */
@@ -252,6 +287,9 @@
           "NON_BINARY"
         ),
         mostCommonTags: getMostCommonTags(qScenes.data.findScenes.scenes, 5),
+        mostFrequentStudio: getMostFrequentStudio(
+          qScenes.data.findScenes.scenes
+        ),
       };
       console.log("Performer Library Meta:", pluginData);
     }
