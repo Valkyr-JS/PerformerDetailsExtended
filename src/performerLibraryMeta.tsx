@@ -12,7 +12,7 @@
     return (
       <div id="plugin-performerLibraryMeta" className="detail-group">
         {items.map((itemProps) => (
-          <DetailItem {...itemProps} />
+          <DetailItem key={itemProps.id} {...itemProps} />
         ))}
       </div>
     );
@@ -78,29 +78,40 @@
    * !component. Have raised a request at
    * !https://github.com/stashapp/stash/issues/4880
    */
-  PluginApi.patch.after("PerformerDetailsPanel", (props: any) => {
-    const { data } = GQL.useFindPerformerQuery({
+  PluginApi.patch.before("MainNavBar.UtilityItems", function (props: any) {
+    const DEV_ONLY_PERFOMER_ID = 107;
+
+    const qPerformer = GQL.useFindPerformerQuery({
       variables: {
-        id: 107, // ! Hardcoded for dev, should get from `PerformerDetailsPanel` props
+        id: DEV_ONLY_PERFOMER_ID,
       },
     });
 
-    const libraryCareerLengthItem = {
-      id: "plugin-lib-career",
-      title: "Library Career Length",
-      value: getLibraryCareerLength(data.findPerformer.scenes),
-    };
+    //@ts-ignore
+    const qScenes = GQL.useFindScenesQuery({
+      variables: {
+        filter: { per_page: -1 },
+        scene_filter: {
+          performers: { modifier: "INCLUDES", value: DEV_ONLY_PERFOMER_ID },
+        },
+      },
+    });
 
-    const detailGroupItems = [libraryCareerLengthItem];
+    if (!!qPerformer.data && !!qScenes.data) {
+      console.log("Performer data:", qPerformer);
+      console.log("Scenes data:", qScenes);
+
+      const pluginData = {
+        libraryCareerLength: getLibraryCareerLength(
+          qScenes.data.findScenes.scenes
+        ),
+      };
+      console.log("Performer Library Meta:", pluginData);
+    }
 
     return [
       {
-        children: (
-          <>
-            {props.children}
-            <DetailGroup items={detailGroupItems} />
-          </>
-        ),
+        children: <>{props.children}</>,
       },
     ];
   });
