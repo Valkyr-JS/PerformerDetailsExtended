@@ -66,29 +66,27 @@
   /* -------------------------------------------------------------------------- */
 
   /** Get the performer's career length based on scenes in the user's library.
-   * Returns a string formatted as "YYYY - YYYY". */
-  const getLibraryCareerLength = (scenes: StashGQLScene[]) => {
-    const dates = {
-      oldest: scenes[0],
-      latest: scenes[0],
-    };
-
-    scenes.forEach((sc) => {
-      const scDate = new Date(sc.date);
-      if (scDate < new Date(dates.oldest.date)) dates.oldest = sc;
-      if (scDate > new Date(dates.latest.date)) dates.latest = sc;
-    });
-
+   * Returns a string formatted as "YYYY - YYYY" or "YYYY". */
+  const getLibraryCareerSpan = (
+    oldestScene: StashGQLScene,
+    newestScene: StashGQLScene
+  ) => {
     const years = {
-      oldest: dates.oldest.date.split("-")[0],
-      latest: dates.latest.date.split("-")[0],
+      oldest: oldestScene.date.split("-")[0],
+      newest: newestScene.date.split("-")[0],
     };
 
     /**
      * TODO - Currently returns a string. Could be repurposed to return scene
      * data so that the oldest and latest scenes can be clicked through to.
+     *
+     * Returns YYYY - YYYY, unless the years are the same in which case it
+     * returns just YYYY.
      */
-    return `${years.oldest} - ${years.latest}`;
+
+    return years.oldest === years.newest
+      ? years.oldest
+      : `${years.oldest} - ${years.newest}`;
   };
 
   /** Get the performer's most frequest scene partner based on scenes in the
@@ -227,8 +225,6 @@
     // Sort count from highest to lowest
     studios.sort((a, b) => b.count - a.count);
 
-    console.log(studios);
-
     // Return the studio with the highest overall count
     return studios.length ? `${studios[0].name} (${studios[0].count})` : null;
   };
@@ -243,53 +239,47 @@
    * !https://github.com/stashapp/stash/issues/4880
    */
   PluginApi.patch.before("MainNavBar.UtilityItems", function (props: any) {
-    const qPerformer = GQL.useFindPerformerQuery({
-      variables: {
-        id: DEV_ONLY_PERFOMER_ID,
-      },
-    });
-
     //@ts-ignore
     const qScenes = GQL.useFindScenesQuery({
       variables: {
-        filter: { per_page: -1 },
+        filter: { per_page: -1, sort: "date" },
         scene_filter: {
           performers: { modifier: "INCLUDES", value: DEV_ONLY_PERFOMER_ID },
         },
       },
     });
 
-    if (!!qPerformer.data && !!qScenes.data && DEV_ONLY_PERFOMER_ID !== null) {
-      console.log("Performer data:", qPerformer);
+    if (!!qScenes.data && DEV_ONLY_PERFOMER_ID !== null) {
       console.log("Scenes data:", qScenes);
 
+      const { scenes } = qScenes.data.findScenes;
+
       const pluginData = {
-        libraryCareerLength: getLibraryCareerLength(
-          qScenes.data.findScenes.scenes
+        libraryCareerSpan: getLibraryCareerSpan(
+          scenes[0],
+          scenes[scenes.length - 1]
         ),
         mostFrequentPartner: getMostFrequentPartner(
-          qScenes.data.findScenes.scenes,
+          scenes,
           DEV_ONLY_PERFOMER_ID.toString()
         ),
         mostFrequentMalePartner: getMostFrequentPartner(
-          qScenes.data.findScenes.scenes,
+          scenes,
           DEV_ONLY_PERFOMER_ID.toString(),
           "MALE"
         ),
         mostFrequentFemalePartner: getMostFrequentPartner(
-          qScenes.data.findScenes.scenes,
+          scenes,
           DEV_ONLY_PERFOMER_ID.toString(),
           "FEMALE"
         ),
         mostFrequentNonbinaryPartner: getMostFrequentPartner(
-          qScenes.data.findScenes.scenes,
+          scenes,
           DEV_ONLY_PERFOMER_ID.toString(),
           "NON_BINARY"
         ),
-        mostCommonTags: getMostCommonTags(qScenes.data.findScenes.scenes, 5),
-        mostFrequentStudio: getMostFrequentStudio(
-          qScenes.data.findScenes.scenes
-        ),
+        mostCommonTags: getMostCommonTags(scenes, 5),
+        mostFrequentStudio: getMostFrequentStudio(scenes),
       };
       console.log("Performer Library Meta:", pluginData);
     }
