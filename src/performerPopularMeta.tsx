@@ -1,7 +1,22 @@
 (function () {
-  const PluginApi = (window as any).PluginApi as IPluginApi;
+  const { PluginApi } = window;
+  const { React } = PluginApi;
 
-  PluginApi.Event.addEventListener("stash:location", (e) =>
-    console.log("Page Changed", e)
-  );
+  /**
+   * !`PerformerDetailsPanel` is not currently available as a PluginApi
+   * !component. Have raised a request at
+   * !https://github.com/stashapp/stash/issues/4880
+   */
+  PluginApi.patch.after("PerformerDetailsPanel", (props: any) => {
+    return [
+      {
+        children: (
+          <>
+            {props.children}
+            <div>Performer library meta</div>
+          </>
+        ),
+      },
+    ];
+  });
 })();
