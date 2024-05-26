@@ -3,6 +3,28 @@
   const { GQL, React } = PluginApi;
 
   /* -------------------------------------------------------------------------- */
+  /*                              DEVELOPMENT ONLY                              */
+  /* -------------------------------------------------------------------------- */
+
+  /* ------------------------ Get the current performer ----------------------- */
+
+  /**
+   * ! This should be able to be removed once the component can be properly
+   * rendered and the current performer ID can be obtained from elsewhere.
+   */
+
+  let DEV_ONLY_PERFOMER_ID: number | null = null;
+
+  PluginApi.Event.addEventListener("stash:location", (e) => {
+    const pathing = e.detail.data.location.pathname.split("/");
+    if (pathing.length > 2 && pathing[1] === "performers") {
+      DEV_ONLY_PERFOMER_ID = +pathing[2];
+    } else {
+      DEV_ONLY_PERFOMER_ID = null;
+    }
+  });
+
+  /* -------------------------------------------------------------------------- */
   /*                              React components                              */
   /* -------------------------------------------------------------------------- */
 
@@ -111,12 +133,15 @@
 
     // Sort count from highest to lowest
     partners.sort((a, b) => b.count - a.count);
-    console.log(partners);
 
     if (typeof gender === "undefined") {
-      // Return the performer with the highest overall count
-      return `${partners[0].name} (${partners[0].count})`;
+      // Return the performer with the highest overall count.
+      return partners.length
+        ? `${partners[0].name} (${partners[0].count})`
+        : null;
     } else {
+      // Else return the performer with the highest overall count of the
+      // required gender.
       const genderedPartner = partners.find((ptnr) => ptnr.gender === gender);
       return genderedPartner
         ? `${genderedPartner.name} (${genderedPartner.count})`
@@ -134,8 +159,6 @@
    * !https://github.com/stashapp/stash/issues/4880
    */
   PluginApi.patch.before("MainNavBar.UtilityItems", function (props: any) {
-    const DEV_ONLY_PERFOMER_ID = 32;
-
     const qPerformer = GQL.useFindPerformerQuery({
       variables: {
         id: DEV_ONLY_PERFOMER_ID,
@@ -152,7 +175,7 @@
       },
     });
 
-    if (!!qPerformer.data && !!qScenes.data) {
+    if (!!qPerformer.data && !!qScenes.data && DEV_ONLY_PERFOMER_ID !== null) {
       console.log("Performer data:", qPerformer);
       console.log("Scenes data:", qScenes);
 
