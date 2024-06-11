@@ -25,10 +25,11 @@
 
   /* ------------------------------- Detail item ------------------------------ */
 
-  const DetailItem = ({ id, title, value }: DetailItemProps) => {
+  const DetailItem = ({ id, isCollapsed, title, value }: DetailItemProps) => {
+    const titleText = !isCollapsed ? title + ":" : title;
     return (
       <div className={"detail-item " + id}>
-        <span className={"detail-item-title " + id}>{title}</span>
+        <span className={"detail-item-title " + id}>{titleText}</span>
         <span className={"detail-item-value " + id}>{value}</span>
       </div>
     );
@@ -36,6 +37,7 @@
 
   interface DetailItemProps {
     id: string;
+    isCollapsed: boolean;
     title: string;
     value: React.ReactNode;
   }
@@ -48,7 +50,8 @@
    * Returns a string formatted as "YYYY - YYYY" or "YYYY". */
   const getLibraryCareerSpan = (
     oldestScene: StashGQLScene,
-    newestScene: StashGQLScene
+    newestScene: StashGQLScene,
+    isCollapsed: boolean
   ): DetailItemProps => {
     const years = {
       oldest: oldestScene.date.split("-")[0],
@@ -66,6 +69,7 @@
 
     const props = {
       id: "library-career",
+      isCollapsed,
       title: "Library Career Span",
       value:
         years.oldest === years.newest
@@ -81,6 +85,7 @@
   const getMostFrequentPartner = (
     scenes: StashGQLScene[],
     performerID: StashGQLPerformer["id"],
+    isCollapsed: boolean,
     gender?: StashGQLGenderEnum
   ): DetailItemProps | null => {
     // Create an array of performer data from all scenes
@@ -129,6 +134,7 @@
       return partners.length
         ? {
             id: "frequent-partner",
+            isCollapsed,
             title: "Most Frequent Partner",
             value: (
               <>
@@ -149,6 +155,7 @@
       return genderedPartner
         ? {
             id: "frequent-partner",
+            isCollapsed,
             title: `Most Frequent ${genderWord} Partner`,
             value: (
               <>
@@ -249,7 +256,11 @@
 
   PluginApi.patch.after(
     "PerformerDetailsPanel.DetailGroup",
-    function ({ children, performer }: PropsPerformerDetailsPanelDetailGroup) {
+    function ({
+      children,
+      collapsed,
+      performer,
+    }: PropsPerformerDetailsPanelDetailGroup) {
       const performerID = performer.id;
 
       //@ts-ignore
@@ -268,10 +279,14 @@
         const { scenes } = qScenes.data.findScenes;
 
         const libraryMetadata: DetailItemProps[] = [
-          getLibraryCareerSpan(scenes[0], scenes[scenes.length - 1]),
+          getLibraryCareerSpan(scenes[0], scenes[scenes.length - 1], collapsed),
         ];
 
-        const mostFrequentPartner = getMostFrequentPartner(scenes, performerID);
+        const mostFrequentPartner = getMostFrequentPartner(
+          scenes,
+          performerID,
+          collapsed
+        );
         if (!!mostFrequentPartner) libraryMetadata.push(mostFrequentPartner);
 
         for (const gender of [
@@ -285,6 +300,7 @@
           const mostFrequentGenderedPartner = getMostFrequentPartner(
             scenes,
             performerID,
+            collapsed,
             gender as StashGQLGenderEnum
           );
           if (!!mostFrequentGenderedPartner)
