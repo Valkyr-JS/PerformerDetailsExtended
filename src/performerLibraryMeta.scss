@@ -3,3 +3,12 @@
     padding-top: 0;
   }
 }
+
+.full-width {
+  .detail-item {
+    .detail-item-title {
+      // Increase from default of 130px
+      width: 150px;
+    }
+  }
+}
