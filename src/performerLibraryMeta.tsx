@@ -49,23 +49,31 @@
   const getLibraryCareerSpan = (
     oldestScene: StashGQLScene,
     newestScene: StashGQLScene
-  ) => {
+  ): DetailItemProps => {
     const years = {
       oldest: oldestScene.date.split("-")[0],
       newest: newestScene.date.split("-")[0],
     };
 
     /**
-     * TODO - Currently returns a string. Could be repurposed to return scene
-     * data so that the oldest and latest scenes can be clicked through to.
+     * TODO - Currently returns a string value. Could be repurposed to return
+     * scene data so that the oldest and latest scenes can be clicked through
+     * to.
      *
      * Returns YYYY - YYYY, unless the years are the same in which case it
      * returns just YYYY.
      */
 
-    return years.oldest === years.newest
-      ? years.oldest
-      : `${years.oldest} - ${years.newest}`;
+    const props = {
+      id: "library-career",
+      title: "Library Career Span",
+      value:
+        years.oldest === years.newest
+          ? years.oldest
+          : `${years.oldest} - ${years.newest}`,
+    };
+
+    return props;
   };
 
   /** Get the performer's most frequest scene partner based on scenes in the
@@ -74,7 +82,7 @@
     scenes: StashGQLScene[],
     performerID: StashGQLPerformer["id"],
     gender?: StashGQLGenderEnum
-  ) => {
+  ): DetailItemProps | null => {
     // Create an array of performer data from all scenes
     const partners: {
       count: number;
@@ -116,14 +124,24 @@
     if (typeof gender === "undefined") {
       // Return the performer with the highest overall count.
       return partners.length
-        ? `${partners[0].name} (${partners[0].count})`
+        ? {
+            id: "frequent-partner",
+            title: "Most Frequent Partner",
+            value: `${partners[0].name} (${partners[0].count})`,
+          }
         : null;
     } else {
       // Else return the performer with the highest overall count of the
       // required gender.
       const genderedPartner = partners.find((ptnr) => ptnr.gender === gender);
+      const genderWord =
+        gender.substring(0, 1) + gender.substring(1).toLowerCase();
       return genderedPartner
-        ? `${genderedPartner.name} (${genderedPartner.count})`
+        ? {
+            id: "frequent-partner",
+            title: `Most Frequent ${genderWord} Partner`,
+            value: `${genderedPartner.name} (${genderedPartner.count})`,
+          }
         : null;
     }
   };
@@ -214,9 +232,8 @@
 
   PluginApi.patch.after(
     "PerformerDetailsPanel.DetailGroup",
-    function ({ children, performer }: any) {
+    function ({ children, performer }: PropsPerformerDetailsPanelDetailGroup) {
       const performerID = performer.id;
-      console.log("performer: ", performer);
 
       //@ts-ignore
       const qScenes = GQL.useFindScenesQuery({
@@ -233,27 +250,31 @@
       if (!!qScenes.data && performerID !== null) {
         const { scenes } = qScenes.data.findScenes;
 
+        const libraryMetadata: DetailItemProps[] = [
+          getLibraryCareerSpan(scenes[0], scenes[scenes.length - 1]),
+        ];
+
+        const mostFrequentPartner = getMostFrequentPartner(scenes, performerID);
+        if (!!mostFrequentPartner) libraryMetadata.push(mostFrequentPartner);
+
+        for (const gender of [
+          "MALE",
+          "FEMALE",
+          "TRANSGENDER_MALE",
+          "TRANSGENDER_FEMALE",
+          "INTERSEX",
+          "NON_BINARY",
+        ]) {
+          const mostFrequentGenderedPartner = getMostFrequentPartner(
+            scenes,
+            performerID,
+            gender as StashGQLGenderEnum
+          );
+          if (!!mostFrequentGenderedPartner)
+            libraryMetadata.push(mostFrequentGenderedPartner);
+        }
+
         const pluginData = {
-          libraryCareerSpan: getLibraryCareerSpan(
-            scenes[0],
-            scenes[scenes.length - 1]
-          ),
-          mostFrequentPartner: getMostFrequentPartner(scenes, performerID),
-          mostFrequentMalePartner: getMostFrequentPartner(
-            scenes,
-            performerID,
-            "MALE"
-          ),
-          mostFrequentFemalePartner: getMostFrequentPartner(
-            scenes,
-            performerID,
-            "FEMALE"
-          ),
-          mostFrequentNonbinaryPartner: getMostFrequentPartner(
-            scenes,
-            performerID,
-            "NON_BINARY"
-          ),
           mostCommonTags: getMostCommonTags(scenes, 5),
           mostFrequentStudio: getMostFrequentStudio(scenes),
         };
@@ -263,13 +284,7 @@
             <div className="detail-group">{children}</div>
             <DetailGroup
               groupID="pluginPerformerLibraryMeta"
-              items={[
-                {
-                  id: "library-career",
-                  title: "Library Career Span",
-                  value: pluginData.libraryCareerSpan,
-                },
-              ]}
+              items={libraryMetadata}
             />
           </>,
         ];

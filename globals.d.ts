@@ -57,6 +57,17 @@ interface IPluginApi {
 }
 
 /* -------------------------------------------------------------------------- */
+/*                                 Components                                 */
+/* -------------------------------------------------------------------------- */
+
+interface PropsPerformerDetailsPanelDetailGroup
+  extends React.PropsWithChildren {
+  collapsed: boolean;
+  fullWidth: boolean;
+  performer: StashGQLPerformer;
+}
+
+/* -------------------------------------------------------------------------- */
 /*                                  Stash GQL                                 */
 /* -------------------------------------------------------------------------- */
 
