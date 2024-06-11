@@ -4,6 +4,17 @@
   }
 }
 
+.detail-item-value .scene-count {
+  opacity: 0.65;
+
+  &::before {
+    content: " (";
+  }
+  &::after {
+    content: ")";
+  }
+}
+
 .full-width {
   .detail-item {
     .detail-item-title {

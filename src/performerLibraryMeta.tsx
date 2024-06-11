@@ -37,7 +37,7 @@
   interface DetailItemProps {
     id: string;
     title: string;
-    value: string;
+    value: React.ReactNode;
   }
 
   /* -------------------------------------------------------------------------- */
@@ -121,13 +121,23 @@
     // Sort count from highest to lowest
     partners.sort((a, b) => b.count - a.count);
 
+    const scenesText = (count: number) =>
+      count + " " + (count === 1 ? "scene" : "scenes");
+
     if (typeof gender === "undefined") {
       // Return the performer with the highest overall count.
       return partners.length
         ? {
             id: "frequent-partner",
             title: "Most Frequent Partner",
-            value: `${partners[0].name} (${partners[0].count})`,
+            value: (
+              <>
+                {partners[0].name}
+                <span className="scene-count">
+                  {scenesText(partners[0].count)}
+                </span>
+              </>
+            ),
           }
         : null;
     } else {
@@ -140,7 +150,14 @@
         ? {
             id: "frequent-partner",
             title: `Most Frequent ${genderWord} Partner`,
-            value: `${genderedPartner.name} (${genderedPartner.count})`,
+            value: (
+              <>
+                {genderedPartner.name}
+                <span className="scene-count">
+                  {scenesText(genderedPartner.count)}
+                </span>
+              </>
+            ),
           }
         : null;
     }
