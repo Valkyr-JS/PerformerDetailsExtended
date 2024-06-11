@@ -3,36 +3,14 @@
   const { GQL, React } = PluginApi;
 
   /* -------------------------------------------------------------------------- */
-  /*                              DEVELOPMENT ONLY                              */
-  /* -------------------------------------------------------------------------- */
-
-  /* ------------------------ Get the current performer ----------------------- */
-
-  /**
-   * ! This should be able to be removed once the component can be properly
-   * rendered and the current performer ID can be obtained from elsewhere.
-   */
-
-  let DEV_ONLY_PERFOMER_ID: number | null = null;
-
-  PluginApi.Event.addEventListener("stash:location", (e) => {
-    const pathing = e.detail.data.location.pathname.split("/");
-    if (pathing.length > 2 && pathing[1] === "performers") {
-      DEV_ONLY_PERFOMER_ID = +pathing[2];
-    } else {
-      DEV_ONLY_PERFOMER_ID = null;
-    }
-  });
-
-  /* -------------------------------------------------------------------------- */
   /*                              React components                              */
   /* -------------------------------------------------------------------------- */
 
   /* ------------------------------ Detail group ------------------------------ */
 
-  const DetailGroup = ({ items }: DetailGroupProps) => {
+  const DetailGroup = ({ groupID, items }: DetailGroupProps) => {
     return (
-      <div id="plugin-performerLibraryMeta" className="detail-group">
+      <div id={groupID} className="detail-group">
         {items.map((itemProps) => (
           <DetailItem key={itemProps.id} {...itemProps} />
         ))}
@@ -41,6 +19,7 @@
   };
 
   interface DetailGroupProps {
+    groupID: string;
     items: DetailItemProps[];
   }
 
@@ -233,61 +212,74 @@
   /*                               PluginApi patch                              */
   /* -------------------------------------------------------------------------- */
 
-  /**
-   * !`PerformerDetailsPanel` is not currently available as a PluginApi
-   * !component. Have raised a request at
-   * !https://github.com/stashapp/stash/issues/4880
-   */
-  PluginApi.patch.before("MainNavBar.UtilityItems", function (props: any) {
-    //@ts-ignore
-    const qScenes = GQL.useFindScenesQuery({
-      variables: {
-        filter: { per_page: -1, sort: "date" },
-        scene_filter: {
-          performers: { modifier: "INCLUDES", value: DEV_ONLY_PERFOMER_ID },
-        },
-      },
-    });
+  PluginApi.patch.after(
+    "PerformerDetailsPanel.DetailGroup",
+    function ({ children, performer }: any) {
+      const performerID = performer.id;
+      console.log("performer: ", performer);
 
-    if (!!qScenes.data && DEV_ONLY_PERFOMER_ID !== null) {
+      //@ts-ignore
+      const qScenes = GQL.useFindScenesQuery({
+        variables: {
+          filter: { per_page: -1, sort: "date" },
+          scene_filter: {
+            performers: { modifier: "INCLUDES", value: performerID },
+          },
+        },
+      });
+
       console.log("Scenes data:", qScenes);
 
-      const { scenes } = qScenes.data.findScenes;
+      if (!!qScenes.data && performerID !== null) {
+        const { scenes } = qScenes.data.findScenes;
 
-      const pluginData = {
-        libraryCareerSpan: getLibraryCareerSpan(
-          scenes[0],
-          scenes[scenes.length - 1]
-        ),
-        mostFrequentPartner: getMostFrequentPartner(
-          scenes,
-          DEV_ONLY_PERFOMER_ID.toString()
-        ),
-        mostFrequentMalePartner: getMostFrequentPartner(
-          scenes,
-          DEV_ONLY_PERFOMER_ID.toString(),
-          "MALE"
-        ),
-        mostFrequentFemalePartner: getMostFrequentPartner(
-          scenes,
-          DEV_ONLY_PERFOMER_ID.toString(),
-          "FEMALE"
-        ),
-        mostFrequentNonbinaryPartner: getMostFrequentPartner(
-          scenes,
-          DEV_ONLY_PERFOMER_ID.toString(),
-          "NON_BINARY"
-        ),
-        mostCommonTags: getMostCommonTags(scenes, 5),
-        mostFrequentStudio: getMostFrequentStudio(scenes),
-      };
-      console.log("Performer Library Meta:", pluginData);
+        const pluginData = {
+          libraryCareerSpan: getLibraryCareerSpan(
+            scenes[0],
+            scenes[scenes.length - 1]
+          ),
+          mostFrequentPartner: getMostFrequentPartner(scenes, performerID),
+          mostFrequentMalePartner: getMostFrequentPartner(
+            scenes,
+            performerID,
+            "MALE"
+          ),
+          mostFrequentFemalePartner: getMostFrequentPartner(
+            scenes,
+            performerID,
+            "FEMALE"
+          ),
+          mostFrequentNonbinaryPartner: getMostFrequentPartner(
+            scenes,
+            performerID,
+            "NON_BINARY"
+          ),
+          mostCommonTags: getMostCommonTags(scenes, 5),
+          mostFrequentStudio: getMostFrequentStudio(scenes),
+        };
+        console.log("Performer Library Meta:", pluginData);
+        return [
+          <>
+            <div className="detail-group">{children}</div>
+            <DetailGroup
+              groupID="pluginPerformerLibraryMeta"
+              items={[
+                {
+                  id: "library-career",
+                  title: "Library Career Span",
+                  value: pluginData.libraryCareerSpan,
+                },
+              ]}
+            />
+          </>,
+        ];
+      }
+
+      return [
+        <>
+          <div className="detail-group">{children}</div>
+        </>,
+      ];
     }
-
-    return [
-      {
-        children: <>{props.children}</>,
-      },
-    ];
-  });
+  );
 })();
