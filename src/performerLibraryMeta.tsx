@@ -116,7 +116,13 @@ import { createFrequentPartnerProps, createLibraryCareerProps } from "./data";
 
       console.log("Scenes data:", qScenes);
 
-      if (!!qScenes.data && performerID !== null) {
+      // Only attach plugin component if scene data has been found. Otherwise,
+      // return the original component only.
+      if (
+        !!qScenes.data &&
+        qScenes.data.findScenes.scenes.length &&
+        performerID !== null
+      ) {
         const { scenes } = qScenes.data.findScenes;
 
         const libraryCareerSpanProps = createLibraryCareerProps(
