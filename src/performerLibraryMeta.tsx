@@ -1,6 +1,6 @@
 import initDetailGroup from "./components/DetailGroup";
 import type { DetailItemProps } from "./components/DetailItem";
-import { getLibraryCareerSpan } from "./data";
+import { createLibraryCareerProps } from "./data";
 
 (function () {
   const { PluginApi } = window;
@@ -16,7 +16,7 @@ import { getLibraryCareerSpan } from "./data";
   const getMostFrequentPartner = (
     scenes: StashGQLScene[],
     performerID: StashGQLPerformer["id"],
-    isCollapsed: boolean,
+    collapsed: boolean,
     gender?: StashGQLGenderEnum
   ): DetailItemProps | null => {
     // Create an array of performer data from all scenes
@@ -65,7 +65,7 @@ import { getLibraryCareerSpan } from "./data";
       return partners.length
         ? {
             id: "frequent-partner",
-            isCollapsed,
+            collapsed,
             title: "Most Frequent Partner",
             value: (
               <>
@@ -86,7 +86,7 @@ import { getLibraryCareerSpan } from "./data";
       return genderedPartner
         ? {
             id: "frequent-partner",
-            isCollapsed,
+            collapsed,
             title: `Most Frequent ${genderWord} Partner`,
             value: (
               <>
@@ -209,9 +209,12 @@ import { getLibraryCareerSpan } from "./data";
       if (!!qScenes.data && performerID !== null) {
         const { scenes } = qScenes.data.findScenes;
 
-        const libraryMetadata: DetailItemProps[] = [
-          getLibraryCareerSpan(scenes[0], scenes[scenes.length - 1], collapsed),
-        ];
+        const libraryCareerSpanProps = createLibraryCareerProps(
+          { oldestScene: scenes[0], newestScene: scenes[scenes.length - 1] },
+          collapsed
+        );
+
+        const libraryMetadata: DetailItemProps[] = [libraryCareerSpanProps];
 
         const mostFrequentPartner = getMostFrequentPartner(
           scenes,

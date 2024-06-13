@@ -1,7 +1,8 @@
 import initDetailItem from "./DetailItem";
 import type { DetailItemProps } from "./DetailItem";
 
-/** Initialises the DetailGroup component by passing React as an argument. */
+/** Initialises and returns the DetailGroup component by passing React as an
+ * argument. */
 const initDetailGroup: initComponent<DetailGroupProps> = (React) => {
   const DetailItem = initDetailItem(React);
 

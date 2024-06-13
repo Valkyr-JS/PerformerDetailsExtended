@@ -1,12 +1,9 @@
-import type { DetailItemProps } from "../components/DetailItem";
-
 /** Get the performer's career length based on scenes in the user's library.
  * Returns a string formatted as "YYYY - YYYY" or "YYYY". */
-const getLibraryCareerSpan = (
-  oldestScene: StashGQLScene,
-  newestScene: StashGQLScene,
-  isCollapsed: boolean
-): DetailItemProps => {
+const createLibraryCareerSpan: createItemProps<IcreateLibraryCareerSpan> = (
+  { oldestScene, newestScene },
+  collapsed
+) => {
   const years = {
     oldest: oldestScene.date.split("-")[0],
     newest: newestScene.date.split("-")[0],
@@ -22,8 +19,8 @@ const getLibraryCareerSpan = (
    */
 
   const props = {
+    collapsed,
     id: "library-career",
-    isCollapsed,
     title: "Library Career Span",
     value:
       years.oldest === years.newest
@@ -34,4 +31,9 @@ const getLibraryCareerSpan = (
   return props;
 };
 
-export default getLibraryCareerSpan;
+export default createLibraryCareerSpan;
+
+interface IcreateLibraryCareerSpan {
+  oldestScene: StashGQLScene;
+  newestScene: StashGQLScene;
+}

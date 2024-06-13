@@ -1,1 +1,1 @@
-export { default as getLibraryCareerSpan } from "./getLibraryCareerSpan";
+export { default as createLibraryCareerProps } from "./createLibraryCareerProps";

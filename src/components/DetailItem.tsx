@@ -1,7 +1,8 @@
-/** Initialises the DetailItem component by passing React as an argument. */
+/** Initialises and returns the DetailItem component by passing React as an
+ * argument. */
 const initDetailItem: initComponent<DetailItemProps> = (React) => {
-  const DetailItem = ({ id, isCollapsed, title, value }: DetailItemProps) => {
-    const titleText = !isCollapsed ? title + ":" : title;
+  const DetailItem = ({ id, collapsed, title, value }: DetailItemProps) => {
+    const titleText = !collapsed ? title + ":" : title;
     return (
       <div className={"detail-item " + id}>
         <span className={"detail-item-title " + id}>{titleText}</span>
@@ -17,7 +18,7 @@ export default initDetailItem;
 
 export interface DetailItemProps {
   id: string;
-  isCollapsed: boolean;
+  collapsed: boolean;
   title: string;
   value: React.ReactNode;
 }
