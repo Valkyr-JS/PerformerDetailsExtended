@@ -2,13 +2,11 @@ import { DetailItemProps } from "../components/DetailItem";
 
 /** Get the performer's most frequest scene partner based on scenes in the
  * user's library. Returns a string formatted as "Name (count)" */
-const createFrequentPartnerProps: createItemProps<
-  IcreateMostFrequentPartner
-> = (
+const createFrequentPartnerProps: FnCreateFrequentPartnerProps = (
   { performerID, scenes, gender },
   collapsed,
   React
-): DetailItemProps | null => {
+) => {
   // Create an array of performer data from all scenes
   const partners: {
     count: number;
@@ -98,3 +96,11 @@ interface IcreateMostFrequentPartner {
   scenes: StashGQLScene[];
   gender?: StashGQLGenderEnum;
 }
+
+type FnCreateFrequentPartnerProps = (
+  args: IcreateMostFrequentPartner,
+  /** Identifies whether the PerformerDetailsPanel is currently collapsed. */
+  collapsed: boolean,
+  /** The React instance, if TSX is required in the output value prop. */
+  React: typeof globalThis.React
+) => DetailItemProps | null;

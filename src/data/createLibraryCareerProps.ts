@@ -2,7 +2,7 @@ import { DetailItemProps } from "../components/DetailItem";
 
 /** Get the performer's career length based on scenes in the user's library.
  * Returns a string formatted as "YYYY - YYYY" or "YYYY". */
-const createLibraryCareerProps: createItemProps<IcreateLibraryCareerSpan> = (
+const createLibraryCareerProps: FnCreateLibraryCareerProps = (
   { oldestScene, newestScene },
   collapsed
 ) => {
@@ -37,6 +37,14 @@ const createLibraryCareerProps: createItemProps<IcreateLibraryCareerSpan> = (
 export default createLibraryCareerProps;
 
 interface IcreateLibraryCareerSpan {
+  /** The oldest scene in the library featuring the performer. */
   oldestScene: StashGQLScene;
+  /** The newest scene in the library featuring the performer. */
   newestScene: StashGQLScene;
 }
+
+type FnCreateLibraryCareerProps = (
+  args: IcreateLibraryCareerSpan,
+  /** Identifies whether the PerformerDetailsPanel is currently collapsed. */
+  collapsed: boolean
+) => DetailItemProps;

@@ -149,12 +149,12 @@ import { createFrequentPartnerProps, createLibraryCareerProps } from "./data";
           "TRANSGENDER_FEMALE",
           "INTERSEX",
           "NON_BINARY",
-        ]) {
+        ] as StashGQLGenderEnum[]) {
           const mostFrequentGenderedPartner = createFrequentPartnerProps(
             {
               scenes,
               performerID,
-              gender: gender as StashGQLGenderEnum,
+              gender,
             },
             collapsed,
             React
