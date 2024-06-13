@@ -6,7 +6,9 @@ const initDetailItem: initComponent<DetailItemProps> = (React) => {
     return (
       <div className={"detail-item " + id}>
         <span className={"detail-item-title " + id}>{titleText}</span>
-        <span className={"detail-item-value " + id}>{value}</span>
+        <span className={"detail-item-value " + id}>
+          <span className={"performer-" + id}>{value}</span>
+        </span>
       </div>
     );
   };
