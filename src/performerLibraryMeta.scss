@@ -1,26 +1,33 @@
-.detail-group {
-  + .detail-group {
-    padding-top: 0;
+#pluginPerformerLibraryMeta {
+  &.detail-group {
+    + .detail-group {
+      padding-top: 0;
+    }
+  }
+
+  .detail-item-value .scene-count {
+    opacity: 0.65;
+
+    &::before {
+      content: " (";
+    }
+    &::after {
+      content: ")";
+    }
   }
 }
 
-.detail-item-value .scene-count {
-  opacity: 0.65;
-
-  &::before {
-    content: " (";
+.full-width #pluginPerformerLibraryMeta .detail-item {
+  .detail-item-title {
+    width: 180px;
   }
-  &::after {
-    content: ")";
-  }
-}
 
-.full-width {
-  .detail-item {
-    .detail-item-title {
-      // Increase from default of 130px
-      width: 240px;
-      margin-right: 10px;
+  &.detail-item-wide {
+    display: inline-flex;
+
+    .detail-item-title,
+    .detail-item-value {
+      width: 100%;
     }
   }
 }

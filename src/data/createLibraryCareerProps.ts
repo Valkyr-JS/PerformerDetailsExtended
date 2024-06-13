@@ -26,6 +26,7 @@ const createLibraryCareerSpan: createItemProps<IcreateLibraryCareerSpan> = (
       years.oldest === years.newest
         ? years.oldest
         : `${years.oldest} - ${years.newest}`,
+    wide: false,
   };
 
   return props;

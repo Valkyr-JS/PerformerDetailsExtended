@@ -75,6 +75,7 @@ import { createLibraryCareerProps } from "./data";
                 </span>
               </>
             ),
+            wide: true,
           }
         : null;
     } else {
@@ -96,6 +97,7 @@ import { createLibraryCareerProps } from "./data";
                 </span>
               </>
             ),
+            wide: true,
           }
         : null;
     }
