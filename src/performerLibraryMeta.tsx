@@ -1,20 +1,10 @@
-import setupDetailGroup from "./components/DetailGroup";
+import initDetailGroup from "./components/DetailGroup";
+import type { DetailItemProps } from "./components/DetailItem";
 
 (function () {
   const { PluginApi } = window;
   const { GQL, React } = PluginApi;
-  const DetailGroup = setupDetailGroup(React);
-
-  /* -------------------------------------------------------------------------- */
-  /*                              React components                              */
-  /* -------------------------------------------------------------------------- */
-
-  interface DetailItemProps {
-    id: string;
-    isCollapsed: boolean;
-    title: string;
-    value: React.ReactNode;
-  }
+  const DetailGroup = initDetailGroup(React);
 
   /* -------------------------------------------------------------------------- */
   /*                               Data formatting                              */

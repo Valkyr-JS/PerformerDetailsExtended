@@ -1,4 +1,9 @@
+import initDetailItem from "./DetailItem";
+import type { DetailItemProps } from "./DetailItem";
+
 const setupDetailGroup = (React: typeof globalThis.React) => {
+  const DetailItem = initDetailItem(React);
+
   const DetailGroup = ({ groupID, items }: DetailGroupProps) => {
     return (
       <div id={groupID} className="detail-group">
@@ -9,29 +14,12 @@ const setupDetailGroup = (React: typeof globalThis.React) => {
     );
   };
 
-  const DetailItem = ({ id, isCollapsed, title, value }: DetailItemProps) => {
-    const titleText = !isCollapsed ? title + ":" : title;
-    return (
-      <div className={"detail-item " + id}>
-        <span className={"detail-item-title " + id}>{titleText}</span>
-        <span className={"detail-item-value " + id}>{value}</span>
-      </div>
-    );
-  };
-
   return DetailGroup;
 };
 
 export default setupDetailGroup;
 
-interface DetailGroupProps {
+export interface DetailGroupProps {
   groupID: string;
   items: DetailItemProps[];
-}
-
-interface DetailItemProps {
-  id: string;
-  isCollapsed: boolean;
-  title: string;
-  value: React.ReactNode;
 }
