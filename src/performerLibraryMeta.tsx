@@ -1,39 +1,13 @@
+import setupDetailGroup from "./components/DetailGroup";
+
 (function () {
   const { PluginApi } = window;
   const { GQL, React } = PluginApi;
+  const DetailGroup = setupDetailGroup(React);
 
   /* -------------------------------------------------------------------------- */
   /*                              React components                              */
   /* -------------------------------------------------------------------------- */
-
-  /* ------------------------------ Detail group ------------------------------ */
-
-  const DetailGroup = ({ groupID, items }: DetailGroupProps) => {
-    return (
-      <div id={groupID} className="detail-group">
-        {items.map((itemProps) => (
-          <DetailItem key={itemProps.id} {...itemProps} />
-        ))}
-      </div>
-    );
-  };
-
-  interface DetailGroupProps {
-    groupID: string;
-    items: DetailItemProps[];
-  }
-
-  /* ------------------------------- Detail item ------------------------------ */
-
-  const DetailItem = ({ id, isCollapsed, title, value }: DetailItemProps) => {
-    const titleText = !isCollapsed ? title + ":" : title;
-    return (
-      <div className={"detail-item " + id}>
-        <span className={"detail-item-title " + id}>{titleText}</span>
-        <span className={"detail-item-value " + id}>{value}</span>
-      </div>
-    );
-  };
 
   interface DetailItemProps {
     id: string;
@@ -323,11 +297,7 @@
         ];
       }
 
-      return [
-        <>
-          <div className="detail-group">{children}</div>
-        </>,
-      ];
+      return [<div className="detail-group">{children}</div>];
     }
   );
 })();
