@@ -1,7 +1,8 @@
 import initDetailItem from "./DetailItem";
 import type { DetailItemProps } from "./DetailItem";
 
-const setupDetailGroup = (React: typeof globalThis.React) => {
+/** Initialises the DetailGroup component by passing React as an argument. */
+const initDetailGroup: initComponent<DetailGroupProps> = (React) => {
   const DetailItem = initDetailItem(React);
 
   const DetailGroup = ({ groupID, items }: DetailGroupProps) => {
@@ -17,7 +18,7 @@ const setupDetailGroup = (React: typeof globalThis.React) => {
   return DetailGroup;
 };
 
-export default setupDetailGroup;
+export default initDetailGroup;
 
 export interface DetailGroupProps {
   groupID: string;

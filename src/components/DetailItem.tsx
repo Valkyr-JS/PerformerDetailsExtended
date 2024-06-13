@@ -1,4 +1,5 @@
-const initDetailItem = (React: typeof globalThis.React) => {
+/** Initialises the DetailItem component by passing React as an argument. */
+const initDetailItem: initComponent<DetailItemProps> = (React) => {
   const DetailItem = ({ id, isCollapsed, title, value }: DetailItemProps) => {
     const titleText = !isCollapsed ? title + ":" : title;
     return (
