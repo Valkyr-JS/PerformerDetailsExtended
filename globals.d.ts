@@ -43,7 +43,7 @@ interface IPluginApi {
     };
   };
   loadableComponents: any;
-  components: Record<string, React.FC<any>>;
+  components: StashPluginComponents;
   utils: {
     NavUtils: any;
     loadComponents: any;
@@ -59,17 +59,22 @@ interface IPluginApi {
 /*                                 Components                                 */
 /* -------------------------------------------------------------------------- */
 
+interface StashPluginComponents {
+  "PerformerDetailsPanel.DetailGroup": (
+    props: PropsPerformerDetailsPanelDetailGroup
+  ) => React.JSX;
+}
 interface PatchableComponents {
   after: (
-    target: "PerformerDetailsPanel.DetailGroup",
+    component: "PerformerDetailsPanel.DetailGroup",
     fn: (props: PropsPerformerDetailsPanelDetailGroup) => React.JSX
   ) => void;
   before: (
-    target: "PerformerDetailsPanel.DetailGroup",
+    component: "PerformerDetailsPanel.DetailGroup",
     fn: (props: PropsPerformerDetailsPanelDetailGroup) => React.JSX
   ) => void;
   instead: (
-    target: "PerformerDetailsPanel.DetailGroup",
+    component: "PerformerDetailsPanel.DetailGroup",
     fn: (props: PropsPerformerDetailsPanelDetailGroup) => React.JSX
   ) => void;
 }

@@ -1,5 +1,4 @@
 import DetailGroup from "./components/DetailGroup";
-import type { DetailItemProps } from "./components/DetailItem";
 import {
   createCommonTagsProps,
   createFrequentPartnerProps,
