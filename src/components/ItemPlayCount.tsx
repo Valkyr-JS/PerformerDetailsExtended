@@ -1,3 +1,4 @@
+import { createDuration } from "../../helpers";
 import DetailItem from "./DetailItem";
 const { GQL, React } = window.PluginApi;
 
@@ -15,8 +16,6 @@ const ItemPlayCount: React.FunctionComponent<ItemPlayCountProps> = (props) => {
     },
   });
 
-  console.log("ItemPlayCount query: ", query);
-
   let playCount = 0;
   let playDuration = 0;
 
@@ -33,9 +32,9 @@ const ItemPlayCount: React.FunctionComponent<ItemPlayCountProps> = (props) => {
       title="Scene Play Count"
       value={
         <>
-          {playCount} times
+          {playCount} {playCount === 1 ? "time" : "times"}
           <span className="additional-data total-play-time">
-            {playDuration} total
+            {createDuration(playDuration)} total
           </span>
         </>
       }
