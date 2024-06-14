@@ -1,4 +1,4 @@
-declare interface Window {
+interface Window {
   PluginApi: IPluginApi;
 }
 
