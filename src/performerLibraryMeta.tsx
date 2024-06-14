@@ -3,45 +3,12 @@ import type { DetailItemProps } from "./components/DetailItem";
 import {
   createCommonTagsProps,
   createFrequentPartnerProps,
+  createFrequentStudioProps,
   createLibraryCareerProps,
 } from "./data";
 
 const { PluginApi } = window;
 const { GQL, React } = PluginApi;
-
-/* -------------------------------------------------------------------------- */
-/*                               Data formatting                              */
-/* -------------------------------------------------------------------------- */
-
-/** Get the performer's most featured studio based on scenes in the user's
- * library. Returns a string formatted as "Studio (count)"  */
-const getMostFrequentStudio = (scenes: StashGQLScene[]) => {
-  // Create an array of studio data from all scenes
-  const studios: {
-    count: number;
-    id: StashGQLStudio["id"];
-    name: StashGQLStudio["name"];
-  }[] = [];
-
-  // Check each scene
-  scenes.forEach((sc) => {
-    // Check if the scene studio already exists in the array
-    const studiosIndex = studios.findIndex((st) => st.id === sc.studio.id);
-
-    if (studiosIndex !== -1) {
-      // Increase the studio's count
-      studios[studiosIndex].count++;
-    } else {
-      studios.push({ id: sc.studio.id, count: 1, name: sc.studio.name });
-    }
-  });
-
-  // Sort count from highest to lowest
-  studios.sort((a, b) => b.count - a.count);
-
-  // Return the studio with the highest overall count
-  return studios.length ? `${studios[0].name} (${studios[0].count})` : null;
-};
 
 /* -------------------------------------------------------------------------- */
 /*                               PluginApi patch                              */
@@ -119,10 +86,9 @@ PluginApi.patch.after(
       );
       if (!!mostCommonTags) libraryMetadata.push(mostCommonTags);
 
-      const pluginData = {
-        mostFrequentStudio: getMostFrequentStudio(scenes),
-      };
-      console.log("Performer Library Meta:", pluginData);
+      const frequentStudio = createFrequentStudioProps({ scenes }, collapsed);
+      if (!!frequentStudio) libraryMetadata.push(frequentStudio);
+
       return [
         <>
           <div className="detail-group">{children}</div>
