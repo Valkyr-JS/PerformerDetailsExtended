@@ -11,14 +11,16 @@ const createFrequentStudioProps: FnCreateFrequentStudioProps = (
   // Create an array of studio data from all scenes
   const studios: {
     count: number;
-    id: StashGQLStudio["id"];
-    name: StashGQLStudio["name"];
+    id: Studio["id"];
+    name: Studio["name"];
   }[] = [];
 
   // Check each scene
   scenes.forEach((sc) => {
     // Check if the scene studio already exists in the array
-    const studiosIndex = studios.findIndex((st) => st.id === sc.studio.id);
+    const studiosIndex = studios.findIndex((st) => st.id === sc.studio?.id);
+
+    if (!sc.studio) return;
 
     if (studiosIndex !== -1) {
       // Increase the studio's count
@@ -49,7 +51,7 @@ const createFrequentStudioProps: FnCreateFrequentStudioProps = (
 export default createFrequentStudioProps;
 
 interface IcreateFrequentStudio {
-  scenes: StashGQLScene[];
+  scenes: Scene[];
 }
 
 type FnCreateFrequentStudioProps = (

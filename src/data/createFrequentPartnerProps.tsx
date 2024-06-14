@@ -11,9 +11,9 @@ const createFrequentPartnerProps: FnCreateFrequentPartnerProps = (
   // Create an array of performer data from all scenes
   const partners: {
     count: number;
-    gender: StashGQLPerformer["gender"];
-    id: StashGQLPerformer["id"];
-    name: StashGQLPerformer["name"];
+    gender: Performer["gender"];
+    id: Performer["id"];
+    name: Performer["name"];
   }[] = [];
 
   // Check each scene
@@ -47,7 +47,7 @@ const createFrequentPartnerProps: FnCreateFrequentPartnerProps = (
   const scenesText = (count: number) =>
     count + " " + (count === 1 ? "scene" : "scenes");
 
-  if (typeof gender === "undefined") {
+  if (!gender) {
     // Return the performer with the highest overall count.
     return partners.length
       ? {
@@ -93,9 +93,9 @@ const createFrequentPartnerProps: FnCreateFrequentPartnerProps = (
 export default createFrequentPartnerProps;
 
 interface IcreateFrequentPartner {
-  performerID: StashGQLPerformer["id"];
-  scenes: StashGQLScene[];
-  gender?: StashGQLGenderEnum;
+  performerID: Performer["id"];
+  scenes: Scene[];
+  gender?: Performer["gender"];
 }
 
 type FnCreateFrequentPartnerProps = (

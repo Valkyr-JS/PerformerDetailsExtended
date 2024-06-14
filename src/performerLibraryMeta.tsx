@@ -26,7 +26,10 @@ PluginApi.patch.after(
       variables: {
         filter: { per_page: -1, sort: "date" },
         scene_filter: {
-          performers: { modifier: "INCLUDES", value: performerID },
+          performers: {
+            modifier: CriterionModifier.Includes,
+            value: [performerID],
+          },
         },
       },
     });
@@ -65,7 +68,7 @@ PluginApi.patch.after(
         "TRANSGENDER_FEMALE",
         "INTERSEX",
         "NON_BINARY",
-      ] as StashGQLGenderEnum[]) {
+      ] as GenderEnum[]) {
         const mostFrequentGenderedPartner = createFrequentPartnerProps(
           {
             scenes,

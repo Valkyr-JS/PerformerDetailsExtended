@@ -11,8 +11,8 @@ const createCommonTagsProps: FnCreateCommonTagsProps = (
   // Create an array of tag data from all scenes
   const tags: {
     count: number;
-    id: StashGQLTag["id"];
-    name: StashGQLTag["name"];
+    id: Tag["id"];
+    name: Tag["name"];
   }[] = [];
 
   // Check each scene
@@ -62,7 +62,7 @@ const createCommonTagsProps: FnCreateCommonTagsProps = (
 export default createCommonTagsProps;
 
 interface IcreateCommonTags {
-  scenes: StashGQLScene[];
+  scenes: Scene[];
   tagCount: number;
 }
 

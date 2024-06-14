@@ -7,8 +7,8 @@ const createLibraryCareerProps: FnCreateLibraryCareerProps = (
   collapsed
 ) => {
   const years = {
-    oldest: oldestScene.date.split("-")[0],
-    newest: newestScene.date.split("-")[0],
+    oldest: oldestScene.date?.split("-")[0],
+    newest: newestScene.date?.split("-")[0],
   };
 
   /**
@@ -25,7 +25,7 @@ const createLibraryCareerProps: FnCreateLibraryCareerProps = (
     id: "library-career",
     title: "Library Career Span",
     value:
-      years.oldest === years.newest
+      years.oldest && years.newest && years.oldest === years.newest
         ? years.oldest
         : `${years.oldest} - ${years.newest}`,
     wide: false,
@@ -38,9 +38,9 @@ export default createLibraryCareerProps;
 
 interface IcreateLibraryCareer {
   /** The oldest scene in the library featuring the performer. */
-  oldestScene: StashGQLScene;
+  oldestScene: Scene;
   /** The newest scene in the library featuring the performer. */
-  newestScene: StashGQLScene;
+  newestScene: Scene;
 }
 
 type FnCreateLibraryCareerProps = (
