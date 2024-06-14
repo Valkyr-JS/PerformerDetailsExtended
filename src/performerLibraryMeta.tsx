@@ -23,7 +23,6 @@ PluginApi.patch.after(
   }: PropsPerformerDetailsPanelDetailGroup) {
     const performerID = performer.id;
 
-    //@ts-ignore
     const qScenes = GQL.useFindScenesQuery({
       variables: {
         filter: { per_page: -1, sort: "date" },
@@ -49,7 +48,7 @@ PluginApi.patch.after(
         collapsed
       );
 
-      const libraryMetadata: DetailItemProps[] = [libraryCareerSpanProps];
+      const libraryMetadata = [libraryCareerSpanProps];
 
       const mostFrequentPartner = createFrequentPartnerProps(
         {

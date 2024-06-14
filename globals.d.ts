@@ -13,6 +13,9 @@ interface IPluginApi {
         };
       };
     };
+    useFindScenesQuery(args: StashGQLQueryFindScenes): {
+      data: { findScenes: StashGQLFindScenesResultType };
+    };
   };
   Event: {
     addEventListener: (
@@ -46,11 +49,7 @@ interface IPluginApi {
     loadComponents: any;
   };
   hooks: any;
-  patch: {
-    before: (target: string, fn: Function) => void;
-    instead: (target: string, fn: Function) => void;
-    after: (target: string, fn: Function) => void;
-  };
+  patch: PatchableComponents;
   register: {
     route: (path: string, component: React.FC<any>) => void;
   };
@@ -59,6 +58,27 @@ interface IPluginApi {
 /* -------------------------------------------------------------------------- */
 /*                                 Components                                 */
 /* -------------------------------------------------------------------------- */
+
+interface PatchableComponents {
+  after: (
+    target: "PerformerDetailsPanel.DetailGroup",
+    fn: (
+      props: PropsPerformerDetailsPanelDetailGroup
+    ) => React.Fc<PropsPerformerDetailsPanelDetailGroup>
+  ) => void;
+  before: (
+    target: "PerformerDetailsPanel.DetailGroup",
+    fn: (
+      props: PropsPerformerDetailsPanelDetailGroup
+    ) => React.Fc<PropsPerformerDetailsPanelDetailGroup>
+  ) => void;
+  instead: (
+    target: "PerformerDetailsPanel.DetailGroup",
+    fn: (
+      props: PropsPerformerDetailsPanelDetailGroup
+    ) => React.Fc<PropsPerformerDetailsPanelDetailGroup>
+  ) => void;
+}
 
 interface PropsPerformerDetailsPanelDetailGroup
   extends React.PropsWithChildren {
@@ -152,3 +172,60 @@ type StashGQLGenderEnum =
   | "TRANSGENDER_FEMALE"
   | "INTERSEX"
   | "NON_BINARY";
+
+type StashGQLSortDirectionEnum = "ASC" | "DESC";
+
+/* -------------------------------------------------------------------------- */
+/*                              Stash GQL Queries                             */
+/* -------------------------------------------------------------------------- */
+
+interface StashGQLQueryFindScenes {
+  variables: {
+    filter?: StashGQLFindFilterType;
+    scene_filter?: StashGQLSceneFilterType;
+  };
+}
+
+interface StashGQLFindFilterType {
+  direction?: StashGQLSortDirectionEnum;
+  page?: number;
+  /** Use `per_page = -1` to indicate all results. Defaults to 25. */
+  per_page?: number;
+  q?: string;
+  sort?: string;
+}
+
+interface StashGQLSceneFilterType {
+  /** Filter to only include scenes with these performers. */
+  performers: StashGQLMultiCriterionInput;
+}
+
+interface StashGQLMultiCriterionInput {
+  modifier: StashGQLCriterionModifier;
+  value: string;
+  excludes?: string;
+}
+
+type StashGQLCriterionModifier =
+  | "EQUALS"
+  | "NOT_EQUALS"
+  | "GREATER_THAN"
+  | "LESS_THAN"
+  | "IS_NULL"
+  | "NOT_NULL"
+  | "INCLUDES_ALL"
+  | "INCLUDES"
+  | "EXCLUDES"
+  | "MATCHES_REGEX"
+  | "NOT_MATCHES_REGEX"
+  | "BETWEEN"
+  | "NOT_BETWEEN";
+
+interface StashGQLFindScenesResultType {
+  count: number;
+  /** The total duration in seconds. */
+  duration: number;
+  /** The total file size in bytes. */
+  filesize: number;
+  scenes: StashGQLScene[];
+}
