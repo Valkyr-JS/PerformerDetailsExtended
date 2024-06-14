@@ -1,5 +1,6 @@
 import { GENDERS } from "./common/constants";
 import DetailGroup from "./components/DetailGroup";
+import ItemPlayCount from "./components/ItemPlayCount";
 import {
   createCommonTagsProps,
   createFrequentPartnerProps,
@@ -87,6 +88,9 @@ PluginApi.patch.after(
             groupID="pluginPerformerLibraryMeta"
             items={libraryMetadata}
           />
+          <div id="pluginPerformerLibraryMeta" className="detail-group">
+            <ItemPlayCount collapsed={collapsed} performerIDs={[performerID]} />
+          </div>
         </>,
       ];
     }

@@ -57,7 +57,7 @@ const createFrequentPartnerProps: FnCreateFrequentPartnerProps = (
           value: (
             <>
               {partners[0].name}
-              <span className="scene-count">
+              <span className="additional-data scene-count">
                 {scenesText(partners[0].count)}
               </span>
             </>
@@ -79,7 +79,7 @@ const createFrequentPartnerProps: FnCreateFrequentPartnerProps = (
           value: (
             <>
               {genderedPartner.name}
-              <span className="scene-count">
+              <span className="additional-data scene-count">
                 {scenesText(genderedPartner.count)}
               </span>
             </>
