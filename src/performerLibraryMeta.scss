@@ -1,9 +1,5 @@
 #pluginPerformerLibraryMeta {
-  &.detail-group {
-    + .detail-group {
-      padding-top: 0;
-    }
-  }
+  padding-top: 0;
 
   .detail-item-value .scene-count {
     opacity: 0.65;
