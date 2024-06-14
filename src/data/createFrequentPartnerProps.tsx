@@ -92,14 +92,14 @@ const createFrequentPartnerProps: FnCreateFrequentPartnerProps = (
 
 export default createFrequentPartnerProps;
 
-interface IcreateMostFrequentPartner {
+interface IcreateFrequentPartner {
   performerID: StashGQLPerformer["id"];
   scenes: StashGQLScene[];
   gender?: StashGQLGenderEnum;
 }
 
 type FnCreateFrequentPartnerProps = (
-  args: IcreateMostFrequentPartner,
+  args: IcreateFrequentPartner,
   /** Identifies whether the PerformerDetailsPanel is currently collapsed. */
   collapsed: boolean
 ) => DetailItemProps | null;

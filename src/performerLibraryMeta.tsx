@@ -1,6 +1,10 @@
 import DetailGroup from "./components/DetailGroup";
 import type { DetailItemProps } from "./components/DetailItem";
-import { createFrequentPartnerProps, createLibraryCareerProps } from "./data";
+import {
+  createCommonTagsProps,
+  createFrequentPartnerProps,
+  createLibraryCareerProps,
+} from "./data";
 
 const { PluginApi } = window;
 const { GQL, React } = PluginApi;
@@ -8,55 +12,6 @@ const { GQL, React } = PluginApi;
 /* -------------------------------------------------------------------------- */
 /*                               Data formatting                              */
 /* -------------------------------------------------------------------------- */
-
-/**
- * Get the most common tags in scenes the performer is featured in. Returns a
- * string formatted as "Tag name A (count), Tag name B (count)..." etc.
- */
-const getMostCommonTags = (scenes: StashGQLScene[], tagCount: number = 3) => {
-  // Create an array of tag data from all scenes
-  const tags: {
-    count: number;
-    id: StashGQLTag["id"];
-    name: StashGQLTag["name"];
-  }[] = [];
-
-  // Check each scene
-  scenes.forEach((sc) => {
-    // Check each tag in the scene
-    sc.tags.forEach((tag) => {
-      // Check if the tag already exists in the array
-      const tagIndex = tags.findIndex((t) => t.id === tag.id);
-
-      if (tagIndex !== -1) {
-        // Increase the tag count
-        tags[tagIndex].count++;
-      } else {
-        // Add the tag to the array
-        tags.push({
-          id: tag.id,
-          count: 1,
-          name: tag.name,
-        });
-      }
-    });
-  });
-
-  // Sort count from highest to lowest
-  tags.sort((a, b) => b.count - a.count);
-
-  // Return the tags with the highest overall count, up to the tagCount
-  if (tags.length) {
-    const maxTags = tags.length < tagCount ? tags.length : tagCount;
-    let tagString = "";
-    for (let i = 0; i < maxTags; i++) {
-      tagString += (i === 0 ? "" : ", ") + `${tags[i].name} (${tags[i].count})`;
-    }
-    return tagString;
-  } else {
-    return null;
-  }
-};
 
 /** Get the performer's most featured studio based on scenes in the user's
  * library. Returns a string formatted as "Studio (count)"  */
@@ -158,8 +113,13 @@ PluginApi.patch.after(
           libraryMetadata.push(mostFrequentGenderedPartner);
       }
 
+      const mostCommonTags = createCommonTagsProps(
+        { scenes, tagCount: 5 },
+        collapsed
+      );
+      if (!!mostCommonTags) libraryMetadata.push(mostCommonTags);
+
       const pluginData = {
-        mostCommonTags: getMostCommonTags(scenes, 5),
         mostFrequentStudio: getMostFrequentStudio(scenes),
       };
       console.log("Performer Library Meta:", pluginData);

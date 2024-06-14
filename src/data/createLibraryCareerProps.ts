@@ -36,7 +36,7 @@ const createLibraryCareerProps: FnCreateLibraryCareerProps = (
 
 export default createLibraryCareerProps;
 
-interface IcreateLibraryCareerSpan {
+interface IcreateLibraryCareer {
   /** The oldest scene in the library featuring the performer. */
   oldestScene: StashGQLScene;
   /** The newest scene in the library featuring the performer. */
@@ -44,7 +44,7 @@ interface IcreateLibraryCareerSpan {
 }
 
 type FnCreateLibraryCareerProps = (
-  args: IcreateLibraryCareerSpan,
+  args: IcreateLibraryCareer,
   /** Identifies whether the PerformerDetailsPanel is currently collapsed. */
   collapsed: boolean
 ) => DetailItemProps;
