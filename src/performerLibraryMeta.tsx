@@ -1,3 +1,4 @@
+import { GENDERS } from "./common/constants";
 import DetailGroup from "./components/DetailGroup";
 import {
   createCommonTagsProps,
@@ -15,11 +16,7 @@ const { GQL, React } = PluginApi;
 
 PluginApi.patch.after(
   "PerformerDetailsPanel.DetailGroup",
-  function ({
-    children,
-    collapsed,
-    performer,
-  }: PropsPerformerDetailsPanelDetailGroup) {
+  function ({ children, collapsed, performer }) {
     const performerID = performer.id;
 
     const qScenes = GQL.useFindScenesQuery({
@@ -61,14 +58,7 @@ PluginApi.patch.after(
       );
       if (!!mostFrequentPartner) libraryMetadata.push(mostFrequentPartner);
 
-      for (const gender of [
-        "MALE",
-        "FEMALE",
-        "TRANSGENDER_MALE",
-        "TRANSGENDER_FEMALE",
-        "INTERSEX",
-        "NON_BINARY",
-      ] as GenderEnum[]) {
+      for (const gender of GENDERS) {
         const mostFrequentGenderedPartner = createFrequentPartnerProps(
           {
             scenes,
