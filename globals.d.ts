@@ -62,21 +62,15 @@ interface IPluginApi {
 interface PatchableComponents {
   after: (
     target: "PerformerDetailsPanel.DetailGroup",
-    fn: (
-      props: PropsPerformerDetailsPanelDetailGroup
-    ) => React.Fc<PropsPerformerDetailsPanelDetailGroup>
+    fn: (props: PropsPerformerDetailsPanelDetailGroup) => React.JSX
   ) => void;
   before: (
     target: "PerformerDetailsPanel.DetailGroup",
-    fn: (
-      props: PropsPerformerDetailsPanelDetailGroup
-    ) => React.Fc<PropsPerformerDetailsPanelDetailGroup>
+    fn: (props: PropsPerformerDetailsPanelDetailGroup) => React.JSX
   ) => void;
   instead: (
     target: "PerformerDetailsPanel.DetailGroup",
-    fn: (
-      props: PropsPerformerDetailsPanelDetailGroup
-    ) => React.Fc<PropsPerformerDetailsPanelDetailGroup>
+    fn: (props: PropsPerformerDetailsPanelDetailGroup) => React.JSX
   ) => void;
 }
 
