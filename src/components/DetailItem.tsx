@@ -1,26 +1,24 @@
+const { React } = window.PluginApi;
+
 /** Initialises and returns the DetailItem component by passing React as an
  * argument. */
-const initDetailItem: initComponent<DetailItemProps> = (React) => {
-  const DetailItem = ({ id, title, ...props }: DetailItemProps) => {
-    const titleText = !props.collapsed ? title + ":" : title;
+const DetailItem = ({ id, title, ...props }: DetailItemProps) => {
+  const titleText = !props.collapsed ? title + ":" : title;
 
-    const classes = ["detail-item", id];
-    if (props.wide) classes.push("detail-item-wide");
+  const classes = ["detail-item", id];
+  if (props.wide) classes.push("detail-item-wide");
 
-    return (
-      <div className={classes.join(" ")}>
-        <span className={"detail-item-title " + id}>{titleText}</span>
-        <span className={"detail-item-value " + id}>
-          <span className={"performer-" + id}>{props.value}</span>
-        </span>
-      </div>
-    );
-  };
-
-  return DetailItem;
+  return (
+    <div className={classes.join(" ")}>
+      <span className={"detail-item-title " + id}>{titleText}</span>
+      <span className={"detail-item-value " + id}>
+        <span className={"performer-" + id}>{props.value}</span>
+      </span>
+    </div>
+  );
 };
 
-export default initDetailItem;
+export default DetailItem;
 
 export interface DetailItemProps {
   /** The unique identifier for the item. */

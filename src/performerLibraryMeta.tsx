@@ -1,10 +1,9 @@
-import initDetailGroup from "./components/DetailGroup";
+import DetailGroup from "./components/DetailGroup";
 import type { DetailItemProps } from "./components/DetailItem";
 import { createFrequentPartnerProps, createLibraryCareerProps } from "./data";
 
 const { PluginApi } = window;
 const { GQL, React } = PluginApi;
-const DetailGroup = initDetailGroup(React);
 
 /* -------------------------------------------------------------------------- */
 /*                               Data formatting                              */
@@ -135,8 +134,7 @@ PluginApi.patch.after(
           scenes,
           performerID,
         },
-        collapsed,
-        React
+        collapsed
       );
       if (!!mostFrequentPartner) libraryMetadata.push(mostFrequentPartner);
 
@@ -154,8 +152,7 @@ PluginApi.patch.after(
             performerID,
             gender,
           },
-          collapsed,
-          React
+          collapsed
         );
         if (!!mostFrequentGenderedPartner)
           libraryMetadata.push(mostFrequentGenderedPartner);
