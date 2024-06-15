@@ -3,11 +3,10 @@
   "version": "0.1.0",
   "description": "Displays metadata about frequent scene partners, most prominent tags, etc. in your library, on performer pages.",
   "scripts": {
-    "build": "npm run compile:ts && npm run compile:scss && npm run copy:yml",
-    "compile": "npm run compile:ts && npm run compile:scss",
-    "compile:scss": "sass src/performerLibraryMeta.scss dist/performerLibraryMeta.css --no-source-map",
-    "compile:ts": "webpack",
-    "copy:yml": "node -e \"require('fs').cpSync('./src/performerLibraryMeta.yml', './dist/performerLibraryMeta.yml', {recursive: true});\""
+    "build": "npm run compile",
+    "compile": "webpack",
+    "start": "npm run watch",
+    "watch": "webpack --watch"
   },
   "repository": {
     "type": "git",
@@ -23,7 +22,12 @@
     "@types/react": "^18.3.3",
     "@types/react-bootstrap": "^0.32.36",
     "@types/react-dom": "^18.3.0",
+    "copy-webpack-plugin": "^12.0.2",
+    "css-loader": "^7.1.2",
+    "css-minimizer-webpack-plugin": "^7.0.0",
+    "mini-css-extract-plugin": "^2.9.0",
     "sass": "^1.77.4",
+    "sass-loader": "^14.2.1",
     "ts-loader": "^9.5.1",
     "typescript": "^5.4.5",
     "webpack": "^5.92.0",

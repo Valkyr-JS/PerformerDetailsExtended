@@ -2,6 +2,7 @@ import DetailGroup from "./components/DetailGroup";
 import ItemMostFeaturedOn from "./components/ItemMostFeaturedOn";
 import ItemPlayCount from "./components/ItemPlayCount";
 import ItemScenesTimespan from "./components/ItemScenesTimespan";
+import "./performerLibraryMeta.scss";
 
 const { PluginApi } = window;
 const { GQL, React } = PluginApi;
