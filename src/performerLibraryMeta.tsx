@@ -1,5 +1,5 @@
 import DetailGroup from "./components/DetailGroup";
-import ItemFrequentStudio from "./components/ItemFrequentStudio";
+import ItemMostFeaturedOn from "./components/ItemMostFeaturedOn";
 import ItemPlayCount from "./components/ItemPlayCount";
 
 const { PluginApi } = window;
@@ -43,8 +43,9 @@ PluginApi.patch.after(
               collapsed={collapsed}
               scenesQueryResult={qScenes.data.findScenes}
             />
-            <ItemFrequentStudio
+            <ItemMostFeaturedOn
               collapsed={collapsed}
+              performer={performer}
               scenesQueryResult={qScenes.data.findScenes}
             />
           </DetailGroup>

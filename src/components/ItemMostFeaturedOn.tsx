@@ -3,6 +3,7 @@ const { React } = window.PluginApi;
 
 const ItemFrequentStudio: React.FC<ItemFrequentStudioProps> = ({
   collapsed,
+  performer,
   scenesQueryResult,
 }) => {
   // Create an array of studio data from all scenes
@@ -39,13 +40,20 @@ const ItemFrequentStudio: React.FC<ItemFrequentStudioProps> = ({
   const topStudio = studios[0];
   const additionalDataValue =
     topStudio.count + (topStudio.count === 1 ? " scene" : " scenes");
+  const linkToStudio = `/studios/${
+    topStudio.id
+  }/scenes?c=("type":"performers","value":("items":%5B("id":"${
+    performer.id
+  }","label":"${encodeURIComponent(
+    performer.name
+  )}")%5D,"excluded":%5B%5D),"modifier":"INCLUDES")`;
 
   return (
     <DetailItem
       collapsed={collapsed}
       id="most-featured-on"
       title="Most Featured On"
-      value={topStudio.name}
+      value={<a href={linkToStudio}>{topStudio.name}</a>}
       wide={true}
       additionalData={{
         id: "featured-studio-scenes",
@@ -60,6 +68,8 @@ export default ItemFrequentStudio;
 interface ItemFrequentStudioProps {
   /** Identifies whether the PerformerDetailsPanel is currently collapsed. */
   collapsed: PropsPerformerDetailsPanelDetailGroup["collapsed"];
+  /** The Stash performer ID. */
+  performer: Performer;
   /** The `findScenes` data object returned from the GQL query. */
   scenesQueryResult: FindScenesResultType;
 }
