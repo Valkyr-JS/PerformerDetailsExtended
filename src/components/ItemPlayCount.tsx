@@ -3,9 +3,9 @@ import DetailItem from "./DetailItem";
 const { React } = window.PluginApi;
 
 /** "Scene Play Count" item component. */
-const ItemPlayCount: React.FunctionComponent<ItemPlayCountProps> = ({
+const ItemPlayCount: React.FC<ItemPlayCountProps> = ({
+  collapsed,
   scenesQueryResult,
-  ...props
 }) => {
   let playCount = 0;
   let playDuration = 0;
@@ -17,15 +17,15 @@ const ItemPlayCount: React.FunctionComponent<ItemPlayCountProps> = ({
 
   return (
     <DetailItem
-      collapsed={props.collapsed}
+      collapsed={collapsed}
       id="play-count"
       title="Scene Play Count"
       value={`${playCount} ${playCount === 1 ? "time" : "times"}`}
+      wide={true}
       additionalData={{
         id: "total-play-time",
         value: `${createDuration(playDuration)} total`,
       }}
-      wide={true}
     />
   );
 };

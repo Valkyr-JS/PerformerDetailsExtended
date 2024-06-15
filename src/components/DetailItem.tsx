@@ -40,7 +40,7 @@ export interface DetailItemProps {
   /** The title of the item as displayed in the UI. */
   title: string;
   /** The value of the item as displayed in the UI. */
-  value: string;
+  value: React.ReactNode;
   /** Identifies whether to treat the item as including long text that requires
    * more room than native items. */
   wide: boolean;

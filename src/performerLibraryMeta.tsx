@@ -1,4 +1,5 @@
 import DetailGroup from "./components/DetailGroup";
+import ItemFrequentStudio from "./components/ItemFrequentStudio";
 import ItemPlayCount from "./components/ItemPlayCount";
 
 const { PluginApi } = window;
@@ -39,6 +40,10 @@ PluginApi.patch.after(
           <DetailGroup>{children}</DetailGroup>
           <DetailGroup id="pluginPerformerLibraryMeta">
             <ItemPlayCount
+              collapsed={collapsed}
+              scenesQueryResult={qScenes.data.findScenes}
+            />
+            <ItemFrequentStudio
               collapsed={collapsed}
               scenesQueryResult={qScenes.data.findScenes}
             />
