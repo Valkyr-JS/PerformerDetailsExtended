@@ -1,6 +1,7 @@
 import DetailGroup from "./components/DetailGroup";
 import ItemMostFeaturedOn from "./components/ItemMostFeaturedOn";
 import ItemPlayCount from "./components/ItemPlayCount";
+import ItemScenesTimespan from "./components/ItemScenesTimespan";
 
 const { PluginApi } = window;
 const { GQL, React } = PluginApi;
@@ -46,6 +47,10 @@ PluginApi.patch.after(
             <ItemMostFeaturedOn
               collapsed={collapsed}
               performer={performer}
+              scenesQueryResult={qScenes.data.findScenes}
+            />
+            <ItemScenesTimespan
+              collapsed={collapsed}
               scenesQueryResult={qScenes.data.findScenes}
             />
           </DetailGroup>
