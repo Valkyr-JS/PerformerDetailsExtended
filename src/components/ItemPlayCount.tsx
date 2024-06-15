@@ -18,13 +18,13 @@ const ItemPlayCount: React.FC<ItemPlayCountProps> = ({
   return (
     <DetailItem
       collapsed={collapsed}
-      id="play-count"
-      title="Scene Play Count"
-      value={`${playCount} ${playCount === 1 ? "time" : "times"}`}
+      id="play-time"
+      title="Scenes Watch For"
+      value={createDuration(playDuration)}
       wide={true}
       additionalData={{
-        id: "total-play-time",
-        value: `${createDuration(playDuration)} total`,
+        id: "total-play-count",
+        value: `${playCount} ${playCount === 1 ? "play" : "plays"}`,
       }}
     />
   );

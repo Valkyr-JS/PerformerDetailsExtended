@@ -9,10 +9,10 @@ export const createDuration = (seconds: number): string => {
   const totalMinutes = inMinutes % 60;
   const totalSeconds = seconds % 60;
 
-  if (inDays > 0) output += (inDays < 10 ? "0" + inDays : inDays) + ":";
-  output += (totalHours < 10 ? "0" + totalHours : totalHours) + ":";
-  output += (totalMinutes < 10 ? "0" + totalMinutes : totalMinutes) + ":";
-  output += totalSeconds < 10 ? "0" + totalSeconds : totalSeconds;
+  if (inDays > 0) output += inDays + " days ";
+  if (!!totalHours || !!output.length) output += totalHours + "h ";
+  if (!!totalMinutes || !!output.length) output += totalMinutes + "m ";
+  output += totalSeconds + "s ";
 
   return output;
 };
