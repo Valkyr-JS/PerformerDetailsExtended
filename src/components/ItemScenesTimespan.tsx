@@ -28,8 +28,8 @@ const ItemScenesTimespan: React.FC<ItemScenesTimespanProps> = ({
     <>
       <DetailItem
         collapsed={collapsed}
-        id="library-timespan"
-        title="Library Timespan"
+        id="scenes-timespan"
+        title="Scenes Timespan"
         value={
           <div className="inner-wrapper">
             <HoverPopover

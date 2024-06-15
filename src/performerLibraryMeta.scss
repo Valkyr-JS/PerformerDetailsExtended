@@ -12,21 +12,17 @@
     }
   }
 
-  /* -------------------------- Item component styles ------------------------- */
-
   .hoverable {
     border-bottom: 1px dotted white;
   }
 
-  .library-timespan {
-    .inner-wrapper {
-      display: inline-flex;
-      align-items: center;
-    }
+  .inner-wrapper {
+    display: inline-flex;
+    align-items: center;
+  }
 
-    .separator {
-      margin: 0 5px;
-    }
+  .separator {
+    margin: 0 5px;
   }
 }
 
