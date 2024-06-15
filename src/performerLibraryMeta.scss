@@ -11,7 +11,26 @@
       content: ")";
     }
   }
+
+  /* -------------------------- Item component styles ------------------------- */
+
+  .hoverable {
+    border-bottom: 1px dotted white;
+  }
+
+  .library-timespan {
+    .inner-wrapper {
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .separator {
+      margin: 0 5px;
+    }
+  }
 }
+
+/* ---------------------------- Full width styles --------------------------- */
 
 .full-width #pluginPerformerLibraryMeta .detail-item {
   .detail-item-title {

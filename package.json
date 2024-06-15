@@ -21,6 +21,7 @@
   "homepage": "https://github.com/Valkyr-JS/plugin-performer-library-meta#readme",
   "devDependencies": {
     "@types/react": "^18.3.3",
+    "@types/react-bootstrap": "^0.32.36",
     "@types/react-dom": "^18.3.0",
     "sass": "^1.77.4",
     "ts-loader": "^9.5.1",

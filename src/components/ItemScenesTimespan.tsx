@@ -1,29 +1,61 @@
 import DetailItem from "./DetailItem";
-const { React } = window.PluginApi;
+const { PluginApi } = window;
+const { React } = PluginApi;
 
 const ItemScenesTimespan: React.FC<ItemScenesTimespanProps> = ({
   collapsed,
   scenesQueryResult,
 }) => {
-  const { scenes } = scenesQueryResult;
+  // Wait for PluginApi components to load before rendering.
+  const componentsLoading = PluginApi.hooks.useLoadComponents([
+    PluginApi.loadableComponents.SceneCard,
+  ]);
+
+  if (componentsLoading) return null;
+  const { HoverPopover, SceneCard } = PluginApi.components;
 
   // Filter out scenes with no date
+  const { scenes } = scenesQueryResult;
   const datedScenes = scenes.filter((sc) => typeof sc.date !== "undefined");
 
-  // Require a minimum of two scenes to display this item.
+  // Require a minimum of two scenes to render this item.
   if (datedScenes.length < 2) return null;
 
   const earliestScene = datedScenes[0];
   const latestScene = datedScenes[datedScenes.length - 1];
 
   return (
-    <DetailItem
-      collapsed={collapsed}
-      id="library-timespan"
-      title="Library Timespan"
-      value={earliestScene.date + " – " + latestScene.date}
-      wide={true}
-    />
+    <>
+      <DetailItem
+        collapsed={collapsed}
+        id="library-timespan"
+        title="Library Timespan"
+        value={
+          <div className="inner-wrapper">
+            <HoverPopover
+              placement="bottom"
+              content={<SceneCard scene={earliestScene} compact={true} />}
+              leaveDelay={100}
+            >
+              <span className="hoverable">
+                {earliestScene.date?.split("-").join("/")}
+              </span>
+            </HoverPopover>
+            <span className="separator">–</span>
+            <HoverPopover
+              placement="bottom"
+              content={<SceneCard scene={latestScene} compact={true} />}
+              leaveDelay={100}
+            >
+              <span className="hoverable">
+                {latestScene.date?.split("-").join("/")}
+              </span>
+            </HoverPopover>
+          </div>
+        }
+        wide={true}
+      />
+    </>
   );
 };
 

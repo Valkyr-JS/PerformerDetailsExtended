@@ -58,9 +58,11 @@ interface IPluginApi {
 /* -------------------------------------------------------------------------- */
 
 interface StashPluginComponents {
+  HoverPopover: (props: IHoverPopover) => React.JSX.Element;
   "PerformerDetailsPanel.DetailGroup": (
     props: PropsPerformerDetailsPanelDetailGroup
   ) => React.JSX.Element;
+  SceneCard: (props: ISceneCardProps) => React.JSX.Element;
 }
 
 interface PatchableComponents {
@@ -83,4 +85,28 @@ interface PropsPerformerDetailsPanelDetailGroup
   collapsed: boolean;
   fullWidth: boolean;
   performer: Performer;
+}
+
+interface IHoverPopover extends React.PropsWithChildren {
+  enterDelay?: number;
+  leaveDelay?: number;
+  content: JSX.Element[] | JSX.Element | string;
+  className?: string;
+  placement?: "top" | "right" | "bottom" | "left";
+  onOpen?: () => void;
+  onClose?: () => void;
+  target?: React.RefObject<HTMLElement>;
+}
+
+interface ISceneCardProps {
+  scene: GQL.SlimSceneDataFragment;
+  containerWidth?: number;
+  previewHeight?: number;
+  index?: number;
+  queue?: SceneQueue;
+  compact?: boolean;
+  selecting?: boolean;
+  selected?: boolean | undefined;
+  zoomIndex?: number;
+  onSelectedChanged?: (selected: boolean, shiftKey: boolean) => void;
 }
