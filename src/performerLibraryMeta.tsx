@@ -73,6 +73,7 @@ PluginApi.patch.after(
             ))}
             <ItemMostCommonTags
               collapsed={collapsed}
+              performer={performer}
               scenesQueryResult={scenesQueryResult}
             />
           </DetailGroup>

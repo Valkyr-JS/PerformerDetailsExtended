@@ -1,8 +1,10 @@
 import DetailItem from "./DetailItem";
+import TagItem from "./TagItem";
 const { React } = window.PluginApi;
 
 const ItemMostCommonTags: React.FC<ItemMostCommonTagsProps> = ({
-  tagCount = 5,
+  tagCount = 3,
+  performer,
   ...props
 }) => {
   // Create an array of tag data from all scenes
@@ -39,9 +41,29 @@ const ItemMostCommonTags: React.FC<ItemMostCommonTagsProps> = ({
 
   // Return the tags with the highest overall count, up to the tagCount
   const maxTags = tags.length < tagCount ? tags.length : tagCount;
-  let value = "";
+  const value = [];
   for (let i = 0; i < maxTags; i++) {
-    value += (i === 0 ? "" : ", ") + `${tags[i].data.name} (${tags[i].count})`;
+    const tagCount = tags[i].count;
+    const tagData = tags[i].data;
+
+    const link = `/scenes?c=("type":"performers","value":("items":%5B("id":"${
+      performer.id
+    }","label":"${encodeURIComponent(
+      performer.name
+    )}")%5D,"excluded":%5B%5D),"modifier":"INCLUDES")&c=("type":"tags","value":("items":%5B("id":"${
+      tagData.id
+    }","label":"${encodeURIComponent(
+      tagData.name
+    )}")%5D,"excluded":%5B%5D,"depth":0),"modifier":"INCLUDES")`;
+
+    value.push(
+      <TagItem
+        link={link}
+        title={`${tagData.name} (${tagCount} ${
+          tagCount === 1 ? "scene" : "scenes"
+        })`}
+      />
+    );
   }
 
   return (
@@ -60,6 +82,8 @@ export default ItemMostCommonTags;
 interface ItemMostCommonTagsProps {
   /** Identifies whether the PerformerDetailsPanel is currently collapsed. */
   collapsed: PropsPerformerDetailsPanelDetailGroup["collapsed"];
+  /** The current Stash performer. */
+  performer: Performer;
   /** The `findScenes` data object returned from the GQL query. */
   scenesQueryResult: FindScenesResultType;
   /** The maximum number of tags to display. Default is 3. */
