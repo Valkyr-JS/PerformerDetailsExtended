@@ -1,16 +1,15 @@
 import { getGenderFromEnum } from "../../helpers";
+import { GENDERS } from "../common/constants";
 import DetailItem from "./DetailItem";
 const { React } = window.PluginApi;
 const { makePerformerScenesUrl } = window.PluginApi.utils.NavUtils;
 
 const ItemMostWorkedWith: React.FC<ItemMostWorkedWithProps> = ({
-  gender,
   performer,
   ...props
 }) => {
-  const genderWord =
-    typeof gender === "undefined" ? "" : " (" + getGenderFromEnum(gender) + ")";
-  const id = genderWord.toLowerCase().split(" ").join("-");
+  const { mostWorkedWithGendered } = props.configQueryResult.plugins
+    .performerLibraryMeta as PerformerDetailsExpandedConfigMap;
 
   // Create an array of performer data from all scenes
   const partners: {
@@ -46,15 +45,47 @@ const ItemMostWorkedWith: React.FC<ItemMostWorkedWithProps> = ({
   // Sort count from highest to lowest
   partners.sort((a, b) => b.count - a.count);
 
-  const topPartner = gender
-    ? partners[partners.findIndex((p) => p.data.gender === gender)]
-    : partners[0];
+  if (!partners) return null;
 
-  if (!topPartner) return null;
+  if (mostWorkedWithGendered) {
+    return GENDERS.map((g) => {
+      const topPartnerIndex = partners.findIndex((p) => p.data.gender === g);
 
+      // If there is no partner for the current gender, don't return a
+      // component.
+      if (topPartnerIndex === -1) return null;
+
+      const topPartner = partners[topPartnerIndex];
+
+      const scenesText =
+        topPartner.count + " " + (topPartner.count === 1 ? "scene" : "scenes");
+      const scenesLink = makePerformerScenesUrl(performer, {
+        id: topPartner.data.id,
+        label: topPartner.data.name,
+      });
+
+      const genderWord = " (" + getGenderFromEnum(g) + ")";
+      const id = genderWord.toLowerCase().split(" ").join("-");
+
+      return (
+        <DetailItem
+          collapsed={props.collapsed}
+          id={"most-worked-with-" + id}
+          title={"Most Worked With " + genderWord}
+          value={<a href={scenesLink}>{topPartner.data.name}</a>}
+          wide={true}
+          additionalData={{
+            id: "scene-count",
+            value: scenesText,
+          }}
+        />
+      );
+    });
+  }
+
+  const topPartner = partners[0];
   const scenesText =
     topPartner.count + " " + (topPartner.count === 1 ? "scene" : "scenes");
-
   const scenesLink = makePerformerScenesUrl(performer, {
     id: topPartner.data.id,
     label: topPartner.data.name,
@@ -63,8 +94,8 @@ const ItemMostWorkedWith: React.FC<ItemMostWorkedWithProps> = ({
   return (
     <DetailItem
       collapsed={props.collapsed}
-      id={"most-worked-with" + id}
-      title={"Most Worked With " + genderWord}
+      id={"most-worked-with"}
+      title={"Most Worked With"}
       value={<a href={scenesLink}>{topPartner.data.name}</a>}
       wide={true}
       additionalData={{
@@ -80,11 +111,10 @@ export default ItemMostWorkedWith;
 interface ItemMostWorkedWithProps {
   /** Identifies whether the PerformerDetailsPanel is currently collapsed. */
   collapsed: PropsPerformerDetailsPanelDetailGroup["collapsed"];
+  /** The `configuration` data object returned from the GQL query. */
+  configQueryResult: ConfigResult;
   /** The current Stash performer. */
   performer: Performer;
   /** The `findScenes` data object returned from the GQL query. */
   scenesQueryResult: FindScenesResultType;
-  /** The gender to return item data for. Leave undefined to return data across
-   * all genders. */
-  gender?: GenderEnum;
 }

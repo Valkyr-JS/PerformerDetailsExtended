@@ -6,6 +6,7 @@ interface IPluginApi {
   React: typeof React;
   ReactDOM: typeof ReactDOM;
   GQL: {
+    useConfigurationQuery(): { data: { configuration: ConfigResult } };
     useFindPerformerQuery(args: { variables: QueryFindPerformerArgs }): {
       data: {
         findPerformer: Query["findPerformer"];

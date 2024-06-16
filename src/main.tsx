@@ -1,4 +1,3 @@
-import { GENDERS } from "./common/constants";
 import DetailGroup from "./components/DetailGroup";
 import ItemMostCommonTags from "./components/Item.CommonTags";
 import ItemContentSize from "./components/ItemContentSize";
@@ -34,6 +33,7 @@ PluginApi.patch.after(
       },
     });
 
+    const qConfig = GQL.useConfigurationQuery();
     const qStats = GQL.useStatsQuery();
 
     // Only attach plugin component if scene data has been found. Otherwise,
@@ -41,9 +41,12 @@ PluginApi.patch.after(
     if (
       !!qScenes.data &&
       qScenes.data.findScenes.scenes.length &&
+      !!qConfig.data &&
       !!qStats.data &&
       performerID !== null
     ) {
+      console.log(qConfig);
+      const configQueryResult = qConfig.data.configuration;
       const scenesQueryResult = qScenes.data.findScenes;
       const statsQueryResult = qStats.data.stats;
       return [
@@ -55,17 +58,10 @@ PluginApi.patch.after(
           >
             <ItemMostWorkedWith
               collapsed={collapsed}
+              configQueryResult={configQueryResult}
               performer={performer}
               scenesQueryResult={scenesQueryResult}
             />
-            {GENDERS.map((g) => (
-              <ItemMostWorkedWith
-                collapsed={collapsed}
-                gender={g}
-                performer={performer}
-                scenesQueryResult={scenesQueryResult}
-              />
-            ))}
             <ItemMostFeaturedOn
               collapsed={collapsed}
               performer={performer}

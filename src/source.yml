@@ -7,3 +7,8 @@ ui:
     - performerLibraryMeta.js
   css:
     - performerLibraryMeta.css
+settings:
+  mostWorkedWithGendered:
+    displayName: '"Most Worked With" by gender'
+    description: The plugin will show a "Most Worked With" metadata item for each gender that the performer has worked with. If false, only the overall most worked with performer will be displayed, irrespective of gender.
+    type: BOOLEAN
