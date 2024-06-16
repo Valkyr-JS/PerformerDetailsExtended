@@ -1,5 +1,6 @@
 import { GENDERS } from "./common/constants";
 import DetailGroup from "./components/DetailGroup";
+import ItemMostCommonTags from "./components/Item.CommonTags";
 import ItemMostFeaturedOn from "./components/ItemMostFeaturedOn";
 import ItemMostWorkedWith from "./components/ItemMostWorkedWith";
 import ItemPlayCount from "./components/ItemPlayCount";
@@ -70,6 +71,10 @@ PluginApi.patch.after(
                 scenesQueryResult={scenesQueryResult}
               />
             ))}
+            <ItemMostCommonTags
+              collapsed={collapsed}
+              scenesQueryResult={scenesQueryResult}
+            />
           </DetailGroup>
         </>,
       ];
