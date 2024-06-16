@@ -4,6 +4,7 @@ import ItemMostCommonTags from "./components/Item.CommonTags";
 import ItemContentSize from "./components/ItemContentSize";
 import ItemMostFeaturedOn from "./components/ItemMostFeaturedOn";
 import ItemMostWorkedWith from "./components/ItemMostWorkedWith";
+import ItemScenesOrganized from "./components/ItemScenesOrganized";
 import ItemScenesTimespan from "./components/ItemScenesTimespan";
 import ItemWatchedFor from "./components/ItemWatchedFor";
 import "./styles.scss";
@@ -78,6 +79,10 @@ PluginApi.patch.after(
               scenesQueryResult={scenesQueryResult}
             />
             <ItemContentSize
+              collapsed={collapsed}
+              scenesQueryResult={scenesQueryResult}
+            />
+            <ItemScenesOrganized
               collapsed={collapsed}
               scenesQueryResult={scenesQueryResult}
             />
