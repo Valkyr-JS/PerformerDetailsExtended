@@ -4,7 +4,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path = require("path");
 
 module.exports = {
-  entry: "./src/performerLibraryMeta.tsx",
+  entry: "./src/main.tsx",
   output: {
     filename: "performerLibraryMeta.js",
     path: path.resolve(__dirname, "dist"),
@@ -32,7 +32,7 @@ module.exports = {
     new CopyPlugin({
       patterns: [
         {
-          from: "src/performerLibraryMeta.yml",
+          from: "src/source.yml",
           to: "performerLibraryMeta.yml",
         },
       ],

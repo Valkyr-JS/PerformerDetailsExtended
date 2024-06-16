@@ -5,7 +5,7 @@ import ItemMostFeaturedOn from "./components/ItemMostFeaturedOn";
 import ItemMostWorkedWith from "./components/ItemMostWorkedWith";
 import ItemPlayCount from "./components/ItemPlayCount";
 import ItemScenesTimespan from "./components/ItemScenesTimespan";
-import "./performerLibraryMeta.scss";
+import "./styles.scss";
 
 const { PluginApi } = window;
 const { GQL, React } = PluginApi;
