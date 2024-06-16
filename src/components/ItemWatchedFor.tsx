@@ -3,7 +3,7 @@ import DetailItem from "./DetailItem";
 const { React } = window.PluginApi;
 
 /** "Scene Play Count" item component. */
-const ItemPlayCount: React.FC<ItemPlayCountProps> = ({
+const ItemWatchedFor: React.FC<ItemPlayCountProps> = ({
   collapsed,
   scenesQueryResult,
 }) => {
@@ -18,8 +18,8 @@ const ItemPlayCount: React.FC<ItemPlayCountProps> = ({
   return (
     <DetailItem
       collapsed={collapsed}
-      id="play-time"
-      title="Scenes Watch For"
+      id="watched-for"
+      title="Scenes Watched For"
       value={createDuration(playDuration)}
       wide={true}
       additionalData={{
@@ -30,7 +30,7 @@ const ItemPlayCount: React.FC<ItemPlayCountProps> = ({
   );
 };
 
-export default ItemPlayCount;
+export default ItemWatchedFor;
 
 interface ItemPlayCountProps {
   /** Identifies whether the PerformerDetailsPanel is currently collapsed. */

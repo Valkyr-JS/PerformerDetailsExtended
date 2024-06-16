@@ -3,7 +3,7 @@ import DetailGroup from "./components/DetailGroup";
 import ItemMostCommonTags from "./components/Item.CommonTags";
 import ItemMostFeaturedOn from "./components/ItemMostFeaturedOn";
 import ItemMostWorkedWith from "./components/ItemMostWorkedWith";
-import ItemPlayCount from "./components/ItemPlayCount";
+import ItemPlayCount from "./components/ItemWatchedFor";
 import ItemScenesTimespan from "./components/ItemScenesTimespan";
 import "./styles.scss";
 
