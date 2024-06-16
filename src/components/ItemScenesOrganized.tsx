@@ -17,7 +17,7 @@ const ItemScenesOrganized: React.FC<ItemScenesOrganizedProps> = (props) => {
       value={
         Math.round((organizedScenes / totalScenes + Number.EPSILON) * 100) + "%"
       }
-      wide={false}
+      wide={true}
       additionalData={{
         id: "scenes-organized-number",
         value: organizedScenes + "/" + totalScenes,

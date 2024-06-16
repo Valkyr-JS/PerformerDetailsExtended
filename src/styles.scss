@@ -28,17 +28,48 @@
 
 /* ---------------------------- Full width styles --------------------------- */
 
-.full-width #pluginPerformerLibraryMeta .detail-item {
-  .detail-item-title {
-    width: 180px;
+.full-width #pluginPerformerLibraryMeta {
+  .detail-item {
+    .detail-item-title {
+      width: 180px;
+    }
+
+    &.detail-item-wide {
+      display: inline-flex;
+
+      .detail-item-title,
+      .detail-item-value {
+        width: 100%;
+      }
+    }
   }
 
-  &.detail-item-wide {
-    display: inline-flex;
+  @media (min-width: 1080px) {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
 
-    .detail-item-title,
-    .detail-item-value {
-      width: 100%;
+    .detail-item.most-common-tags {
+      grid-column: span 2;
     }
+  }
+
+  @media (min-width: 1360px) {
+    grid-template-columns: repeat(3, 1fr);
+
+    .detail-item.most-common-tags {
+      grid-column: span 3;
+    }
+  }
+
+  @media (min-width: 1620px) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @media (min-width: 1980px) {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  @media (min-width: 2200px) {
+    grid-template-columns: repeat(6, 1fr);
   }
 }

@@ -11,7 +11,7 @@ const ItemContentSize: React.FC<ItemContentSizeProps> = (props) => {
       id="content-size"
       title="Total Content"
       value={createDuration(duration)}
-      wide={false}
+      wide={true}
       additionalData={{
         id: "content-filesize",
         value: createFilesize(filesize),

@@ -29,7 +29,7 @@ const ItemLastPlayed: React.FC<ItemLastPlayedProps> = (props) => {
           {recentlyPlayedScene.date?.split("-").join("/")}
         </span>
       }
-      wide={false}
+      wide={true}
     />
   );
 };
