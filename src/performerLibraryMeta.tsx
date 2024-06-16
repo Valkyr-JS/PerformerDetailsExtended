@@ -1,5 +1,7 @@
+import { GENDERS } from "./common/constants";
 import DetailGroup from "./components/DetailGroup";
 import ItemMostFeaturedOn from "./components/ItemMostFeaturedOn";
+import ItemMostWorkedWith from "./components/ItemMostWorkedWith";
 import ItemPlayCount from "./components/ItemPlayCount";
 import ItemScenesTimespan from "./components/ItemScenesTimespan";
 import "./performerLibraryMeta.scss";
@@ -37,23 +39,37 @@ PluginApi.patch.after(
       qScenes.data.findScenes.scenes.length &&
       performerID !== null
     ) {
+      const scenesQueryResult = qScenes.data.findScenes;
       return [
         <>
           <DetailGroup>{children}</DetailGroup>
           <DetailGroup id="pluginPerformerLibraryMeta">
             <ItemPlayCount
               collapsed={collapsed}
-              scenesQueryResult={qScenes.data.findScenes}
+              scenesQueryResult={scenesQueryResult}
             />
             <ItemMostFeaturedOn
               collapsed={collapsed}
               performer={performer}
-              scenesQueryResult={qScenes.data.findScenes}
+              scenesQueryResult={scenesQueryResult}
             />
             <ItemScenesTimespan
               collapsed={collapsed}
-              scenesQueryResult={qScenes.data.findScenes}
+              scenesQueryResult={scenesQueryResult}
             />
+            <ItemMostWorkedWith
+              collapsed={collapsed}
+              performer={performer}
+              scenesQueryResult={scenesQueryResult}
+            />
+            {GENDERS.map((g) => (
+              <ItemMostWorkedWith
+                collapsed={collapsed}
+                gender={g}
+                performer={performer}
+                scenesQueryResult={scenesQueryResult}
+              />
+            ))}
           </DetailGroup>
         </>,
       ];

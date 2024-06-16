@@ -16,3 +16,23 @@ export const createDuration = (seconds: number): string => {
 
   return output;
 };
+
+export const getGenderFromEnum = (
+  gender: GenderEnum
+): string | null => {
+  switch (gender) {
+    case "MALE":
+      return "Male";
+    case "FEMALE":
+      return "Female";
+    case "TRANSGENDER_MALE":
+      return "Transgender male";
+    case "TRANSGENDER_FEMALE":
+      return "Transgender female";
+    case "INTERSEX":
+      return "Intersex";
+    case "NON_BINARY":
+      return "Non-binary";
+  }
+  return null;
+};

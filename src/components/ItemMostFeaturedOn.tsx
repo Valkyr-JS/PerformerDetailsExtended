@@ -68,7 +68,7 @@ export default ItemFrequentStudio;
 interface ItemFrequentStudioProps {
   /** Identifies whether the PerformerDetailsPanel is currently collapsed. */
   collapsed: PropsPerformerDetailsPanelDetailGroup["collapsed"];
-  /** The Stash performer ID. */
+  /** The current Stash performer. */
   performer: Performer;
   /** The `findScenes` data object returned from the GQL query. */
   scenesQueryResult: FindScenesResultType;
