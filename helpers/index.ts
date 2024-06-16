@@ -1,3 +1,5 @@
+/** Converts the given seconds into a uniform string showing an amount of time.
+ * */
 export const createDuration = (seconds: number): string => {
   const inMinutes = Math.floor(seconds / 60);
   const inHours = Math.floor(inMinutes / 60);
@@ -19,6 +21,22 @@ export const createDuration = (seconds: number): string => {
   return output;
 };
 
+/** Converts the given bytes into a uniform string showing a filesize, from
+ * bytes to terabytes. */
+export const createFilesize = (bytes: number): string => {
+  const b = roundToTwo(bytes);
+  const kb = roundToTwo(bytes / 1024);
+  if (kb < 1) return b + "B";
+  const mb = roundToTwo(kb / 1024);
+  if (mb < 1) return kb + "KB";
+  const gb = roundToTwo(mb / 1024);
+  if (gb < 1) return mb + "MB";
+  const tb = roundToTwo(gb / 1024);
+  if (tb < 1) return gb + "GB";
+  return tb + "TB";
+};
+
+/** Returns the associated string GenderEnum as a human-readable value. */
 export const getGenderFromEnum = (gender: GenderEnum): string | null => {
   switch (gender) {
     case "MALE":
@@ -36,3 +54,7 @@ export const getGenderFromEnum = (gender: GenderEnum): string | null => {
   }
   return null;
 };
+
+/** Round the provided number to two decimal places. */
+const roundToTwo = (number: number): number =>
+  Math.round((number + Number.EPSILON) * 100) / 100;

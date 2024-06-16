@@ -1,4 +1,4 @@
-import { createDuration } from "../../helpers";
+import { createDuration, createFilesize } from "../../helpers";
 import DetailItem from "./DetailItem";
 const { React } = window.PluginApi;
 
@@ -14,7 +14,7 @@ const ItemContentSize: React.FC<ItemContentSizeProps> = (props) => {
       wide={false}
       additionalData={{
         id: "content-filesize",
-        value: "2.4GB",
+        value: createFilesize(filesize),
       }}
     />
   );
