@@ -1,6 +1,7 @@
 import { GENDERS } from "./common/constants";
 import DetailGroup from "./components/DetailGroup";
 import ItemMostCommonTags from "./components/Item.CommonTags";
+import ItemContentSize from "./components/ItemContentSize";
 import ItemMostFeaturedOn from "./components/ItemMostFeaturedOn";
 import ItemMostWorkedWith from "./components/ItemMostWorkedWith";
 import ItemScenesTimespan from "./components/ItemScenesTimespan";
@@ -74,6 +75,10 @@ PluginApi.patch.after(
             <ItemMostCommonTags
               collapsed={collapsed}
               performer={performer}
+              scenesQueryResult={scenesQueryResult}
+            />
+            <ItemContentSize
+              collapsed={collapsed}
               scenesQueryResult={scenesQueryResult}
             />
           </DetailGroup>
