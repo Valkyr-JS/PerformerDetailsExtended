@@ -49,23 +49,10 @@ PluginApi.patch.after(
       return [
         <>
           <DetailGroup>{children}</DetailGroup>
-          <DetailGroup id="pluginPerformerLibraryMeta">
-            <ItemContentSize
-              collapsed={collapsed}
-              scenesQueryResult={scenesQueryResult}
-            />
-            <ItemWatchedFor
-              collapsed={collapsed}
-              scenesQueryResult={scenesQueryResult}
-            />
-            <ItemScenesTimespan
-              collapsed={collapsed}
-              scenesQueryResult={scenesQueryResult}
-            />
-            <ItemScenesOrganized
-              collapsed={collapsed}
-              scenesQueryResult={scenesQueryResult}
-            />
+          <DetailGroup
+            id="pde__entities"
+            className="performer-details-extended"
+          >
             <ItemMostWorkedWith
               collapsed={collapsed}
               performer={performer}
@@ -87,6 +74,24 @@ PluginApi.patch.after(
             <ItemMostCommonTags
               collapsed={collapsed}
               performer={performer}
+              scenesQueryResult={scenesQueryResult}
+            />
+          </DetailGroup>
+          <DetailGroup id="pde__numbers" className="performer-details-extended">
+            <ItemContentSize
+              collapsed={collapsed}
+              scenesQueryResult={scenesQueryResult}
+            />
+            <ItemWatchedFor
+              collapsed={collapsed}
+              scenesQueryResult={scenesQueryResult}
+            />
+            <ItemScenesTimespan
+              collapsed={collapsed}
+              scenesQueryResult={scenesQueryResult}
+            />
+            <ItemScenesOrganized
+              collapsed={collapsed}
               scenesQueryResult={scenesQueryResult}
             />
             <ItemOCount
