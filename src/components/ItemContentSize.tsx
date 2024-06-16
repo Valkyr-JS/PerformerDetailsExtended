@@ -1,13 +1,16 @@
+import { createDuration } from "../../helpers";
 import DetailItem from "./DetailItem";
 const { React } = window.PluginApi;
 
 const ItemContentSize: React.FC<ItemContentSizeProps> = (props) => {
+  const { duration, filesize } = props.scenesQueryResult;
+
   return (
     <DetailItem
       collapsed={props.collapsed}
       id="content-size"
-      title="Total Content Size"
-      value="1h 2m 3s"
+      title="Total Content"
+      value={createDuration(duration)}
       wide={false}
       additionalData={{
         id: "content-filesize",

@@ -12,14 +12,14 @@ export const createDuration = (seconds: number): string => {
   if (inDays > 0) output += inDays + " days ";
   if (!!totalHours || !!output.length) output += totalHours + "h ";
   if (!!totalMinutes || !!output.length) output += totalMinutes + "m ";
-  output += totalSeconds + "s ";
+
+  // Round down to match native
+  output += Math.floor(totalSeconds) + "s ";
 
   return output;
 };
 
-export const getGenderFromEnum = (
-  gender: GenderEnum
-): string | null => {
+export const getGenderFromEnum = (gender: GenderEnum): string | null => {
   switch (gender) {
     case "MALE":
       return "Male";
