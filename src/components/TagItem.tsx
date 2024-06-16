@@ -5,7 +5,8 @@ const { React } = window.PluginApi;
 const TagItem: React.FC<TagItemProps> = (props) => {
   /**
    * ! Awaiting `TagCard` component to be made available in order to add the
-   * hover popover.
+   * hover popover. See
+   * https://github.com/stashapp/stash/issues/4510#issuecomment-2171511553
    */
   return (
     <span className="tag-item badge badge-secondary">
