@@ -4,6 +4,7 @@ import ItemMostCommonTags from "./components/Item.CommonTags";
 import ItemContentSize from "./components/ItemContentSize";
 import ItemMostFeaturedOn from "./components/ItemMostFeaturedOn";
 import ItemMostWorkedWith from "./components/ItemMostWorkedWith";
+import ItemOCount from "./components/ItemOCount";
 import ItemScenesOrganized from "./components/ItemScenesOrganized";
 import ItemScenesTimespan from "./components/ItemScenesTimespan";
 import ItemWatchedFor from "./components/ItemWatchedFor";
@@ -33,16 +34,18 @@ PluginApi.patch.after(
       },
     });
 
-    console.log("Scenes data:", qScenes);
+    const qStats = GQL.useStatsQuery();
 
     // Only attach plugin component if scene data has been found. Otherwise,
     // return the original component only.
     if (
       !!qScenes.data &&
       qScenes.data.findScenes.scenes.length &&
+      !!qStats.data &&
       performerID !== null
     ) {
       const scenesQueryResult = qScenes.data.findScenes;
+      const statsQueryResult = qStats.data.stats;
       return [
         <>
           <DetailGroup>{children}</DetailGroup>
@@ -85,6 +88,11 @@ PluginApi.patch.after(
               collapsed={collapsed}
               performer={performer}
               scenesQueryResult={scenesQueryResult}
+            />
+            <ItemOCount
+              collapsed={collapsed}
+              scenesQueryResult={scenesQueryResult}
+              statsQueryResult={statsQueryResult}
             />
           </DetailGroup>
         </>,

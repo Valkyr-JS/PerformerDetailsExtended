@@ -14,6 +14,7 @@ interface IPluginApi {
     useFindScenesQuery(args: { variables: QueryFindScenesArgs }): {
       data: { findScenes: Query["findScenes"] };
     };
+    useStatsQuery(): { data: { stats: StatsResultType } };
   };
   Event: {
     addEventListener: (
