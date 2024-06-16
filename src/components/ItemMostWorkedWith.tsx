@@ -1,9 +1,11 @@
 import { getGenderFromEnum } from "../../helpers";
 import DetailItem from "./DetailItem";
 const { React } = window.PluginApi;
+const { makePerformerScenesUrl } = window.PluginApi.utils.NavUtils;
 
 const ItemMostWorkedWith: React.FC<ItemMostWorkedWithProps> = ({
   gender,
+  performer,
   ...props
 }) => {
   const genderWord =
@@ -13,9 +15,7 @@ const ItemMostWorkedWith: React.FC<ItemMostWorkedWithProps> = ({
   // Create an array of performer data from all scenes
   const partners: {
     count: number;
-    gender: Performer["gender"];
-    id: Performer["id"];
-    name: Performer["name"];
+    data: Performer;
   }[] = [];
 
   // Check each scene
@@ -23,9 +23,11 @@ const ItemMostWorkedWith: React.FC<ItemMostWorkedWithProps> = ({
     // Check each performer in the scene
     sc.performers.forEach((pf) => {
       // Check this is not the featured performer
-      if (pf.id !== props.performer.id) {
+      if (pf.id !== performer.id) {
         // Check if the performer already exists in the array
-        const perfomersIndex = partners.findIndex((ptnr) => ptnr.id === pf.id);
+        const perfomersIndex = partners.findIndex(
+          (ptnr) => ptnr.data.id === pf.id
+        );
 
         if (perfomersIndex !== -1) {
           // Increase the performer count
@@ -33,10 +35,8 @@ const ItemMostWorkedWith: React.FC<ItemMostWorkedWithProps> = ({
         } else {
           // Add the performer to the array
           partners.push({
-            id: pf.id,
             count: 1,
-            gender: pf.gender,
-            name: pf.name,
+            data: pf,
           });
         }
       }
@@ -47,7 +47,7 @@ const ItemMostWorkedWith: React.FC<ItemMostWorkedWithProps> = ({
   partners.sort((a, b) => b.count - a.count);
 
   const topPartner = gender
-    ? partners[partners.findIndex((p) => p.gender === gender)]
+    ? partners[partners.findIndex((p) => p.data.gender === gender)]
     : partners[0];
 
   if (!topPartner) return null;
@@ -55,12 +55,17 @@ const ItemMostWorkedWith: React.FC<ItemMostWorkedWithProps> = ({
   const scenesText =
     topPartner.count + " " + (topPartner.count === 1 ? "scene" : "scenes");
 
+  const scenesLink = makePerformerScenesUrl(performer, {
+    id: topPartner.data.id,
+    label: topPartner.data.name,
+  });
+
   return (
     <DetailItem
       collapsed={props.collapsed}
       id={"most-worked-with" + id}
       title={"Most Worked With " + genderWord}
-      value={topPartner.name}
+      value={<a href={scenesLink}>{topPartner.data.name}</a>}
       wide={true}
       additionalData={{
         id: "scene-count",
