@@ -3,7 +3,7 @@ import DetailItem from "./DetailItem";
 const { React } = window.PluginApi;
 
 /** "Scene Play Count" item component. */
-const ItemWatchedFor: React.FC<ItemPlayCountProps> = ({
+const ItemWatchedFor: React.FC<ItemWatchedForProps> = ({
   collapsed,
   scenesQueryResult,
 }) => {
@@ -32,7 +32,7 @@ const ItemWatchedFor: React.FC<ItemPlayCountProps> = ({
 
 export default ItemWatchedFor;
 
-interface ItemPlayCountProps {
+interface ItemWatchedForProps {
   /** Identifies whether the PerformerDetailsPanel is currently collapsed. */
   collapsed: PropsPerformerDetailsPanelDetailGroup["collapsed"];
   /** The `findScenes` data object returned from the GQL query. */

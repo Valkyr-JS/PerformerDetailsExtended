@@ -3,8 +3,8 @@ import DetailGroup from "./components/DetailGroup";
 import ItemMostCommonTags from "./components/Item.CommonTags";
 import ItemMostFeaturedOn from "./components/ItemMostFeaturedOn";
 import ItemMostWorkedWith from "./components/ItemMostWorkedWith";
-import ItemPlayCount from "./components/ItemWatchedFor";
 import ItemScenesTimespan from "./components/ItemScenesTimespan";
+import ItemWatchedFor from "./components/ItemWatchedFor";
 import "./styles.scss";
 
 const { PluginApi } = window;
@@ -45,13 +45,8 @@ PluginApi.patch.after(
         <>
           <DetailGroup>{children}</DetailGroup>
           <DetailGroup id="pluginPerformerLibraryMeta">
-            <ItemPlayCount
+            <ItemWatchedFor
               collapsed={collapsed}
-              scenesQueryResult={scenesQueryResult}
-            />
-            <ItemMostFeaturedOn
-              collapsed={collapsed}
-              performer={performer}
               scenesQueryResult={scenesQueryResult}
             />
             <ItemScenesTimespan
@@ -71,6 +66,11 @@ PluginApi.patch.after(
                 scenesQueryResult={scenesQueryResult}
               />
             ))}
+            <ItemMostFeaturedOn
+              collapsed={collapsed}
+              performer={performer}
+              scenesQueryResult={scenesQueryResult}
+            />
             <ItemMostCommonTags
               collapsed={collapsed}
               performer={performer}
