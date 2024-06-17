@@ -6,7 +6,10 @@ const ItemMostCommonTags: React.FC<ItemMostCommonTagsProps> = ({
   performer,
   ...props
 }) => {
-  const tagCount = props.pluginConfig.mostCommonTagsCount;
+  const { mostCommonTagsCount, mostCommonTagsOn } = props.pluginConfig;
+
+  // Do not render the item if the user has turned it off in the config.
+  if (!mostCommonTagsOn) return null;
 
   // Create an array of tag data from all scenes
   const tags: {
@@ -41,7 +44,9 @@ const ItemMostCommonTags: React.FC<ItemMostCommonTagsProps> = ({
   if (!tags.length) return null;
 
   // Return the tags with the highest overall count, up to the tagCount
-  const maxTags = tags.length < tagCount ? tags.length : tagCount;
+  const maxTags =
+    tags.length < mostCommonTagsCount ? tags.length : mostCommonTagsCount;
+
   const value = [];
   for (let i = 0; i < maxTags; i++) {
     const tagCount = tags[i].count;
@@ -67,7 +72,7 @@ const ItemMostCommonTags: React.FC<ItemMostCommonTagsProps> = ({
     );
   }
 
-  const title = "Most Common Tag" + (tagCount === 1 ? "" : "s");
+  const title = "Most Common Tag" + (mostCommonTagsCount === 1 ? "" : "s");
 
   return (
     <DetailItem

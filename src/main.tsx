@@ -57,7 +57,8 @@ PluginApi.patch.after(
 
       // Compile the user's config with config defaults
       const pluginConfig: PerformerDetailsExpandedFinalConfigMap = {
-        mostCommonTagsCount: getConfigProp(userConfig?.mostCommonTagsCount, 3),
+        // For mostCommonTagsCount, set to 3 if the value is undefined or 0.
+        mostCommonTagsCount: userConfig?.mostCommonTagsCount || 3,
         mostCommonTagsOn: getConfigProp(userConfig?.mostCommonTagsOn, true),
         mostWorkedWithGendered: getConfigProp(
           userConfig?.mostCommonTagsOn,
