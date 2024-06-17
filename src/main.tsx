@@ -60,6 +60,10 @@ PluginApi.patch.after(
         // For mostCommonTagsCount, set to 3 if the value is undefined or 0.
         mostCommonTagsCount: userConfig?.mostCommonTagsCount || 3,
         mostCommonTagsOn: getConfigProp(userConfig?.mostCommonTagsOn, true),
+        mostFeaturedNetwork: getConfigProp(
+          userConfig?.mostFeaturedNetwork,
+          true
+        ),
         mostWorkedWithGendered: getConfigProp(
           userConfig?.mostCommonTagsOn,
           true
@@ -82,8 +86,8 @@ PluginApi.patch.after(
             <ItemMostWorkedWith
               collapsed={collapsed}
               performer={performer}
-              scenesQueryResult={scenesQueryResult}
               pluginConfig={pluginConfig}
+              scenesQueryResult={scenesQueryResult}
             />
             <ItemMostFeaturedOn
               collapsed={collapsed}
@@ -93,8 +97,8 @@ PluginApi.patch.after(
             <ItemMostCommonTags
               collapsed={collapsed}
               performer={performer}
-              scenesQueryResult={scenesQueryResult}
               pluginConfig={pluginConfig}
+              scenesQueryResult={scenesQueryResult}
             />
           </DetailGroup>
           <DetailGroup id="pde__numbers" className="performer-details-extended">

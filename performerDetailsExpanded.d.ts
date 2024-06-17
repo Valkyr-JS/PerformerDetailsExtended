@@ -9,6 +9,9 @@ interface PerformerDetailsExpandedConfigMap {
   mostCommonTagsCount?: number;
   /** Toggle displaying the "Most Common Tags" item on or off. Default is on. */
   mostCommonTagsOn?: boolean;
+  /** Toggle displaying the "Most Featured On (Network)" item on or off. Default
+   * is on. */
+  mostFeaturedNetwork?: boolean;
   /** Show a "Most Worked With" metadata item for each gender that the performer
    * has worked with. If false, only one item showing the most worked with
    * performer overall will be displayed. */
@@ -20,5 +23,6 @@ interface PerformerDetailsExpandedFinalConfigMap
   extends PerformerDetailsExpandedConfigMap {
   mostCommonTagsCount: number;
   mostCommonTagsOn: boolean;
+  mostFeaturedNetwork: boolean;
   mostWorkedWithGendered: boolean;
 }
