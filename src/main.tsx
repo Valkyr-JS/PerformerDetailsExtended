@@ -13,7 +13,7 @@ import "./styles.scss";
 const { PluginApi } = window;
 const { GQL, React } = PluginApi;
 
-const defaultConfig: PerformerDetailsExpandedConfigMap = {
+const defaultConfig: PerformerDetailsExpandedFinalConfigMap = {
   mostCommonTagsCount: 3,
   mostWorkedWithGendered: true,
 };
@@ -55,7 +55,7 @@ PluginApi.patch.after(
       const scenesQueryResult = qScenes.data.findScenes;
       const statsQueryResult = qStats.data.stats;
 
-      const userConfig: PerformerDetailsExpandedConfigMap = {
+      const userConfig: PerformerDetailsExpandedFinalConfigMap = {
         ...defaultConfig,
         ...configurationQueryResult.plugins.PerformerDetailsExtended,
         mostCommonTagsCount:

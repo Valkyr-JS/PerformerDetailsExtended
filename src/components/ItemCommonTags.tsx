@@ -90,5 +90,5 @@ interface ItemMostCommonTagsProps {
   /** The `findScenes` data object returned from the GQL query. */
   scenesQueryResult: FindScenesResultType;
   /** The user config data. */
-  userConfig: PerformerDetailsExpandedConfigMap;
+  userConfig: PerformerDetailsExpandedFinalConfigMap;
 }
