@@ -12,6 +12,10 @@ settings:
     displayName: Number of Common Tags
     description: The number of tags to show under "Most Common Tags". Default is 3.
     type: NUMBER
+  mostCommonTagsOn:
+    displayName: Show "Most Common Tags" item
+    description: Toggle displaying the "Most Common Tags" item on or off. Default is on.
+    type: BOOLEAN
   mostWorkedWithGendered:
     displayName: '"Most Worked With" by gender'
     description: Show a "Most Worked With" metadata item for each gender that the performer has worked with. If false, only one item showing the most worked with performer overall will be displayed.
