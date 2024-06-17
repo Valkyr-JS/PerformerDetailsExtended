@@ -1,12 +1,12 @@
-name: Performer Library Meta
+name: Performer Details Extended
 description: Displays metadata about frequent scene partners, most prominent tags, etc. in your library, on performer pages.
-url: https://github.com/Valkyr-JS/stash-plugins
+url: https://github.com/Valkyr-JS/plugin-performer-library-meta
 version: 0.1.0
 ui:
   javascript:
-    - performerLibraryMeta.js
+    - PerformerDetailsExtended.js
   css:
-    - performerLibraryMeta.css
+    - PerformerDetailsExtended.css
 settings:
   mostCommonTagsCount:
     displayName: Number of Common Tags

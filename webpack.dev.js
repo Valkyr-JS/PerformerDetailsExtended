@@ -6,7 +6,7 @@ const path = require("path");
 module.exports = {
   entry: "./src/main.tsx",
   output: {
-    filename: "performerLibraryMeta.js",
+    filename: "PerformerDetailsExtended.js",
     path: path.resolve(__dirname, "dist"),
     clean: true,
   },
@@ -33,12 +33,12 @@ module.exports = {
       patterns: [
         {
           from: "src/source.yml",
-          to: "performerLibraryMeta.yml",
+          to: "PerformerDetailsExtended.yml",
         },
       ],
     }),
     new MiniCssExtractPlugin({
-      filename: "performerLibraryMeta.css",
+      filename: "PerformerDetailsExtended.css",
     }),
   ],
   resolve: {

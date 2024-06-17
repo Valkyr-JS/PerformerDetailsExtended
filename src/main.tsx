@@ -57,10 +57,10 @@ PluginApi.patch.after(
 
       const userConfig: PerformerDetailsExpandedConfigMap = {
         ...defaultConfig,
-        ...configurationQueryResult.plugins.performerLibraryMeta,
+        ...configurationQueryResult.plugins.PerformerDetailsExtended,
         mostCommonTagsCount:
-          configurationQueryResult.plugins.performerLibraryMeta
-            .mostCommonTagsCount || defaultConfig.mostCommonTagsCount,
+          configurationQueryResult.plugins.PerformerDetailsExtended
+            ?.mostCommonTagsCount || defaultConfig.mostCommonTagsCount,
       };
       return [
         <>

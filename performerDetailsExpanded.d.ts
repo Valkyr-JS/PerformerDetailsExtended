@@ -1,5 +1,5 @@
 interface PerformerDetailsExpandedConfigResult extends ConfigResult {
-  plugins: { performerLibraryMeta: PerformerDetailsExpandedConfigMap };
+  plugins: { PerformerDetailsExtended: PerformerDetailsExpandedConfigMap };
 }
 
 interface PerformerDetailsExpandedConfigMap {
