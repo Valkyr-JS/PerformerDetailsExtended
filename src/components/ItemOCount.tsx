@@ -13,9 +13,11 @@ const ItemOCount: React.FC<ItemOCountProps> = (props) => {
     if (typeof sc.o_counter !== "undefined") oCount += sc.o_counter || 0;
   });
 
-  const percentage = Math.round(
-    (oCount / total_o_count + Number.EPSILON) * 100
-  );
+  // Don't return a component if there is no O count for this performer
+  if (oCount === 0) return null;
+
+  const percentage =
+    Math.round((oCount / total_o_count + Number.EPSILON) * 10000) / 100;
   const additionalValue = `${percentage}% of ${total_o_count} total`;
 
   return (
