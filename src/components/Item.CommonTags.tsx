@@ -3,10 +3,11 @@ import TagItem from "./TagItem";
 const { React } = window.PluginApi;
 
 const ItemMostCommonTags: React.FC<ItemMostCommonTagsProps> = ({
-  tagCount = 3,
   performer,
   ...props
 }) => {
+  const tagCount = props.userConfig.mostCommonTagsCount;
+
   // Create an array of tag data from all scenes
   const tags: {
     count: number;
@@ -66,11 +67,13 @@ const ItemMostCommonTags: React.FC<ItemMostCommonTagsProps> = ({
     );
   }
 
+  const title = "Most Common Tag" + (tagCount === 1 ? "" : "s");
+
   return (
     <DetailItem
       collapsed={props.collapsed}
       id="most-common-tags"
-      title="Most Common Tags"
+      title={title}
       value={value}
       wide={true}
     />
@@ -86,6 +89,6 @@ interface ItemMostCommonTagsProps {
   performer: Performer;
   /** The `findScenes` data object returned from the GQL query. */
   scenesQueryResult: FindScenesResultType;
-  /** The maximum number of tags to display. Default is 3. */
-  tagCount?: number;
+  /** The user config data. */
+  userConfig: PerformerDetailsExpandedConfigMap;
 }

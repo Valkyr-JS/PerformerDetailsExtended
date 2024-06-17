@@ -8,7 +8,11 @@ ui:
   css:
     - performerLibraryMeta.css
 settings:
+  mostCommonTagsCount:
+    displayName: Number of Common Tags
+    description: The number of tags to show under "Most Common Tags". Default is 3.
+    type: NUMBER
   mostWorkedWithGendered:
     displayName: '"Most Worked With" by gender'
-    description: The plugin will show a "Most Worked With" metadata item for each gender that the performer has worked with. If false, only the overall most worked with performer will be displayed, irrespective of gender.
+    description: Show a "Most Worked With" metadata item for each gender that the performer has worked with. If false, only one item showing the most worked with performer overall will be displayed.
     type: BOOLEAN

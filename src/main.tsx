@@ -12,6 +12,11 @@ import "./styles.scss";
 const { PluginApi } = window;
 const { GQL, React } = PluginApi;
 
+const defaultConfig: PerformerDetailsExpandedConfigMap = {
+  mostCommonTagsCount: 3,
+  mostWorkedWithGendered: true,
+};
+
 /* -------------------------------------------------------------------------- */
 /*                               PluginApi patch                              */
 /* -------------------------------------------------------------------------- */
@@ -45,10 +50,16 @@ PluginApi.patch.after(
       !!qStats.data &&
       performerID !== null
     ) {
-      console.log(qConfig);
-      const configQueryResult = qConfig.data.configuration;
       const scenesQueryResult = qScenes.data.findScenes;
       const statsQueryResult = qStats.data.stats;
+
+      const userConfig: PerformerDetailsExpandedConfigMap = {
+        ...defaultConfig,
+        ...qConfig.data.configuration.plugins.performerLibraryMeta,
+        mostCommonTagsCount:
+          qConfig.data.configuration.plugins.performerLibraryMeta
+            .mostCommonTagsCount || defaultConfig.mostCommonTagsCount,
+      };
       return [
         <>
           <DetailGroup>{children}</DetailGroup>
@@ -58,9 +69,9 @@ PluginApi.patch.after(
           >
             <ItemMostWorkedWith
               collapsed={collapsed}
-              configQueryResult={configQueryResult}
               performer={performer}
               scenesQueryResult={scenesQueryResult}
+              userConfig={userConfig}
             />
             <ItemMostFeaturedOn
               collapsed={collapsed}
@@ -71,6 +82,7 @@ PluginApi.patch.after(
               collapsed={collapsed}
               performer={performer}
               scenesQueryResult={scenesQueryResult}
+              userConfig={userConfig}
             />
           </DetailGroup>
           <DetailGroup id="pde__numbers" className="performer-details-extended">

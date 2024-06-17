@@ -8,8 +8,7 @@ const ItemMostWorkedWith: React.FC<ItemMostWorkedWithProps> = ({
   performer,
   ...props
 }) => {
-  const { mostWorkedWithGendered } = props.configQueryResult.plugins
-    .performerLibraryMeta as PerformerDetailsExpandedConfigMap;
+  const { mostWorkedWithGendered } = props.userConfig;
 
   // Create an array of performer data from all scenes
   const partners: {
@@ -111,10 +110,10 @@ export default ItemMostWorkedWith;
 interface ItemMostWorkedWithProps {
   /** Identifies whether the PerformerDetailsPanel is currently collapsed. */
   collapsed: PropsPerformerDetailsPanelDetailGroup["collapsed"];
-  /** The `configuration` data object returned from the GQL query. */
-  configQueryResult: ConfigResult;
   /** The current Stash performer. */
   performer: Performer;
   /** The `findScenes` data object returned from the GQL query. */
   scenesQueryResult: FindScenesResultType;
+  /** The user config data. */
+  userConfig: PerformerDetailsExpandedConfigMap;
 }
