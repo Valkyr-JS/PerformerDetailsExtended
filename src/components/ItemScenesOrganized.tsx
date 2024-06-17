@@ -20,7 +20,7 @@ const ItemScenesOrganized: React.FC<ItemScenesOrganizedProps> = (props) => {
       wide={true}
       additionalData={{
         id: "scenes-organized-number",
-        value: organizedScenes + "/" + totalScenes,
+        value: organizedScenes + " of " + totalScenes,
       }}
     />
   );
