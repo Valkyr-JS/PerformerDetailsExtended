@@ -1,4 +1,5 @@
 import DetailGroup from "./components/DetailGroup";
+import ItemAverageRating from "./components/ItemAverageRating";
 import ItemMostCommonTags from "./components/Item.CommonTags";
 import ItemContentSize from "./components/ItemContentSize";
 import ItemMostFeaturedOn from "./components/ItemMostFeaturedOn";
@@ -50,14 +51,15 @@ PluginApi.patch.after(
       !!qStats.data &&
       performerID !== null
     ) {
+      const configurationQueryResult = qConfig.data.configuration;
       const scenesQueryResult = qScenes.data.findScenes;
       const statsQueryResult = qStats.data.stats;
 
       const userConfig: PerformerDetailsExpandedConfigMap = {
         ...defaultConfig,
-        ...qConfig.data.configuration.plugins.performerLibraryMeta,
+        ...configurationQueryResult.plugins.performerLibraryMeta,
         mostCommonTagsCount:
-          qConfig.data.configuration.plugins.performerLibraryMeta
+          configurationQueryResult.plugins.performerLibraryMeta
             .mostCommonTagsCount || defaultConfig.mostCommonTagsCount,
       };
       return [
@@ -67,6 +69,12 @@ PluginApi.patch.after(
             id="pde__entities"
             className="performer-details-extended"
           >
+            <ItemAverageRating
+              collapsed={collapsed}
+              configurationQueryResult={configurationQueryResult}
+              performer={performer}
+              scenesQueryResult={scenesQueryResult}
+            />
             <ItemMostWorkedWith
               collapsed={collapsed}
               performer={performer}

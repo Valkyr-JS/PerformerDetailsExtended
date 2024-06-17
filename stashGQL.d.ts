@@ -4422,3 +4422,8 @@ type LatestVersion = {
   release_date: Scalars["String"]
   url: Scalars["String"]
 }
+
+interface IratingSystemOptions {
+  starPrecision: "full" | "half" | "quarter" | "tenth";
+  type: "decimal" | "stars";
+}
