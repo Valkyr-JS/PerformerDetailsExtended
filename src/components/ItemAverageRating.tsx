@@ -3,8 +3,13 @@ const { React } = window.PluginApi;
 
 const ItemAverageRating: React.FC<ItemAverageRatingProps> = (props) => {
   // Get the user's rating system
-  const ratingSystem = props.configurationQueryResult.ui
-    .ratingSystemOptions as IratingSystemOptions;
+  const defaultRatingSystem: IratingSystemOptions = {
+    type: "stars",
+    starPrecision: "full",
+  };
+  const ratingSystem =
+    (props.configurationQueryResult.ui
+      ?.ratingSystemOptions as IratingSystemOptions) || defaultRatingSystem;
 
   // Get the rating for each scene
   const { scenes } = props.scenesQueryResult;
