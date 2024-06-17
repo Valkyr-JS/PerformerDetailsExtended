@@ -6,7 +6,7 @@ const ItemMostCommonTags: React.FC<ItemMostCommonTagsProps> = ({
   performer,
   ...props
 }) => {
-  const tagCount = props.userConfig.mostCommonTagsCount;
+  const tagCount = props.pluginConfig.mostCommonTagsCount;
 
   // Create an array of tag data from all scenes
   const tags: {
@@ -87,8 +87,8 @@ interface ItemMostCommonTagsProps {
   collapsed: PropsPerformerDetailsPanelDetailGroup["collapsed"];
   /** The current Stash performer. */
   performer: Performer;
+  /** The plugin config data. */
+  pluginConfig: PerformerDetailsExpandedFinalConfigMap;
   /** The `findScenes` data object returned from the GQL query. */
   scenesQueryResult: FindScenesResultType;
-  /** The user config data. */
-  userConfig: PerformerDetailsExpandedFinalConfigMap;
 }

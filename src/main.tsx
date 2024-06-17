@@ -13,11 +13,6 @@ import "./styles.scss";
 const { PluginApi } = window;
 const { GQL, React } = PluginApi;
 
-const defaultConfig: PerformerDetailsExpandedFinalConfigMap = {
-  mostCommonTagsCount: 3,
-  mostWorkedWithGendered: true,
-};
-
 /* -------------------------------------------------------------------------- */
 /*                               PluginApi patch                              */
 /* -------------------------------------------------------------------------- */
@@ -55,13 +50,21 @@ PluginApi.patch.after(
       const scenesQueryResult = qScenes.data.findScenes;
       const statsQueryResult = qStats.data.stats;
 
-      const userConfig: PerformerDetailsExpandedFinalConfigMap = {
-        ...defaultConfig,
-        ...configurationQueryResult.plugins.PerformerDetailsExtended,
-        mostCommonTagsCount:
-          configurationQueryResult.plugins.PerformerDetailsExtended
-            ?.mostCommonTagsCount || defaultConfig.mostCommonTagsCount,
+      const userConfig = configurationQueryResult.plugins
+        .PerformerDetailsExtended as
+        | PerformerDetailsExpandedConfigMap
+        | undefined;
+
+      // Compile the user's config with config defaults
+      const pluginConfig: PerformerDetailsExpandedFinalConfigMap = {
+        mostCommonTagsCount: getConfigProp(userConfig?.mostCommonTagsCount, 3),
+        mostCommonTagsOn: getConfigProp(userConfig?.mostCommonTagsOn, true),
+        mostWorkedWithGendered: getConfigProp(
+          userConfig?.mostCommonTagsOn,
+          true
+        ),
       };
+
       return [
         <>
           <DetailGroup>{children}</DetailGroup>
@@ -79,7 +82,7 @@ PluginApi.patch.after(
               collapsed={collapsed}
               performer={performer}
               scenesQueryResult={scenesQueryResult}
-              userConfig={userConfig}
+              pluginConfig={pluginConfig}
             />
             <ItemMostFeaturedOn
               collapsed={collapsed}
@@ -90,7 +93,7 @@ PluginApi.patch.after(
               collapsed={collapsed}
               performer={performer}
               scenesQueryResult={scenesQueryResult}
-              userConfig={userConfig}
+              pluginConfig={pluginConfig}
             />
           </DetailGroup>
           <DetailGroup id="pde__numbers" className="performer-details-extended">
@@ -123,3 +126,9 @@ PluginApi.patch.after(
     return [<div className="detail-group">{children}</div>];
   }
 );
+
+/** Returns the given property from the user's config, or the default value if
+ * the user hasn't explicitly set it. */
+function getConfigProp<T>(value: T | undefined, defaultValue: T) {
+  return typeof value !== "undefined" ? value : defaultValue;
+}
