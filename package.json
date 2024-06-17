@@ -3,10 +3,10 @@
   "version": "0.1.0",
   "description": "Displays metadata about frequent scene partners, most prominent tags, etc. in your library, on performer pages.",
   "scripts": {
-    "build": "npm run compile",
-    "compile": "webpack",
+    "build": "webpack --config webpack.prod.js",
+    "dev": "webpack --config webpack.dev.js",
     "start": "npm run watch",
-    "watch": "webpack --watch"
+    "watch": "webpack --config webpack.dev.js --watch"
   },
   "repository": {
     "type": "git",
