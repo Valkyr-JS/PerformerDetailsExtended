@@ -35,7 +35,7 @@ PluginApi.patch.after(
     });
 
     const qAllStudios = GQL.useFindStudiosQuery({
-      variables: { filter: { sort: "id" } },
+      variables: { filter: { per_page: -1, sort: "id" } },
     });
 
     const qConfig = GQL.useConfigurationQuery();
