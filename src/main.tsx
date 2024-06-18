@@ -24,7 +24,7 @@ PluginApi.patch.after(
 
     const qScenes = GQL.useFindScenesQuery({
       variables: {
-        filter: { per_page: -1, sort: "date" },
+        filter: { per_page: -1 },
         scene_filter: {
           performers: {
             modifier: CriterionModifier.Includes,
@@ -32,6 +32,10 @@ PluginApi.patch.after(
           },
         },
       },
+    });
+
+    const qAllStudios = GQL.useFindStudiosQuery({
+      variables: { filter: { sort: "id" } },
     });
 
     const qConfig = GQL.useConfigurationQuery();
@@ -44,8 +48,10 @@ PluginApi.patch.after(
       qScenes.data.findScenes.scenes.length &&
       !!qConfig.data &&
       !!qStats.data &&
+      !!qAllStudios.data &&
       performerID !== null
     ) {
+      const allStudiosQueryResult = qAllStudios.data.findStudios;
       const configurationQueryResult = qConfig.data.configuration;
       const scenesQueryResult = qScenes.data.findScenes;
       const statsQueryResult = qStats.data.stats;
@@ -60,6 +66,10 @@ PluginApi.patch.after(
         // For mostCommonTagsCount, set to 3 if the value is undefined or 0.
         mostCommonTagsCount: userConfig?.mostCommonTagsCount || 3,
         mostCommonTagsOn: getConfigProp(userConfig?.mostCommonTagsOn, true),
+        mostFeaturedNetworkOn: getConfigProp(
+          userConfig?.mostFeaturedNetworkOn,
+          true
+        ),
         mostWorkedWithGendered: getConfigProp(
           userConfig?.mostCommonTagsOn,
           true
@@ -82,19 +92,21 @@ PluginApi.patch.after(
             <ItemMostWorkedWith
               collapsed={collapsed}
               performer={performer}
-              scenesQueryResult={scenesQueryResult}
               pluginConfig={pluginConfig}
+              scenesQueryResult={scenesQueryResult}
             />
             <ItemMostFeaturedOn
+              allStudiosQueryResult={allStudiosQueryResult}
               collapsed={collapsed}
               performer={performer}
+              pluginConfig={pluginConfig}
               scenesQueryResult={scenesQueryResult}
             />
             <ItemMostCommonTags
               collapsed={collapsed}
               performer={performer}
-              scenesQueryResult={scenesQueryResult}
               pluginConfig={pluginConfig}
+              scenesQueryResult={scenesQueryResult}
             />
           </DetailGroup>
           <DetailGroup id="pde__numbers" className="performer-details-extended">
