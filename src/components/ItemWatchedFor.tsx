@@ -1,4 +1,4 @@
-import { createDuration } from "../../helpers";
+import { createDuration } from "../helpers";
 import DetailItem from "./DetailItem";
 const { React } = window.PluginApi;
 

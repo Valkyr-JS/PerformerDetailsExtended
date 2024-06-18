@@ -24,3 +24,7 @@ settings:
     displayName: '"Most Worked With" by gender'
     description: Show a "Most Worked With" metadata item for each gender that the performer has worked with. If false, only one item showing the most worked with performer overall will be displayed.
     type: BOOLEAN
+  showWhenCollapsed:
+    displayName: Show when collapsed
+    description: When enabled, the plugin data will always be displayed, irrelevant of whether the performer details panel is collapsed or not. If disabled, it will follow the same settings as Interface > Detail Page > Show all details.
+    type: BOOLEAN
