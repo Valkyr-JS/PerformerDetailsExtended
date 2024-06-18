@@ -12,6 +12,10 @@ interface PDEConfigMap {
    * has worked with. If false, only one item showing the most worked with
    * performer overall will be displayed. */
   mostWorkedWithGendered?: boolean;
+  /** When enabled, the plugin data will be displayed whether the performer
+   * details are collapsed or not. If disabled, it will follow the same settings
+   * as Interface > Detail Page > Show all details. */
+  showWhenCollapsed?: boolean;
 }
 
 interface PDEConfigResult extends ConfigResult {
@@ -25,6 +29,7 @@ interface PDEFinalConfigMap extends PDEConfigMap {
   mostCommonTagsOn: boolean;
   mostFeaturedNetworkOn: boolean;
   mostWorkedWithGendered: boolean;
+  showWhenCollapsed: boolean;
 }
 
 interface PluginsConfig {

@@ -62,27 +62,33 @@ PluginApi.patch.after(
       const scenesQueryResult = qScenes.data.findScenes;
       const statsQueryResult = qStats.data.stats;
 
-      const showDetails = !collapsed;
+      const { showAllDetails } = configurationQueryResult.ui;
+
+      const userConfig =
+        configurationQueryResult.plugins.PerformerDetailsExtended;
+
+      // Compile the user's config with config defaults
+      const pluginConfig: PDEFinalConfigMap = {
+        // For mostCommonTagsCount, set to 3 if the value is undefined or 0.
+        mostCommonTagsCount: userConfig?.mostCommonTagsCount || 3,
+        mostCommonTagsOn: getConfigProp(userConfig?.mostCommonTagsOn, true),
+        mostFeaturedNetworkOn: getConfigProp(
+          userConfig?.mostFeaturedNetworkOn,
+          true
+        ),
+        mostWorkedWithGendered: getConfigProp(
+          userConfig?.mostCommonTagsOn,
+          true
+        ),
+        showWhenCollapsed: getConfigProp(
+          userConfig?.showWhenCollapsed,
+          showAllDetails || false
+        ),
+      };
+
+      const showDetails = !collapsed || pluginConfig.showWhenCollapsed;
 
       if (showDetails) {
-        const userConfig =
-          configurationQueryResult.plugins.PerformerDetailsExtended;
-
-        // Compile the user's config with config defaults
-        const pluginConfig: PDEFinalConfigMap = {
-          // For mostCommonTagsCount, set to 3 if the value is undefined or 0.
-          mostCommonTagsCount: userConfig?.mostCommonTagsCount || 3,
-          mostCommonTagsOn: getConfigProp(userConfig?.mostCommonTagsOn, true),
-          mostFeaturedNetworkOn: getConfigProp(
-            userConfig?.mostFeaturedNetworkOn,
-            true
-          ),
-          mostWorkedWithGendered: getConfigProp(
-            userConfig?.mostCommonTagsOn,
-            true
-          ),
-        };
-
         return [
           <>
             <DetailGroup>{children}</DetailGroup>
