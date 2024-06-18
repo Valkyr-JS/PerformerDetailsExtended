@@ -60,8 +60,8 @@ PluginApi.patch.after(
         // For mostCommonTagsCount, set to 3 if the value is undefined or 0.
         mostCommonTagsCount: userConfig?.mostCommonTagsCount || 3,
         mostCommonTagsOn: getConfigProp(userConfig?.mostCommonTagsOn, true),
-        mostFeaturedNetwork: getConfigProp(
-          userConfig?.mostFeaturedNetwork,
+        mostFeaturedNetworkOn: getConfigProp(
+          userConfig?.mostFeaturedNetworkOn,
           true
         ),
         mostWorkedWithGendered: getConfigProp(

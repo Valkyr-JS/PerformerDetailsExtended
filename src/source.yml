@@ -16,7 +16,7 @@ settings:
     displayName: Show "Most Common Tags" item
     description: Toggle displaying the "Most Common Tags" item on or off. Default is on.
     type: BOOLEAN
-  mostFeaturedNetwork:
+  mostFeaturedNetworkOn:
     displayName: Show "Most Featured On (Network)" item
     description: Toggle displaying the "Most Featured On (Network)" item on or off. Default is on.
     type: BOOLEAN
