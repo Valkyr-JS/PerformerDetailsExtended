@@ -24,7 +24,7 @@ PluginApi.patch.after(
 
     const qScenes = GQL.useFindScenesQuery({
       variables: {
-        filter: { per_page: -1, sort: "date" },
+        filter: { per_page: -1 },
         scene_filter: {
           performers: {
             modifier: CriterionModifier.Includes,
@@ -34,21 +34,9 @@ PluginApi.patch.after(
       },
     });
 
-    const qStudios = GQL.useFindStudiosQuery({
-      variables: {
-        filter: { per_page: -1 },
-        studio_filter: {
-          scenes_filter: {
-            performers: {
-              modifier: CriterionModifier.Includes,
-              value: [performerID],
-            },
-          },
-        },
-      },
+    const qAllStudios = GQL.useFindStudiosQuery({
+      variables: { filter: { sort: "id" } },
     });
-
-    console.log(qStudios);
 
     const qConfig = GQL.useConfigurationQuery();
     const qStats = GQL.useStatsQuery();
@@ -60,8 +48,10 @@ PluginApi.patch.after(
       qScenes.data.findScenes.scenes.length &&
       !!qConfig.data &&
       !!qStats.data &&
+      !!qAllStudios.data &&
       performerID !== null
     ) {
+      const allStudiosQueryResult = qAllStudios.data.findStudios;
       const configurationQueryResult = qConfig.data.configuration;
       const scenesQueryResult = qScenes.data.findScenes;
       const statsQueryResult = qStats.data.stats;
@@ -106,8 +96,10 @@ PluginApi.patch.after(
               scenesQueryResult={scenesQueryResult}
             />
             <ItemMostFeaturedOn
+              allStudiosQueryResult={allStudiosQueryResult}
               collapsed={collapsed}
               performer={performer}
+              pluginConfig={pluginConfig}
               scenesQueryResult={scenesQueryResult}
             />
             <ItemMostCommonTags
