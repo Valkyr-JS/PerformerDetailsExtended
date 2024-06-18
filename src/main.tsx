@@ -34,6 +34,22 @@ PluginApi.patch.after(
       },
     });
 
+    const qStudios = GQL.useFindStudiosQuery({
+      variables: {
+        filter: { per_page: -1 },
+        studio_filter: {
+          scenes_filter: {
+            performers: {
+              modifier: CriterionModifier.Includes,
+              value: [performerID],
+            },
+          },
+        },
+      },
+    });
+
+    console.log(qStudios);
+
     const qConfig = GQL.useConfigurationQuery();
     const qStats = GQL.useStatsQuery();
 
