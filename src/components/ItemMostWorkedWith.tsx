@@ -113,7 +113,7 @@ interface ItemMostWorkedWithProps {
   /** The current Stash performer. */
   performer: Performer;
   /** The plugin config data. */
-  pluginConfig: PerformerDetailsExpandedFinalConfigMap;
+  pluginConfig: PDEFinalConfigMap;
   /** The `findScenes` data object returned from the GQL query. */
   scenesQueryResult: FindScenesResultType;
 }

@@ -52,17 +52,16 @@ PluginApi.patch.after(
       performerID !== null
     ) {
       const allStudiosQueryResult = qAllStudios.data.findStudios;
-      const configurationQueryResult = qConfig.data.configuration;
+      const configurationQueryResult = qConfig.data
+        .configuration as PDEConfigResult;
       const scenesQueryResult = qScenes.data.findScenes;
       const statsQueryResult = qStats.data.stats;
 
-      const userConfig = configurationQueryResult.plugins
-        .PerformerDetailsExtended as
-        | PerformerDetailsExpandedConfigMap
-        | undefined;
+      const userConfig =
+        configurationQueryResult.plugins.PerformerDetailsExtended;
 
       // Compile the user's config with config defaults
-      const pluginConfig: PerformerDetailsExpandedFinalConfigMap = {
+      const pluginConfig: PDEFinalConfigMap = {
         // For mostCommonTagsCount, set to 3 if the value is undefined or 0.
         mostCommonTagsCount: userConfig?.mostCommonTagsCount || 3,
         mostCommonTagsOn: getConfigProp(userConfig?.mostCommonTagsOn, true),

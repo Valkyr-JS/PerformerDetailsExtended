@@ -1,10 +1,6 @@
-interface PerformerDetailsExpandedConfigResult extends ConfigResult {
-  plugins: { PerformerDetailsExtended: PerformerDetailsExpandedConfigMap };
-}
-
 /** Stash only creates config items when they are changed. By default they are
  * `undefined`. */
-interface PerformerDetailsExpandedConfigMap {
+interface PDEConfigMap {
   /** The number of tags to show under "Most Common Tags". Default is 3. */
   mostCommonTagsCount?: number;
   /** Toggle displaying the "Most Common Tags" item on or off. Default is on. */
@@ -18,11 +14,28 @@ interface PerformerDetailsExpandedConfigMap {
   mostWorkedWithGendered?: boolean;
 }
 
-/** Matches `PerformerDetailsExpandedConfigMap` but with required properties. */
-interface PerformerDetailsExpandedFinalConfigMap
-  extends PerformerDetailsExpandedConfigMap {
+interface PDEConfigResult extends ConfigResult {
+  plugins: PluginsConfig;
+  ui: UIConfig;
+}
+
+/** Matches `PDEConfigMap` but with required properties. */
+interface PDEFinalConfigMap extends PDEConfigMap {
   mostCommonTagsCount: number;
   mostCommonTagsOn: boolean;
   mostFeaturedNetworkOn: boolean;
   mostWorkedWithGendered: boolean;
+}
+
+interface PluginsConfig {
+  PerformerDetailsExtended?: PDEConfigMap;
+}
+
+interface UIConfig {
+  /** When enabled, this option will present expanded details while maintaining
+   * a compact presentation. */
+  compactExpandedDetails?: boolean;
+  /** When enabled, all content details will be shown by default and each detail
+   * item will fit under a single column. */
+  showAllDetails?: boolean;
 }
