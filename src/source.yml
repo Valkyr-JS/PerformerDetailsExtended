@@ -26,5 +26,5 @@ settings:
     type: BOOLEAN
   showWhenCollapsed:
     displayName: Show when collapsed
-    description: When enabled, the plugin data will be displayed whether the performer details are collapsed or not. If disabled, it will follow the same settings as Interface > Detail Page > Show all details.
+    description: When enabled, the plugin data will always be displayed, irrelevant of whether the performer details panel is collapsed or not. If disabled, it will follow the same settings as Interface > Detail Page > Show all details.
     type: BOOLEAN
