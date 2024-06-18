@@ -1,4 +1,4 @@
-import { getGenderFromEnum } from "../../helpers";
+import { getGenderFromEnum } from "../helpers";
 import { GENDERS } from "../common/constants";
 import DetailItem from "./DetailItem";
 const { React } = window.PluginApi;
