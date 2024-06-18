@@ -7,6 +7,7 @@ const ItemMostFeaturedOn: React.FC<ItemMostFeaturedOnProps> = ({
 }) => {
   const { mostFeaturedNetworkOn } = props.pluginConfig;
   const { scenes } = props.scenesQueryResult;
+
   if (scenes.length === 0) return null;
 
   /* ------------------------------- Studio data ------------------------------ */
@@ -92,35 +93,37 @@ const ItemMostFeaturedOn: React.FC<ItemMostFeaturedOnProps> = ({
       }
     });
 
-    // Sort count from highest to lowest number of scenes.
-    networks.sort(sortHighToLow);
+    if (networks.length > 0) {
+      // Sort count from highest to lowest number of scenes.
+      networks.sort(sortHighToLow);
 
-    const topNetwork = networks[0];
-    const additionalNetworkDataValue =
-      topNetwork.count + (topNetwork.count === 1 ? " scene" : " scenes");
-    const linkToNetwork = `/studios/${
-      topNetwork.data.id
-    }/scenes?c=("type":"performers","value":("items":%5B("id":"${
-      performer.id
-    }","label":"${encodeURIComponent(
-      performer.name
-    )}")%5D,"excluded":%5B%5D),"modifier":"INCLUDES")`;
+      const topNetwork = networks[0];
+      const additionalNetworkDataValue =
+        topNetwork.count + (topNetwork.count === 1 ? " scene" : " scenes");
+      const linkToNetwork = `/studios/${
+        topNetwork.data.id
+      }/scenes?c=("type":"performers","value":("items":%5B("id":"${
+        performer.id
+      }","label":"${encodeURIComponent(
+        performer.name
+      )}")%5D,"excluded":%5B%5D),"modifier":"INCLUDES")`;
 
-    // Don't return the network unless it is different from the top studio.
-    if (topNetwork.data.id !== topStudio.data.id) {
-      itemMostFeaturedNetwork = (
-        <DetailItem
-          collapsed={props.collapsed}
-          id="most-featured-network"
-          title="Most Featured On (Network)"
-          value={<a href={linkToNetwork}>{topNetwork.data.name}</a>}
-          wide={true}
-          additionalData={{
-            id: "featured-network-scenes",
-            value: additionalNetworkDataValue,
-          }}
-        />
-      );
+      // Don't return the network unless it is different from the top studio.
+      if (topNetwork.data.id !== topStudio.data.id) {
+        itemMostFeaturedNetwork = (
+          <DetailItem
+            collapsed={props.collapsed}
+            id="most-featured-network"
+            title="Most Featured On (Network)"
+            value={<a href={linkToNetwork}>{topNetwork.data.name}</a>}
+            wide={true}
+            additionalData={{
+              id: "featured-network-scenes",
+              value: additionalNetworkDataValue,
+            }}
+          />
+        );
+      }
     }
   }
 
