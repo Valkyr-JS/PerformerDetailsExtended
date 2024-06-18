@@ -41,98 +41,110 @@ PluginApi.patch.after(
     const qConfig = GQL.useConfigurationQuery();
     const qStats = GQL.useStatsQuery();
 
-    // Only attach plugin component if scene data has been found. Otherwise,
-    // return the original component only.
-    if (
+    /**
+     * Only display the plugin data if:
+     * * The required data has been loaded.
+     * * AND The performer details section is NOT collapsed
+     * * UNLESS the user has set to override this behaviour.
+     */
+    const dataLoaded =
       !!qScenes.data &&
       qScenes.data.findScenes.scenes.length &&
       !!qConfig.data &&
       !!qStats.data &&
       !!qAllStudios.data &&
-      performerID !== null
-    ) {
+      performerID !== null;
+
+    if (dataLoaded) {
       const allStudiosQueryResult = qAllStudios.data.findStudios;
       const configurationQueryResult = qConfig.data
         .configuration as PDEConfigResult;
       const scenesQueryResult = qScenes.data.findScenes;
       const statsQueryResult = qStats.data.stats;
 
-      const userConfig =
-        configurationQueryResult.plugins.PerformerDetailsExtended;
+      const showDetails = !collapsed;
 
-      // Compile the user's config with config defaults
-      const pluginConfig: PDEFinalConfigMap = {
-        // For mostCommonTagsCount, set to 3 if the value is undefined or 0.
-        mostCommonTagsCount: userConfig?.mostCommonTagsCount || 3,
-        mostCommonTagsOn: getConfigProp(userConfig?.mostCommonTagsOn, true),
-        mostFeaturedNetworkOn: getConfigProp(
-          userConfig?.mostFeaturedNetworkOn,
-          true
-        ),
-        mostWorkedWithGendered: getConfigProp(
-          userConfig?.mostCommonTagsOn,
-          true
-        ),
-      };
+      if (showDetails) {
+        const userConfig =
+          configurationQueryResult.plugins.PerformerDetailsExtended;
 
-      return [
-        <>
-          <DetailGroup>{children}</DetailGroup>
-          <DetailGroup
-            id="pde__entities"
-            className="performer-details-extended"
-          >
-            <ItemAverageRating
-              collapsed={collapsed}
-              configurationQueryResult={configurationQueryResult}
-              performer={performer}
-              scenesQueryResult={scenesQueryResult}
-            />
-            <ItemMostWorkedWith
-              collapsed={collapsed}
-              performer={performer}
-              pluginConfig={pluginConfig}
-              scenesQueryResult={scenesQueryResult}
-            />
-            <ItemMostFeaturedOn
-              allStudiosQueryResult={allStudiosQueryResult}
-              collapsed={collapsed}
-              performer={performer}
-              pluginConfig={pluginConfig}
-              scenesQueryResult={scenesQueryResult}
-            />
-            <ItemMostCommonTags
-              collapsed={collapsed}
-              performer={performer}
-              pluginConfig={pluginConfig}
-              scenesQueryResult={scenesQueryResult}
-            />
-          </DetailGroup>
-          <DetailGroup id="pde__numbers" className="performer-details-extended">
-            <ItemContentSize
-              collapsed={collapsed}
-              scenesQueryResult={scenesQueryResult}
-            />
-            <ItemWatchedFor
-              collapsed={collapsed}
-              scenesQueryResult={scenesQueryResult}
-            />
-            <ItemScenesTimespan
-              collapsed={collapsed}
-              scenesQueryResult={scenesQueryResult}
-            />
-            <ItemScenesOrganized
-              collapsed={collapsed}
-              scenesQueryResult={scenesQueryResult}
-            />
-            <ItemOCount
-              collapsed={collapsed}
-              scenesQueryResult={scenesQueryResult}
-              statsQueryResult={statsQueryResult}
-            />
-          </DetailGroup>
-        </>,
-      ];
+        // Compile the user's config with config defaults
+        const pluginConfig: PDEFinalConfigMap = {
+          // For mostCommonTagsCount, set to 3 if the value is undefined or 0.
+          mostCommonTagsCount: userConfig?.mostCommonTagsCount || 3,
+          mostCommonTagsOn: getConfigProp(userConfig?.mostCommonTagsOn, true),
+          mostFeaturedNetworkOn: getConfigProp(
+            userConfig?.mostFeaturedNetworkOn,
+            true
+          ),
+          mostWorkedWithGendered: getConfigProp(
+            userConfig?.mostCommonTagsOn,
+            true
+          ),
+        };
+
+        return [
+          <>
+            <DetailGroup>{children}</DetailGroup>
+            <DetailGroup
+              id="pde__entities"
+              className="performer-details-extended"
+            >
+              <ItemAverageRating
+                collapsed={collapsed}
+                configurationQueryResult={configurationQueryResult}
+                performer={performer}
+                scenesQueryResult={scenesQueryResult}
+              />
+              <ItemMostWorkedWith
+                collapsed={collapsed}
+                performer={performer}
+                pluginConfig={pluginConfig}
+                scenesQueryResult={scenesQueryResult}
+              />
+              <ItemMostFeaturedOn
+                allStudiosQueryResult={allStudiosQueryResult}
+                collapsed={collapsed}
+                performer={performer}
+                pluginConfig={pluginConfig}
+                scenesQueryResult={scenesQueryResult}
+              />
+              <ItemMostCommonTags
+                collapsed={collapsed}
+                performer={performer}
+                pluginConfig={pluginConfig}
+                scenesQueryResult={scenesQueryResult}
+              />
+            </DetailGroup>
+            <DetailGroup
+              id="pde__numbers"
+              className="performer-details-extended"
+            >
+              <ItemContentSize
+                collapsed={collapsed}
+                scenesQueryResult={scenesQueryResult}
+              />
+              <ItemWatchedFor
+                collapsed={collapsed}
+                scenesQueryResult={scenesQueryResult}
+              />
+              <ItemScenesTimespan
+                collapsed={collapsed}
+                scenesQueryResult={scenesQueryResult}
+              />
+              <ItemScenesOrganized
+                collapsed={collapsed}
+                scenesQueryResult={scenesQueryResult}
+              />
+              <ItemOCount
+                collapsed={collapsed}
+                scenesQueryResult={scenesQueryResult}
+                statsQueryResult={statsQueryResult}
+              />
+            </DetailGroup>
+          </>,
+        ];
+      }
     }
 
     return [<div className="detail-group">{children}</div>];
