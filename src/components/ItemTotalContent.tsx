@@ -2,27 +2,27 @@ import { createDuration, createFilesize } from "../helpers";
 import DetailItem from "./DetailItem";
 const { React } = window.PluginApi;
 
-const ItemContentSize: React.FC<ItemContentSizeProps> = (props) => {
+const ItemTotalContent: React.FC<ItemTotalContentProps> = (props) => {
   const { duration, filesize } = props.scenesQueryResult;
 
   return (
     <DetailItem
       collapsed={props.collapsed}
-      id="content-size"
+      id="total-content"
       title="Total Content"
       value={createDuration(duration)}
       wide={true}
       additionalData={{
-        id: "content-filesize",
+        id: "total-filesize",
         value: createFilesize(filesize),
       }}
     />
   );
 };
 
-export default ItemContentSize;
+export default ItemTotalContent;
 
-interface ItemContentSizeProps {
+interface ItemTotalContentProps {
   /** Identifies whether the PerformerDetailsPanel is currently collapsed. */
   collapsed: PropsPerformerDetailsPanelDetailGroup["collapsed"];
   /** The `findScenes` data object returned from the GQL query. */

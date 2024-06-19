@@ -1,12 +1,12 @@
 import DetailGroup from "./components/DetailGroup";
 import ItemAverageRating from "./components/ItemAverageRating";
-import ItemContentSize from "./components/ItemContentSize";
-import ItemTopTags from "./components/ItemTopTags";
 import ItemMostFeaturedOn from "./components/ItemMostFeaturedOn";
 import ItemMostWorkedWith from "./components/ItemMostWorkedWith";
 import ItemOCount from "./components/ItemOCount";
 import ItemScenesOrganized from "./components/ItemScenesOrganized";
 import ItemScenesTimespan from "./components/ItemScenesTimespan";
+import ItemTopTags from "./components/ItemTopTags";
+import ItemTotalContent from "./components/ItemTotalContent";
 import ItemWatchedFor from "./components/ItemWatchedFor";
 import "./styles.scss";
 
@@ -123,7 +123,7 @@ PluginApi.patch.after(
               id="pde__numbers"
               className="performer-details-extended"
             >
-              <ItemContentSize
+              <ItemTotalContent
                 collapsed={collapsed}
                 scenesQueryResult={scenesQueryResult}
               />
