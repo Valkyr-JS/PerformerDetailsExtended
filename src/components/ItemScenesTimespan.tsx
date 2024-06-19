@@ -25,37 +25,35 @@ const ItemScenesTimespan: React.FC<ItemScenesTimespanProps> = ({
   const latestScene = datedScenes[datedScenes.length - 1];
 
   return (
-    <>
-      <DetailItem
-        collapsed={collapsed}
-        id="scenes-timespan"
-        title="Scenes Timespan"
-        value={
-          <div className="inner-wrapper">
-            <HoverPopover
-              placement="bottom"
-              content={<SceneCard scene={earliestScene} compact={true} />}
-              leaveDelay={100}
-            >
-              <span className="hoverable">
-                {earliestScene.date?.split("-").join("/")}
-              </span>
-            </HoverPopover>
-            <span className="separator">–</span>
-            <HoverPopover
-              placement="bottom"
-              content={<SceneCard scene={latestScene} compact={true} />}
-              leaveDelay={100}
-            >
-              <span className="hoverable">
-                {latestScene.date?.split("-").join("/")}
-              </span>
-            </HoverPopover>
-          </div>
-        }
-        wide={true}
-      />
-    </>
+    <DetailItem
+      collapsed={collapsed}
+      id="scenes-timespan"
+      title="Scenes Timespan"
+      value={
+        <div className="inner-wrapper">
+          <HoverPopover
+            placement="bottom"
+            content={<SceneCard scene={earliestScene} compact={true} />}
+            leaveDelay={100}
+          >
+            <span className="hoverable">
+              {earliestScene.date?.split("-").join("/")}
+            </span>
+          </HoverPopover>
+          <span className="separator">–</span>
+          <HoverPopover
+            placement="bottom"
+            content={<SceneCard scene={latestScene} compact={true} />}
+            leaveDelay={100}
+          >
+            <span className="hoverable">
+              {latestScene.date?.split("-").join("/")}
+            </span>
+          </HoverPopover>
+        </div>
+      }
+      wide={true}
+    />
   );
 };
 

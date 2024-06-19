@@ -24,7 +24,7 @@ PluginApi.patch.after(
 
     const qScenes = GQL.useFindScenesQuery({
       variables: {
-        filter: { per_page: -1 },
+        filter: { per_page: -1, sort: "date" },
         scene_filter: {
           performers: {
             modifier: CriterionModifier.Includes,
