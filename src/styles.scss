@@ -48,7 +48,7 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
 
-    .detail-item.most-common-tags {
+    .detail-item.top-tags {
       grid-column: span 2;
     }
   }
@@ -56,7 +56,7 @@
   @media (min-width: 1360px) {
     grid-template-columns: repeat(3, 1fr);
 
-    .detail-item.most-common-tags {
+    .detail-item.top-tags {
       grid-column: span 3;
     }
   }

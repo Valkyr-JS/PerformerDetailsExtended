@@ -1,7 +1,7 @@
 import DetailGroup from "./components/DetailGroup";
 import ItemAverageRating from "./components/ItemAverageRating";
 import ItemContentSize from "./components/ItemContentSize";
-import ItemMostCommonTags from "./components/ItemCommonTags";
+import ItemTopTags from "./components/ItemTopTags";
 import ItemMostFeaturedOn from "./components/ItemMostFeaturedOn";
 import ItemMostWorkedWith from "./components/ItemMostWorkedWith";
 import ItemOCount from "./components/ItemOCount";
@@ -69,17 +69,14 @@ PluginApi.patch.after(
 
       // Compile the user's config with config defaults
       const pluginConfig: PDEFinalConfigMap = {
-        // For mostCommonTagsCount, set to 3 if the value is undefined or 0.
-        mostCommonTagsCount: userConfig?.mostCommonTagsCount || 3,
-        mostCommonTagsOn: getConfigProp(userConfig?.mostCommonTagsOn, true),
+        // For topTagsCount, set to 3 if the value is undefined or 0.
+        topTagsCount: userConfig?.topTagsCount || 3,
+        topTagsOn: getConfigProp(userConfig?.topTagsOn, true),
         mostFeaturedNetworkOn: getConfigProp(
           userConfig?.mostFeaturedNetworkOn,
           true
         ),
-        mostWorkedWithGendered: getConfigProp(
-          userConfig?.mostCommonTagsOn,
-          true
-        ),
+        mostWorkedWithGendered: getConfigProp(userConfig?.topTagsOn, true),
         showWhenCollapsed: getConfigProp(
           userConfig?.showWhenCollapsed,
           showAllDetails || false
@@ -115,7 +112,7 @@ PluginApi.patch.after(
                 pluginConfig={pluginConfig}
                 scenesQueryResult={scenesQueryResult}
               />
-              <ItemMostCommonTags
+              <ItemTopTags
                 collapsed={collapsed}
                 performer={performer}
                 pluginConfig={pluginConfig}

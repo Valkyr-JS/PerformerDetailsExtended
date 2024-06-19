@@ -1,10 +1,10 @@
 /** Stash only creates config items when they are changed. By default they are
  * `undefined`. */
 interface PDEConfigMap {
-  /** The number of tags to show under "Most Common Tags". Default is 3. */
-  mostCommonTagsCount?: number;
-  /** Toggle displaying the "Most Common Tags" item on or off. Default is on. */
-  mostCommonTagsOn?: boolean;
+  /** The number of tags to show under "Top Tags". Default is 3. */
+  topTagsCount?: number;
+  /** Toggle displaying the "Top Tags" item on or off. Default is on. */
+  topTagsOn?: boolean;
   /** Toggle displaying the "Most Featured On (Network)" item on or off. Default
    * is on. */
   mostFeaturedNetworkOn?: boolean;
@@ -26,8 +26,8 @@ interface PDEConfigResult extends ConfigResult {
 
 /** Matches `PDEConfigMap` but with required properties. */
 interface PDEFinalConfigMap extends PDEConfigMap {
-  mostCommonTagsCount: number;
-  mostCommonTagsOn: boolean;
+  topTagsCount: number;
+  topTagsOn: boolean;
   mostFeaturedNetworkOn: boolean;
   mostWorkedWithGendered: boolean;
   showWhenCollapsed: boolean;

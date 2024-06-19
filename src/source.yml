@@ -8,13 +8,13 @@ ui:
   css:
     - PerformerDetailsExtended.css
 settings:
-  mostCommonTagsCount:
-    displayName: Number of Common Tags
-    description: The number of tags to show under "Most Common Tags". Default is 3.
+  topTagsCount:
+    displayName: Number of top tags
+    description: The number of tags to show under "Top Tags". Default is 3.
     type: NUMBER
-  mostCommonTagsOn:
-    displayName: Show "Most Common Tags" item
-    description: Toggle displaying the "Most Common Tags" item on or off. Default is on.
+  topTagsOn:
+    displayName: Show "Top Tags" item
+    description: When enabled, the "Top Tags" item will be displayed. Default is on.
     type: BOOLEAN
   mostFeaturedNetworkOn:
     displayName: Show "Most Featured On (Network)" item

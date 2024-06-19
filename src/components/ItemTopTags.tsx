@@ -2,14 +2,11 @@ import DetailItem from "./DetailItem";
 import TagItem from "./TagItem";
 const { React } = window.PluginApi;
 
-const ItemMostCommonTags: React.FC<ItemMostCommonTagsProps> = ({
-  performer,
-  ...props
-}) => {
-  const { mostCommonTagsCount, mostCommonTagsOn } = props.pluginConfig;
+const ItemTopTags: React.FC<ItemTopTagsProps> = ({ performer, ...props }) => {
+  const { topTagsCount, topTagsOn } = props.pluginConfig;
 
   // Do not render the item if the user has turned it off in the config.
-  if (!mostCommonTagsOn) return null;
+  if (!topTagsOn) return null;
 
   // Create an array of tag data from all scenes
   const tags: {
@@ -44,8 +41,7 @@ const ItemMostCommonTags: React.FC<ItemMostCommonTagsProps> = ({
   if (!tags.length) return null;
 
   // Return the tags with the highest overall count, up to the tagCount
-  const maxTags =
-    tags.length < mostCommonTagsCount ? tags.length : mostCommonTagsCount;
+  const maxTags = tags.length < topTagsCount ? tags.length : topTagsCount;
 
   const value = [];
   for (let i = 0; i < maxTags; i++) {
@@ -72,12 +68,12 @@ const ItemMostCommonTags: React.FC<ItemMostCommonTagsProps> = ({
     );
   }
 
-  const title = "Most Common Tag" + (mostCommonTagsCount === 1 ? "" : "s");
+  const title = "Top Tag" + (topTagsCount === 1 ? "" : "s");
 
   return (
     <DetailItem
       collapsed={props.collapsed}
-      id="most-common-tags"
+      id="top-tags"
       title={title}
       value={value}
       wide={true}
@@ -85,9 +81,9 @@ const ItemMostCommonTags: React.FC<ItemMostCommonTagsProps> = ({
   );
 };
 
-export default ItemMostCommonTags;
+export default ItemTopTags;
 
-interface ItemMostCommonTagsProps {
+interface ItemTopTagsProps {
   /** Identifies whether the PerformerDetailsPanel is currently collapsed. */
   collapsed: PropsPerformerDetailsPanelDetailGroup["collapsed"];
   /** The current Stash performer. */
