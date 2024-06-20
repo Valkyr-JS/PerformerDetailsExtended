@@ -1,6 +1,6 @@
 import DetailGroup from "./components/DetailGroup";
 import ItemAverageRating from "./components/ItemAverageRating";
-import ItemMostWorkedWith from "./components/ItemMostWorkedWith";
+import ItemAppearsMostWith from "./components/ItemAppearsMostWith";
 import ItemOCount from "./components/ItemOCount";
 import ItemScenesOrganized from "./components/ItemScenesOrganized";
 import ItemScenesTimespan from "./components/ItemScenesTimespan";
@@ -73,7 +73,7 @@ PluginApi.patch.after(
         topTagsCount: userConfig?.topTagsCount || 3,
         topTagsOn: getConfigProp(userConfig?.topTagsOn, true),
         topNetworkOn: getConfigProp(userConfig?.topNetworkOn, true),
-        mostWorkedWithGendered: getConfigProp(userConfig?.topTagsOn, true),
+        appearsMostWithGendered: getConfigProp(userConfig?.topTagsOn, true),
         showWhenCollapsed: getConfigProp(
           userConfig?.showWhenCollapsed,
           showAllDetails || false
@@ -96,7 +96,7 @@ PluginApi.patch.after(
                 performer={performer}
                 scenesQueryResult={scenesQueryResult}
               />
-              <ItemMostWorkedWith
+              <ItemAppearsMostWith
                 collapsed={collapsed}
                 performer={performer}
                 pluginConfig={pluginConfig}

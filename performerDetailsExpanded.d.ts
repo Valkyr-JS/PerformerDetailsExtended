@@ -8,10 +8,10 @@ interface PDEConfigMap {
   /** Toggle displaying the "Top Network" item on or off. Default
    * is on. */
   topNetworkOn?: boolean;
-  /** Show a "Most Worked With" metadata item for each gender that the performer
-   * has worked with. If false, only one item showing the most worked with
+  /** Show a "Appears Most With" metadata item for each gender that the performer
+   * has worked with. If false, only one item showing the Appears Most With
    * performer overall will be displayed. */
-  mostWorkedWithGendered?: boolean;
+  appearsMostWithGendered?: boolean;
   /** When enabled, the plugin data will always be displayed, irrelevant of
    * whether the performer details panel is collapsed or not. If disabled, it
    * will follow the same settings as Interface > Detail Page > Show all
@@ -29,7 +29,7 @@ interface PDEFinalConfigMap extends PDEConfigMap {
   topTagsCount: number;
   topTagsOn: boolean;
   topNetworkOn: boolean;
-  mostWorkedWithGendered: boolean;
+  appearsMostWithGendered: boolean;
   showWhenCollapsed: boolean;
 }
 
