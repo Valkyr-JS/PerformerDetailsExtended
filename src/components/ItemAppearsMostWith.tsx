@@ -1,4 +1,4 @@
-import { getGenderFromEnum } from "../helpers";
+import { createOverflowText, getGenderFromEnum } from "../helpers";
 import { GENDERS } from "../common/constants";
 import DetailItem from "./DetailItem";
 const { React } = window.PluginApi;
@@ -94,17 +94,13 @@ const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
       }
 
       if (topPartners.length > maxLinks) {
-        let overflow = "";
-        for (let i = maxLinks; i < topPartners.length; i++) {
-          overflow += topPartners[i].data.name;
+        const names = topPartners.map((p) => p.data.name);
+        const title = createOverflowText(names, maxLinks);
 
-          if (i < topPartners.length - 1) overflow += ", ";
-          if (i === topPartners.length - 2) overflow += "and ";
-        }
         links.push(
           <>
             {" "}
-            <span className="top-meta-overflow hoverable" title={overflow}>
+            <span className="top-meta-overflow hoverable" title={title}>
               and {topPartners.length - maxLinks} more
             </span>
           </>

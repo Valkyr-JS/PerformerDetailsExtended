@@ -1,3 +1,4 @@
+import { createOverflowText } from "../helpers";
 import DetailItem from "./DetailItem";
 const { React } = window.PluginApi;
 
@@ -72,7 +73,17 @@ const ItemTopStudio: React.FC<ItemTopStudioProps> = ({
   }
 
   if (topStudioData.length > maxLinks) {
-    links.push(" and " + (topStudioData.length - maxLinks) + " more");
+    const names = topStudioData.map((st) => st.name);
+    const title = createOverflowText(names, maxLinks);
+
+    links.push(
+      <>
+        {" "}
+        <span className="top-meta-overflow hoverable" title={title}>
+          and {topStudioData.length - maxLinks} more
+        </span>
+      </>
+    );
   }
 
   const value = <>{...links}</>;
@@ -165,7 +176,17 @@ const ItemTopStudio: React.FC<ItemTopStudioProps> = ({
       }
 
       if (topNetworkData.length > nwMaxLinks) {
-        nwLinks.push(" and " + (topNetworkData.length - nwMaxLinks) + " more");
+        const names = topNetworkData.map((nw) => nw.name);
+        const title = createOverflowText(names, maxLinks);
+
+        nwLinks.push(
+          <>
+            {" "}
+            <span className="top-meta-overflow hoverable" title={title}>
+              and {topNetworkData.length - maxLinks} more
+            </span>
+          </>
+        );
       }
 
       const nwValue = <>{...nwLinks}</>;
