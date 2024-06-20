@@ -198,7 +198,7 @@ const ItemTopStudio: React.FC<ItemTopStudioProps> = ({
           <DetailItem
             collapsed={props.collapsed}
             id="top-network"
-            title="Top Network"
+            title={"Top Network" + (topNetworkData.length > 1 ? "s" : "")}
             value={nwValue}
             wide={true}
             additionalData={{
@@ -216,7 +216,7 @@ const ItemTopStudio: React.FC<ItemTopStudioProps> = ({
       <DetailItem
         collapsed={props.collapsed}
         id="top-studio"
-        title="Top Studio"
+        title={"Top Studio" + (topStudioData.length > 1 ? "s" : "")}
         value={value}
         wide={true}
         additionalData={{
