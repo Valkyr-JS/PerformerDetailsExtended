@@ -94,7 +94,21 @@ const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
       }
 
       if (topPartners.length > maxLinks) {
-        links.push(" and " + (topPartners.length - maxLinks) + " more");
+        let overflow = "";
+        for (let i = maxLinks; i < topPartners.length; i++) {
+          overflow += topPartners[i].data.name;
+
+          if (i < topPartners.length - 1) overflow += ", ";
+          if (i === topPartners.length - 2) overflow += "and ";
+        }
+        links.push(
+          <>
+            {" "}
+            <span className="top-meta-overflow hoverable" title={overflow}>
+              and {topPartners.length - maxLinks} more
+            </span>
+          </>
+        );
       }
 
       const value = <>{...links}</>;
