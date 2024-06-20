@@ -46,7 +46,8 @@ const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
 
   // If the top partner's count is less than the minimum required, don't return
   // a component.
-  if (!partners || partners[0].count < minimumAppearances) return null;
+  if (partners.length === 0 || partners[0].count < minimumAppearances)
+    return null;
 
   if (appearsMostWithGendered) {
     return GENDERS.map((g) => {
