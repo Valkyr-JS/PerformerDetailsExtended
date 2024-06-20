@@ -2,8 +2,8 @@ import { createDuration } from "../helpers";
 import DetailItem from "./DetailItem";
 const { React } = window.PluginApi;
 
-/** "Scene Play Count" item component. */
-const ItemWatchedFor: React.FC<ItemWatchedForProps> = ({
+/** "Total Play Duration" item component. */
+const ItemTotalPlayDuration: React.FC<ItemTotalPlayDurationProps> = ({
   collapsed,
   scenesQueryResult,
 }) => {
@@ -18,8 +18,8 @@ const ItemWatchedFor: React.FC<ItemWatchedForProps> = ({
   return (
     <DetailItem
       collapsed={collapsed}
-      id="watched-for"
-      title="Scenes Watched For"
+      id="total-play-duration"
+      title="Total Play Duration"
       value={createDuration(playDuration)}
       wide={true}
       additionalData={{
@@ -30,9 +30,9 @@ const ItemWatchedFor: React.FC<ItemWatchedForProps> = ({
   );
 };
 
-export default ItemWatchedFor;
+export default ItemTotalPlayDuration;
 
-interface ItemWatchedForProps {
+interface ItemTotalPlayDurationProps {
   /** Identifies whether the PerformerDetailsPanel is currently collapsed. */
   collapsed: PropsPerformerDetailsPanelDetailGroup["collapsed"];
   /** The `findScenes` data object returned from the GQL query. */

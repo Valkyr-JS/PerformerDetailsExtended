@@ -1,13 +1,13 @@
 import DetailGroup from "./components/DetailGroup";
 import ItemAverageRating from "./components/ItemAverageRating";
-import ItemContentSize from "./components/ItemContentSize";
-import ItemMostCommonTags from "./components/ItemCommonTags";
-import ItemMostFeaturedOn from "./components/ItemMostFeaturedOn";
-import ItemMostWorkedWith from "./components/ItemMostWorkedWith";
+import ItemAppearsMostWith from "./components/ItemAppearsMostWith";
 import ItemOCount from "./components/ItemOCount";
 import ItemScenesOrganized from "./components/ItemScenesOrganized";
 import ItemScenesTimespan from "./components/ItemScenesTimespan";
-import ItemWatchedFor from "./components/ItemWatchedFor";
+import ItemTopStudio from "./components/ItemTopStudio";
+import ItemTopTags from "./components/ItemTopTags";
+import ItemTotalContent from "./components/ItemTotalContent";
+import ItemTotalPlayDuration from "./components/ItemTotalPlayDuration";
 import "./styles.scss";
 
 const { PluginApi } = window;
@@ -69,17 +69,11 @@ PluginApi.patch.after(
 
       // Compile the user's config with config defaults
       const pluginConfig: PDEFinalConfigMap = {
-        // For mostCommonTagsCount, set to 3 if the value is undefined or 0.
-        mostCommonTagsCount: userConfig?.mostCommonTagsCount || 3,
-        mostCommonTagsOn: getConfigProp(userConfig?.mostCommonTagsOn, true),
-        mostFeaturedNetworkOn: getConfigProp(
-          userConfig?.mostFeaturedNetworkOn,
-          true
-        ),
-        mostWorkedWithGendered: getConfigProp(
-          userConfig?.mostCommonTagsOn,
-          true
-        ),
+        // For topTagsCount, set to 3 if the value is undefined or 0.
+        topTagsCount: userConfig?.topTagsCount || 3,
+        topTagsOn: getConfigProp(userConfig?.topTagsOn, true),
+        topNetworkOn: getConfigProp(userConfig?.topNetworkOn, true),
+        appearsMostWithGendered: getConfigProp(userConfig?.topTagsOn, true),
         showWhenCollapsed: getConfigProp(
           userConfig?.showWhenCollapsed,
           showAllDetails || false
@@ -102,20 +96,20 @@ PluginApi.patch.after(
                 performer={performer}
                 scenesQueryResult={scenesQueryResult}
               />
-              <ItemMostWorkedWith
+              <ItemAppearsMostWith
                 collapsed={collapsed}
                 performer={performer}
                 pluginConfig={pluginConfig}
                 scenesQueryResult={scenesQueryResult}
               />
-              <ItemMostFeaturedOn
+              <ItemTopStudio
                 allStudiosQueryResult={allStudiosQueryResult}
                 collapsed={collapsed}
                 performer={performer}
                 pluginConfig={pluginConfig}
                 scenesQueryResult={scenesQueryResult}
               />
-              <ItemMostCommonTags
+              <ItemTopTags
                 collapsed={collapsed}
                 performer={performer}
                 pluginConfig={pluginConfig}
@@ -126,11 +120,11 @@ PluginApi.patch.after(
               id="pde__numbers"
               className="performer-details-extended"
             >
-              <ItemContentSize
+              <ItemTotalContent
                 collapsed={collapsed}
                 scenesQueryResult={scenesQueryResult}
               />
-              <ItemWatchedFor
+              <ItemTotalPlayDuration
                 collapsed={collapsed}
                 scenesQueryResult={scenesQueryResult}
               />

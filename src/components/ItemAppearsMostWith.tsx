@@ -4,11 +4,11 @@ import DetailItem from "./DetailItem";
 const { React } = window.PluginApi;
 const { makePerformerScenesUrl } = window.PluginApi.utils.NavUtils;
 
-const ItemMostWorkedWith: React.FC<ItemMostWorkedWithProps> = ({
+const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
   performer,
   ...props
 }) => {
-  const { mostWorkedWithGendered } = props.pluginConfig;
+  const { appearsMostWithGendered } = props.pluginConfig;
 
   // Create an array of performer data from all scenes
   const partners: {
@@ -46,7 +46,7 @@ const ItemMostWorkedWith: React.FC<ItemMostWorkedWithProps> = ({
 
   if (!partners) return null;
 
-  if (mostWorkedWithGendered) {
+  if (appearsMostWithGendered) {
     return GENDERS.map((g) => {
       const topPartnerIndex = partners.findIndex((p) => p.data.gender === g);
 
@@ -69,8 +69,8 @@ const ItemMostWorkedWith: React.FC<ItemMostWorkedWithProps> = ({
       return (
         <DetailItem
           collapsed={props.collapsed}
-          id={"most-worked-with-" + id}
-          title={"Most Worked With " + genderWord}
+          id={"appears-most-with-" + id}
+          title={"Appears Most With " + genderWord}
           value={<a href={scenesLink}>{topPartner.data.name}</a>}
           wide={true}
           additionalData={{
@@ -93,8 +93,8 @@ const ItemMostWorkedWith: React.FC<ItemMostWorkedWithProps> = ({
   return (
     <DetailItem
       collapsed={props.collapsed}
-      id={"most-worked-with"}
-      title={"Most Worked With"}
+      id={"appears-most-with"}
+      title={"Appears Most With"}
       value={<a href={scenesLink}>{topPartner.data.name}</a>}
       wide={true}
       additionalData={{
@@ -105,9 +105,9 @@ const ItemMostWorkedWith: React.FC<ItemMostWorkedWithProps> = ({
   );
 };
 
-export default ItemMostWorkedWith;
+export default ItemAppearsMostWith;
 
-interface ItemMostWorkedWithProps {
+interface ItemAppearsMostWithProps {
   /** Identifies whether the PerformerDetailsPanel is currently collapsed. */
   collapsed: PropsPerformerDetailsPanelDetailGroup["collapsed"];
   /** The current Stash performer. */
