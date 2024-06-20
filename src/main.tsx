@@ -7,7 +7,7 @@ import ItemScenesTimespan from "./components/ItemScenesTimespan";
 import ItemTopStudio from "./components/ItemTopStudio";
 import ItemTopTags from "./components/ItemTopTags";
 import ItemTotalContent from "./components/ItemTotalContent";
-import ItemWatchedFor from "./components/ItemWatchedFor";
+import ItemTotalPlayDuration from "./components/ItemTotalPlayDuration";
 import "./styles.scss";
 
 const { PluginApi } = window;
@@ -124,7 +124,7 @@ PluginApi.patch.after(
                 collapsed={collapsed}
                 scenesQueryResult={scenesQueryResult}
               />
-              <ItemWatchedFor
+              <ItemTotalPlayDuration
                 collapsed={collapsed}
                 scenesQueryResult={scenesQueryResult}
               />
