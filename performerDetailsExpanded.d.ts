@@ -1,22 +1,26 @@
 /** Stash only creates config items when they are changed. By default they are
  * `undefined`. */
 interface PDEConfigMap {
-  /** The number of tags to show under "Top Tags". Default is 3. */
-  topTagsCount?: number;
-  /** Toggle displaying the "Top Tags" item on or off. Default is on. */
-  topTagsOn?: boolean;
-  /** Toggle displaying the "Top Network" item on or off. Default
-   * is on. */
-  topNetworkOn?: boolean;
-  /** Show a "Appears Most With" metadata item for each gender that the performer
-   * has worked with. If false, only one item showing the Appears Most With
-   * performer overall will be displayed. */
+  /** Show a "Appears Most With" metadata item for each gender that the
+   * performer has worked with. If false, only one item showing the Appears Most
+   * With performer overall will be displayed. */
   appearsMostWithGendered?: boolean;
+  /** The minimum number of appearances a performer needs to have had with a
+   * partner/studio/network in order to show the data. The default value is
+   * 2. */
+  minimumAppearances?: number;
   /** When enabled, the plugin data will always be displayed, irrelevant of
    * whether the performer details panel is collapsed or not. If disabled, it
    * will follow the same settings as Interface > Detail Page > Show all
    * details. */
   showWhenCollapsed?: boolean;
+  /** Toggle displaying the "Top Network" item on or off. Default
+   * is on. */
+  topNetworkOn?: boolean;
+  /** The number of tags to show under "Top Tags". Default is 3. */
+  topTagsCount?: number;
+  /** Toggle displaying the "Top Tags" item on or off. Default is on. */
+  topTagsOn?: boolean;
 }
 
 interface PDEConfigResult extends ConfigResult {
@@ -26,11 +30,12 @@ interface PDEConfigResult extends ConfigResult {
 
 /** Matches `PDEConfigMap` but with required properties. */
 interface PDEFinalConfigMap extends PDEConfigMap {
+  appearsMostWithGendered: boolean;
+  minimumAppearances: number;
+  showWhenCollapsed: boolean;
+  topNetworkOn: boolean;
   topTagsCount: number;
   topTagsOn: boolean;
-  topNetworkOn: boolean;
-  appearsMostWithGendered: boolean;
-  showWhenCollapsed: boolean;
 }
 
 interface PluginsConfig {

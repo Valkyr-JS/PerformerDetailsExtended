@@ -12,19 +12,23 @@ settings:
     displayName: '"Appears Most With" by gender'
     description: Show an "Appears Most With" metadata item for each gender that the performer has worked with. If false, only one item showing the performer they work with most overall will be displayed.
     type: BOOLEAN
+  minimumAppearances:
+    displayName: Minimum appearances required
+    description: The minimum number of appearances a performer needs to have had with a partner/studio/network in order to show the data. The default value is 2.
+    type: NUMBER
+  showWhenCollapsed:
+    displayName: Show when collapsed
+    description: When enabled, the plugin data will always be displayed, irrelevant of whether the performer details panel is collapsed or not. If disabled, it will follow the same settings as Interface > Detail Page > Show all details.
+    type: BOOLEAN
   topNetworkOn:
     displayName: Show "Top Network" item
     description: Toggle displaying the "Top Network" item on or off. Default is on.
     type: BOOLEAN
   topTagsCount:
     displayName: Number of top tags
-    description: The number of tags to show under "Top Tags". Default is 3.
+    description: The number of tags to show under "Top Tags". The default value is 3.
     type: NUMBER
   topTagsOn:
     displayName: Show "Top Tags" item
     description: When enabled, the "Top Tags" item will be displayed. Default is on.
-    type: BOOLEAN
-  showWhenCollapsed:
-    displayName: Show when collapsed
-    description: When enabled, the plugin data will always be displayed, irrelevant of whether the performer details panel is collapsed or not. If disabled, it will follow the same settings as Interface > Detail Page > Show all details.
     type: BOOLEAN

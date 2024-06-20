@@ -5,7 +5,7 @@ const ItemTopStudio: React.FC<ItemTopStudioProps> = ({
   performer,
   ...props
 }) => {
-  const { topNetworkOn } = props.pluginConfig;
+  const { minimumAppearances, topNetworkOn } = props.pluginConfig;
   const { scenes } = props.scenesQueryResult;
 
   if (scenes.length === 0) return null;
@@ -39,6 +39,11 @@ const ItemTopStudio: React.FC<ItemTopStudioProps> = ({
   studios.sort(sortHighToLow);
 
   const topStudio = studios[0];
+
+  // If the top studio's count is less than the minimum required, don't return a
+  // component.
+  if (topStudio.count < minimumAppearances) return null;
+
   const additionalDataValue =
     topStudio.count + (topStudio.count === 1 ? " scene" : " scenes");
   const linkToStudio = `/studios/${
@@ -108,8 +113,12 @@ const ItemTopStudio: React.FC<ItemTopStudioProps> = ({
         performer.name
       )}")%5D,"excluded":%5B%5D),"modifier":"INCLUDES")`;
 
-      // Don't return the network unless it is different from the top studio.
-      if (topNetwork.data.id !== topStudio.data.id) {
+      // Don't return the network unless it is different from the top studio and
+      // its count is at least the minimum required.
+      if (
+        topNetwork.data.id !== topStudio.data.id &&
+        !(topNetwork.count < minimumAppearances)
+      ) {
         itemTopNetworkOn = (
           <DetailItem
             collapsed={props.collapsed}

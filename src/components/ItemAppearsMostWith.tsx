@@ -8,7 +8,7 @@ const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
   performer,
   ...props
 }) => {
-  const { appearsMostWithGendered } = props.pluginConfig;
+  const { appearsMostWithGendered, minimumAppearances } = props.pluginConfig;
 
   // Create an array of performer data from all scenes
   const partners: {
@@ -44,15 +44,22 @@ const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
   // Sort count from highest to lowest
   partners.sort((a, b) => b.count - a.count);
 
-  if (!partners) return null;
+  // If the top partner's count is less than the minimum required, don't return
+  // a component.
+  if (partners.length === 0 || partners[0].count < minimumAppearances)
+    return null;
 
   if (appearsMostWithGendered) {
     return GENDERS.map((g) => {
       const topPartnerIndex = partners.findIndex((p) => p.data.gender === g);
 
-      // If there is no partner for the current gender, don't return a
-      // component.
-      if (topPartnerIndex === -1) return null;
+      // If there is no partner for the current gender or the top partner's
+      // count is less than the minimum required, don't return a component.
+      if (
+        topPartnerIndex === -1 ||
+        partners[topPartnerIndex].count < minimumAppearances
+      )
+        return null;
 
       const topPartner = partners[topPartnerIndex];
 
@@ -83,6 +90,11 @@ const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
   }
 
   const topPartner = partners[0];
+
+  // If the top partner's count is less than the minimum required, don't return
+  // a component.
+  if (topPartner.count < minimumAppearances) return null;
+
   const scenesText =
     topPartner.count + " " + (topPartner.count === 1 ? "scene" : "scenes");
   const scenesLink = makePerformerScenesUrl(performer, {
