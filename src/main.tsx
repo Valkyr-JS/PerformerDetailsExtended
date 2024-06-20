@@ -70,14 +70,15 @@ PluginApi.patch.after(
       // Compile the user's config with config defaults
       const pluginConfig: PDEFinalConfigMap = {
         // For topTagsCount, set to 3 if the value is undefined or 0.
-        topTagsCount: userConfig?.topTagsCount || 3,
-        topTagsOn: getConfigProp(userConfig?.topTagsOn, true),
-        topNetworkOn: getConfigProp(userConfig?.topNetworkOn, true),
         appearsMostWithGendered: getConfigProp(userConfig?.topTagsOn, true),
+        minimumAppearances: getConfigProp(userConfig?.minimumAppearances, 2),
         showWhenCollapsed: getConfigProp(
           userConfig?.showWhenCollapsed,
           showAllDetails || false
         ),
+        topNetworkOn: getConfigProp(userConfig?.topNetworkOn, true),
+        topTagsCount: userConfig?.topTagsCount || 3,
+        topTagsOn: getConfigProp(userConfig?.topTagsOn, true),
       };
 
       const showDetails = !collapsed || pluginConfig.showWhenCollapsed;
