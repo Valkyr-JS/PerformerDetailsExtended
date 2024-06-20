@@ -12,6 +12,10 @@ settings:
     displayName: '"Appears Most With" by gender'
     description: Show an "Appears Most With" metadata item for each gender that the performer has worked with. If false, only one item showing the performer they work with most overall will be displayed.
     type: BOOLEAN
+  maximumTops:
+    displayName: Top appearances before overflow listed
+    description: The maximum number of results that are displayed as a performer's top studios/networks/partners before they overflow to a hover popover. The default value is 3.
+    type: NUMBER
   minimumAppearances:
     displayName: Minimum appearances required
     description: The minimum number of appearances a performer needs to have had with a partner/studio/network in order to show the data. The default value is 2.

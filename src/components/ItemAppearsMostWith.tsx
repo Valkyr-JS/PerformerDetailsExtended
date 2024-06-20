@@ -8,7 +8,8 @@ const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
   performer,
   ...props
 }) => {
-  const { appearsMostWithGendered, minimumAppearances } = props.pluginConfig;
+  const { appearsMostWithGendered, maximumTops, minimumAppearances } =
+    props.pluginConfig;
 
   // Create an array of performer data from all scenes
   const partners: {
@@ -81,21 +82,29 @@ const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
         " " +
         (topPartners[0].count === 1 ? "scene" : "scenes");
 
+      const maxLinks =
+        topPartners.length < maximumTops ? topPartners.length : maximumTops;
+
+      let links = [];
+      for (let i = 0; i < maxLinks; i++) {
+        links.push(
+          <a href={topPartnersData[i].scenesLink}>{topPartnersData[i].name}</a>
+        );
+        if (i !== maxLinks - 1) links.push(" / ");
+      }
+
+      if (topPartners.length > maxLinks) {
+        links.push(" and " + (topPartners.length - maxLinks) + " more");
+      }
+
+      const value = <>{...links}</>;
+
       return (
         <DetailItem
           collapsed={props.collapsed}
           id={"appears-most-with-" + id}
           title={"Appears Most With " + genderWord}
-          value={
-            <>
-              {topPartnersData.map((p, i) => (
-                <>
-                  <a href={p.scenesLink}>{p.name}</a>
-                  {i === topPartnersData.length - 1 ? null : " / "}
-                </>
-              ))}
-            </>
-          }
+          value={value}
           wide={true}
           additionalData={{
             id: "scene-count",
