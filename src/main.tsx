@@ -74,6 +74,7 @@ PluginApi.patch.after(
           userConfig?.appearsMostWithGendered,
           true
         ),
+        maximumTops: getConfigProp(userConfig?.maximumTops, 3),
         minimumAppearances: getConfigProp(userConfig?.minimumAppearances, 2),
         showWhenCollapsed: getConfigProp(
           userConfig?.showWhenCollapsed,

@@ -1,4 +1,4 @@
-import { getGenderFromEnum } from "../helpers";
+import { createOverflowText, getGenderFromEnum } from "../helpers";
 import { GENDERS } from "../common/constants";
 import DetailItem from "./DetailItem";
 const { React } = window.PluginApi;
@@ -8,7 +8,8 @@ const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
   performer,
   ...props
 }) => {
-  const { appearsMostWithGendered, minimumAppearances } = props.pluginConfig;
+  const { appearsMostWithGendered, maximumTops, minimumAppearances } =
+    props.pluginConfig;
 
   // Create an array of performer data from all scenes
   const partners: {
@@ -51,34 +52,69 @@ const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
 
   if (appearsMostWithGendered) {
     return GENDERS.map((g) => {
-      const topPartnerIndex = partners.findIndex((p) => p.data.gender === g);
+      const genderedPartners = partners.filter((p) => p.data.gender === g);
 
       // If there is no partner for the current gender or the top partner's
       // count is less than the minimum required, don't return a component.
       if (
-        topPartnerIndex === -1 ||
-        partners[topPartnerIndex].count < minimumAppearances
+        genderedPartners.length === 0 ||
+        genderedPartners[0].count < minimumAppearances
       )
         return null;
 
-      const topPartner = partners[topPartnerIndex];
+      const topPartners = genderedPartners
+        .filter((p) => p.count === genderedPartners[0].count)
+        .sort((a, b) => a.data.name.localeCompare(b.data.name, "en"));
 
-      const scenesText =
-        topPartner.count + " " + (topPartner.count === 1 ? "scene" : "scenes");
-      const scenesLink = makePerformerScenesUrl(performer, {
-        id: topPartner.data.id,
-        label: topPartner.data.name,
+      const topPartnersData = topPartners.map((p) => {
+        const scenesLink = makePerformerScenesUrl(performer, {
+          id: p.data.id,
+          label: p.data.name,
+        });
+
+        return { name: p.data.name, scenesLink };
       });
 
       const genderWord = " (" + getGenderFromEnum(g) + ")";
       const id = genderWord.toLowerCase().split(" ").join("-");
+      const scenesText =
+        topPartners[0].count +
+        " " +
+        (topPartners[0].count === 1 ? "scene" : "scenes");
+
+      const maxLinks =
+        topPartners.length < maximumTops ? topPartners.length : maximumTops;
+
+      let links = [];
+      for (let i = 0; i < maxLinks; i++) {
+        links.push(
+          <a href={topPartnersData[i].scenesLink}>{topPartnersData[i].name}</a>
+        );
+        if (i !== maxLinks - 1) links.push(" / ");
+      }
+
+      if (topPartners.length > maxLinks) {
+        const names = topPartners.map((p) => p.data.name);
+        const title = createOverflowText(names, maxLinks);
+
+        links.push(
+          <>
+            {" "}
+            <span className="top-meta-overflow hoverable" title={title}>
+              and {topPartners.length - maxLinks} more
+            </span>
+          </>
+        );
+      }
+
+      const value = <>{...links}</>;
 
       return (
         <DetailItem
           collapsed={props.collapsed}
           id={"appears-most-with-" + id}
           title={"Appears Most With " + genderWord}
-          value={<a href={scenesLink}>{topPartner.data.name}</a>}
+          value={value}
           wide={true}
           additionalData={{
             id: "scene-count",

@@ -5,6 +5,10 @@ interface PDEConfigMap {
    * performer has worked with. If false, only one item showing the Appears Most
    * With performer overall will be displayed. */
   appearsMostWithGendered?: boolean;
+  /** The maximum number of results that are displayed as a performer's top
+   * studios/networks/partners before they overflow to a hover popover. The
+   * default value is 3. */
+  maximumTops?: number;
   /** The minimum number of appearances a performer needs to have had with a
    * partner/studio/network in order to show the data. The default value is
    * 2. */
@@ -31,6 +35,7 @@ interface PDEConfigResult extends ConfigResult {
 /** Matches `PDEConfigMap` but with required properties. */
 interface PDEFinalConfigMap extends PDEConfigMap {
   appearsMostWithGendered: boolean;
+  maximumTops: number;
   minimumAppearances: number;
   showWhenCollapsed: boolean;
   topNetworkOn: boolean;

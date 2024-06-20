@@ -58,3 +58,23 @@ export const getGenderFromEnum = (gender: GenderEnum): string | null => {
 /** Round the provided number to two decimal places. */
 const roundToTwo = (number: number): number =>
   Math.round((number + Number.EPSILON) * 100) / 100;
+
+/** Creates a string list of names from an array of data which overflowa an item
+ * */
+export const createOverflowText = (arr: string[], overflowAt: number) => {
+  let overflow = "";
+  for (let i = overflowAt; i < arr.length; i++) {
+    overflow += arr[i];
+    const isOneBeforeLast = i === arr.length - 2;
+    const isAnyBeforeLast = i < arr.length - 1;
+
+    if (arr.length - overflowAt === 2) {
+      overflow += isOneBeforeLast ? " and " : "";
+    } else {
+      if (isAnyBeforeLast) overflow += ", ";
+      if (isOneBeforeLast) overflow += "and ";
+    }
+  }
+
+  return overflow;
+};
