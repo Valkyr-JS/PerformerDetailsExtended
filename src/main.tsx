@@ -70,7 +70,10 @@ PluginApi.patch.after(
       // Compile the user's config with config defaults
       const pluginConfig: PDEFinalConfigMap = {
         // For topTagsCount, set to 3 if the value is undefined or 0.
-        appearsMostWithGendered: getConfigProp(userConfig?.topTagsOn, true),
+        appearsMostWithGendered: getConfigProp(
+          userConfig?.appearsMostWithGendered,
+          true
+        ),
         minimumAppearances: getConfigProp(userConfig?.minimumAppearances, 2),
         showWhenCollapsed: getConfigProp(
           userConfig?.showWhenCollapsed,
