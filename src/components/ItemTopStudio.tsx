@@ -5,7 +5,7 @@ const ItemTopStudio: React.FC<ItemTopStudioProps> = ({
   performer,
   ...props
 }) => {
-  const { minimumAppearances, topNetworkOn } = props.pluginConfig;
+  const { maximumTops, minimumAppearances, topNetworkOn } = props.pluginConfig;
   const { scenes } = props.scenesQueryResult;
 
   if (scenes.length === 0) return null;
@@ -36,23 +36,46 @@ const ItemTopStudio: React.FC<ItemTopStudioProps> = ({
 
   // Sort count from highest to lowest number of scenes.
   const sortHighToLow = (a: IstudioCount, b: IstudioCount) => b.count - a.count;
-  studios.sort(sortHighToLow);
+  const sortedStudios = studios.sort(sortHighToLow);
 
-  const topStudio = studios[0];
+  // If there are no studios or the top studio's count is less than the minimum
+  // required, don't return a component.
+  if (sortedStudios.length === 0 || sortedStudios[0].count < minimumAppearances)
+    return null;
 
-  // If the top studio's count is less than the minimum required, don't return a
-  // component.
-  if (topStudio.count < minimumAppearances) return null;
+  const highestValue = sortedStudios[0].count;
+  const topStudios = sortedStudios
+    .filter((st) => st.count === highestValue)
+    .sort((a, b) => a.data.name.localeCompare(b.data.name, "en"));
 
-  const additionalDataValue =
-    topStudio.count + (topStudio.count === 1 ? " scene" : " scenes");
-  const linkToStudio = `/studios/${
-    topStudio.data.id
-  }/scenes?c=("type":"performers","value":("items":%5B("id":"${
-    performer.id
-  }","label":"${encodeURIComponent(
-    performer.name
-  )}")%5D,"excluded":%5B%5D),"modifier":"INCLUDES")`;
+  const topStudioData = topStudios.map((st) => {
+    const scenesLink = `/studios/${
+      st.data.id
+    }/scenes?c=("type":"performers","value":("items":%5B("id":"${
+      performer.id
+    }","label":"${encodeURIComponent(
+      performer.name
+    )}")%5D,"excluded":%5B%5D),"modifier":"INCLUDES")`;
+    return { scenesLink, name: st.data.name };
+  });
+
+  const scenesText = highestValue + (highestValue === 1 ? " scene" : " scenes");
+  const maxLinks =
+    topStudioData.length < maximumTops ? topStudioData.length : maximumTops;
+
+  let links = [];
+  for (let i = 0; i < maxLinks; i++) {
+    links.push(
+      <a href={topStudioData[i].scenesLink}>{topStudioData[i].name}</a>
+    );
+    if (i !== maxLinks - 1) links.push(" / ");
+  }
+
+  if (topStudioData.length > maxLinks) {
+    links.push(" and " + (topStudioData.length - maxLinks) + " more");
+  }
+
+  const value = <>{...links}</>;
 
   /* ------------------------------ Network data ------------------------------ */
 
@@ -81,7 +104,7 @@ const ItemTopStudio: React.FC<ItemTopStudioProps> = ({
        */
       const network = getNetworkData(sc.studio?.id);
 
-      // If network is undefined or null, skip
+      // If network is undefined or null, or exists in the top studio list, skip it
       if (!network) return;
 
       // Check if the scene network already exists in the array
@@ -100,35 +123,66 @@ const ItemTopStudio: React.FC<ItemTopStudioProps> = ({
 
     if (networks.length > 0) {
       // Sort count from highest to lowest number of scenes.
-      networks.sort(sortHighToLow);
+      const sortedNetworks = networks.sort(sortHighToLow);
 
-      const topNetwork = networks[0];
-      const additionalNetworkDataValue =
-        topNetwork.count + (topNetwork.count === 1 ? " scene" : " scenes");
-      const linkToNetwork = `/studios/${
-        topNetwork.data.id
-      }/scenes?c=("type":"performers","value":("items":%5B("id":"${
-        performer.id
-      }","label":"${encodeURIComponent(
-        performer.name
-      )}")%5D,"excluded":%5B%5D),"modifier":"INCLUDES")`;
+      // If there are no networks or the top networks's count is less than the
+      // minimum required, don't return a component.
+      if (
+        sortedNetworks.length === 0 ||
+        sortedNetworks[0].count < minimumAppearances
+      )
+        return null;
+
+      const highestNwValue = sortedNetworks[0].count;
+      const topNetworks = sortedNetworks
+        .filter((st) => st.count === highestNwValue)
+        .sort((a, b) => a.data.name.localeCompare(b.data.name, "en"));
+
+      const topNetworkData = topNetworks.map((st) => {
+        const scenesLink = `/studios/${
+          st.data.id
+        }/scenes?c=("type":"performers","value":("items":%5B("id":"${
+          performer.id
+        }","label":"${encodeURIComponent(
+          performer.name
+        )}")%5D,"excluded":%5B%5D),"modifier":"INCLUDES")`;
+        return { scenesLink, name: st.data.name };
+      });
+
+      const nwScenesText =
+        highestNwValue + (highestNwValue === 1 ? " scene" : " scenes");
+      const nwMaxLinks =
+        topNetworkData.length < maximumTops
+          ? topNetworkData.length
+          : maximumTops;
+
+      let nwLinks = [];
+      for (let i = 0; i < nwMaxLinks; i++) {
+        nwLinks.push(
+          <a href={topNetworkData[i].scenesLink}>{topNetworkData[i].name}</a>
+        );
+        if (i !== nwMaxLinks - 1) nwLinks.push(" / ");
+      }
+
+      if (topNetworkData.length > nwMaxLinks) {
+        nwLinks.push(" and " + (topNetworkData.length - nwMaxLinks) + " more");
+      }
+
+      const nwValue = <>{...nwLinks}</>;
 
       // Don't return the network unless it is different from the top studio and
       // its count is at least the minimum required.
-      if (
-        topNetwork.data.id !== topStudio.data.id &&
-        !(topNetwork.count < minimumAppearances)
-      ) {
+      if (!(highestNwValue < minimumAppearances)) {
         itemTopNetworkOn = (
           <DetailItem
             collapsed={props.collapsed}
             id="top-network"
             title="Top Network"
-            value={<a href={linkToNetwork}>{topNetwork.data.name}</a>}
+            value={nwValue}
             wide={true}
             additionalData={{
               id: "top-network-scenes",
-              value: additionalNetworkDataValue,
+              value: nwScenesText,
             }}
           />
         );
@@ -142,11 +196,11 @@ const ItemTopStudio: React.FC<ItemTopStudioProps> = ({
         collapsed={props.collapsed}
         id="top-studio"
         title="Top Studio"
-        value={<a href={linkToStudio}>{topStudio.data.name}</a>}
+        value={value}
         wide={true}
         additionalData={{
           id: "top-studio-scenes",
-          value: additionalDataValue,
+          value: scenesText,
         }}
       />
       {itemTopNetworkOn}
