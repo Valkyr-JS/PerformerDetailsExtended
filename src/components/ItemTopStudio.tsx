@@ -1,11 +1,11 @@
 import DetailItem from "./DetailItem";
 const { React } = window.PluginApi;
 
-const ItemMostFeaturedOn: React.FC<ItemMostFeaturedOnProps> = ({
+const ItemTopStudio: React.FC<ItemTopStudioProps> = ({
   performer,
   ...props
 }) => {
-  const { mostFeaturedNetworkOn } = props.pluginConfig;
+  const { topNetworkOn } = props.pluginConfig;
   const { scenes } = props.scenesQueryResult;
 
   if (scenes.length === 0) return null;
@@ -51,9 +51,9 @@ const ItemMostFeaturedOn: React.FC<ItemMostFeaturedOnProps> = ({
 
   /* ------------------------------ Network data ------------------------------ */
 
-  let itemMostFeaturedNetwork = null;
+  let itemTopNetworkOn = null;
 
-  if (mostFeaturedNetworkOn) {
+  if (topNetworkOn) {
     // Create an array of network data from all scenes
     const networks: IstudioCount[] = [];
 
@@ -110,15 +110,15 @@ const ItemMostFeaturedOn: React.FC<ItemMostFeaturedOnProps> = ({
 
       // Don't return the network unless it is different from the top studio.
       if (topNetwork.data.id !== topStudio.data.id) {
-        itemMostFeaturedNetwork = (
+        itemTopNetworkOn = (
           <DetailItem
             collapsed={props.collapsed}
-            id="most-featured-network"
-            title="Most Featured On (Network)"
+            id="top-network"
+            title="Top Network"
             value={<a href={linkToNetwork}>{topNetwork.data.name}</a>}
             wide={true}
             additionalData={{
-              id: "featured-network-scenes",
+              id: "top-network-scenes",
               value: additionalNetworkDataValue,
             }}
           />
@@ -131,23 +131,23 @@ const ItemMostFeaturedOn: React.FC<ItemMostFeaturedOnProps> = ({
     <>
       <DetailItem
         collapsed={props.collapsed}
-        id="most-featured-on"
-        title="Most Featured On"
+        id="top-studio"
+        title="Top Studio"
         value={<a href={linkToStudio}>{topStudio.data.name}</a>}
         wide={true}
         additionalData={{
-          id: "featured-studio-scenes",
+          id: "top-studio-scenes",
           value: additionalDataValue,
         }}
       />
-      {itemMostFeaturedNetwork}
+      {itemTopNetworkOn}
     </>
   );
 };
 
-export default ItemMostFeaturedOn;
+export default ItemTopStudio;
 
-interface ItemMostFeaturedOnProps {
+interface ItemTopStudioProps {
   /** The `findStudios` data object returned from the unfiltered GQL query. */
   allStudiosQueryResult: FindStudiosResultType;
   /** Identifies whether the PerformerDetailsPanel is currently collapsed. */

@@ -5,9 +5,9 @@ interface PDEConfigMap {
   topTagsCount?: number;
   /** Toggle displaying the "Top Tags" item on or off. Default is on. */
   topTagsOn?: boolean;
-  /** Toggle displaying the "Most Featured On (Network)" item on or off. Default
+  /** Toggle displaying the "Top Network" item on or off. Default
    * is on. */
-  mostFeaturedNetworkOn?: boolean;
+  topNetworkOn?: boolean;
   /** Show a "Most Worked With" metadata item for each gender that the performer
    * has worked with. If false, only one item showing the most worked with
    * performer overall will be displayed. */
@@ -28,7 +28,7 @@ interface PDEConfigResult extends ConfigResult {
 interface PDEFinalConfigMap extends PDEConfigMap {
   topTagsCount: number;
   topTagsOn: boolean;
-  mostFeaturedNetworkOn: boolean;
+  topNetworkOn: boolean;
   mostWorkedWithGendered: boolean;
   showWhenCollapsed: boolean;
 }

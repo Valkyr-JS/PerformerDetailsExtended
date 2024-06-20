@@ -1,10 +1,10 @@
 import DetailGroup from "./components/DetailGroup";
 import ItemAverageRating from "./components/ItemAverageRating";
-import ItemMostFeaturedOn from "./components/ItemMostFeaturedOn";
 import ItemMostWorkedWith from "./components/ItemMostWorkedWith";
 import ItemOCount from "./components/ItemOCount";
 import ItemScenesOrganized from "./components/ItemScenesOrganized";
 import ItemScenesTimespan from "./components/ItemScenesTimespan";
+import ItemTopStudio from "./components/ItemTopStudio";
 import ItemTopTags from "./components/ItemTopTags";
 import ItemTotalContent from "./components/ItemTotalContent";
 import ItemWatchedFor from "./components/ItemWatchedFor";
@@ -72,10 +72,7 @@ PluginApi.patch.after(
         // For topTagsCount, set to 3 if the value is undefined or 0.
         topTagsCount: userConfig?.topTagsCount || 3,
         topTagsOn: getConfigProp(userConfig?.topTagsOn, true),
-        mostFeaturedNetworkOn: getConfigProp(
-          userConfig?.mostFeaturedNetworkOn,
-          true
-        ),
+        topNetworkOn: getConfigProp(userConfig?.topNetworkOn, true),
         mostWorkedWithGendered: getConfigProp(userConfig?.topTagsOn, true),
         showWhenCollapsed: getConfigProp(
           userConfig?.showWhenCollapsed,
@@ -105,7 +102,7 @@ PluginApi.patch.after(
                 pluginConfig={pluginConfig}
                 scenesQueryResult={scenesQueryResult}
               />
-              <ItemMostFeaturedOn
+              <ItemTopStudio
                 allStudiosQueryResult={allStudiosQueryResult}
                 collapsed={collapsed}
                 performer={performer}
