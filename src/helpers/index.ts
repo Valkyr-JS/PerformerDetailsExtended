@@ -7,7 +7,7 @@ export const createDuration = (seconds: number): string => {
 
   let output = "";
 
-  const totalHours = inHours % 60;
+  const totalHours = inHours % 24;
   const totalMinutes = inMinutes % 60;
   const totalSeconds = seconds % 60;
 
