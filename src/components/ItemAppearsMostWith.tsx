@@ -44,6 +44,8 @@ const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
   // Sort count from highest to lowest
   partners.sort((a, b) => b.count - a.count);
 
+  // If the top partner's count is less than the minimum required, don't return
+  // a component.
   if (!partners || partners[0].count < minimumAppearances) return null;
 
   if (appearsMostWithGendered) {
@@ -88,7 +90,8 @@ const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
 
   const topPartner = partners[0];
 
-  // If the top partner's count is less than the minimum required, don't return a component.
+  // If the top partner's count is less than the minimum required, don't return
+  // a component.
   if (topPartner.count < minimumAppearances) return null;
 
   const scenesText =
