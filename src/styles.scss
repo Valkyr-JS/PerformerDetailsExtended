@@ -1,4 +1,8 @@
 .performer-details-extended {
+  &:empty {
+    display: none !important;
+  }
+
   /** Display item values horizontally instead of vertically. */
   .inner-wrapper {
     display: inline-flex;
