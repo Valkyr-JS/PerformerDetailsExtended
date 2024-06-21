@@ -7,14 +7,15 @@ const ItemTopStudio: React.FC<ItemTopStudioProps> = ({
   ...props
 }) => {
   const { maximumTops, minimumAppearances, topNetworkOn } = props.pluginConfig;
+  const { studios } = props.studiosQueryResult;
   const { scenes } = props.scenesQueryResult;
 
-  if (scenes.length === 0) return null;
+  if (studios.length === 0) return null;
 
   /* ------------------------------- Studio data ------------------------------ */
 
   // Create an array of studio data from all scenes
-  const studios: IstudioCount[] = [];
+  const studiosData: IstudioData[] = [];
 
   // Check each scene
   scenes.forEach((sc) => {
@@ -22,22 +23,22 @@ const ItemTopStudio: React.FC<ItemTopStudioProps> = ({
     if (!sc.studio) return;
 
     // Check if the scene studio already exists in the array
-    const studiosIndex = studios.findIndex(
+    const studiosIndex = studiosData.findIndex(
       (st) => st.data.id === sc.studio?.id
     );
 
     if (studiosIndex !== -1) {
       // Studio already appears the array. Increase its count.
-      studios[studiosIndex].count++;
+      studiosData[studiosIndex].count++;
     } else {
       // Add the studio to the array
-      studios.push({ count: 1, data: sc.studio });
+      studiosData.push({ count: 1, data: sc.studio });
     }
   });
 
   // Sort count from highest to lowest number of scenes.
-  const sortHighToLow = (a: IstudioCount, b: IstudioCount) => b.count - a.count;
-  const sortedStudios = studios.sort(sortHighToLow);
+  const sortHighToLow = (a: IstudioData, b: IstudioData) => b.count - a.count;
+  const sortedStudios = studiosData.sort(sortHighToLow);
 
   // If there are no studios or the top studio's count is less than the minimum
   // required, don't return a component.
@@ -94,13 +95,13 @@ const ItemTopStudio: React.FC<ItemTopStudioProps> = ({
 
   if (topNetworkOn) {
     // Create an array of network data from all scenes
-    const networks: IstudioCount[] = [];
+    const networksData: IstudioData[] = [];
 
     // If the scene studio has a network, use it. Otherwise treat the studio as
     // the network.
     const getNetworkData = (studioID: Studio["id"] | undefined) => {
       if (typeof studioID === "undefined") return undefined;
-      const studioData = props.allStudiosQueryResult.studios.find(
+      const studioData = props.studiosQueryResult.studios.find(
         (st) => st.id === studioID
       );
       return studioData?.parent_studio ? studioData.parent_studio : studioData;
@@ -119,22 +120,22 @@ const ItemTopStudio: React.FC<ItemTopStudioProps> = ({
       if (!network) return;
 
       // Check if the scene network already exists in the array
-      const networksIndex = networks.findIndex(
+      const networksIndex = networksData.findIndex(
         (nw) => nw.data.id === network.id
       );
 
       if (networksIndex !== -1) {
         // Network already appears the array. Increase its count.
-        networks[networksIndex].count++;
+        networksData[networksIndex].count++;
       } else {
         // Add the network to the array
-        networks.push({ count: 1, data: network });
+        networksData.push({ count: 1, data: network });
       }
     });
 
-    if (networks.length > 0) {
+    if (networksData.length > 0) {
       // Sort count from highest to lowest number of scenes.
-      const sortedNetworks = networks.sort(sortHighToLow);
+      const sortedNetworks = networksData.sort(sortHighToLow);
 
       // If there are no networks or the top networks's count is less than the
       // minimum required, don't return a component.
@@ -232,8 +233,6 @@ const ItemTopStudio: React.FC<ItemTopStudioProps> = ({
 export default ItemTopStudio;
 
 interface ItemTopStudioProps {
-  /** The `findStudios` data object returned from the unfiltered GQL query. */
-  allStudiosQueryResult: FindStudiosResultType;
   /** Identifies whether the PerformerDetailsPanel is currently collapsed. */
   collapsed: PropsPerformerDetailsPanelDetailGroup["collapsed"];
   /** The current Stash performer. */
@@ -242,9 +241,11 @@ interface ItemTopStudioProps {
   pluginConfig: PDEFinalConfigMap;
   /** The `findScenes` data object returned from the GQL query. */
   scenesQueryResult: FindScenesResultType;
+  /** The `findStudios` data object returned from the GQL query. */
+  studiosQueryResult: FindStudiosResultType;
 }
 
-interface IstudioCount {
+interface IstudioData {
   count: number;
   data: Studio;
 }
