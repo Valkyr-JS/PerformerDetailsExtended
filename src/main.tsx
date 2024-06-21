@@ -34,8 +34,18 @@ PluginApi.patch.after(
       },
     });
 
-    const qAllStudios = GQL.useFindStudiosQuery({
-      variables: { filter: { per_page: -1, sort: "id" } },
+    const qStudios = GQL.useFindStudiosQuery({
+      variables: {
+        filter: { per_page: -1, sort: "id" },
+        studio_filter: {
+          scenes_filter: {
+            performers: {
+              modifier: CriterionModifier.Includes,
+              value: [performerID],
+            },
+          },
+        },
+      },
     });
 
     const qConfig = GQL.useConfigurationQuery();
@@ -52,15 +62,15 @@ PluginApi.patch.after(
       qScenes.data.findScenes.scenes.length &&
       !!qConfig.data &&
       !!qStats.data &&
-      !!qAllStudios.data &&
+      !!qStudios.data &&
       performerID !== null;
 
     if (dataLoaded) {
-      const allStudiosQueryResult = qAllStudios.data.findStudios;
       const configurationQueryResult = qConfig.data
         .configuration as PDEConfigResult;
       const scenesQueryResult = qScenes.data.findScenes;
       const statsQueryResult = qStats.data.stats;
+      const studiosQueryResult = qStudios.data.findStudios;
 
       const { showAllDetails } = configurationQueryResult.ui;
 
@@ -108,11 +118,11 @@ PluginApi.patch.after(
                 scenesQueryResult={scenesQueryResult}
               />
               <ItemTopStudio
-                allStudiosQueryResult={allStudiosQueryResult}
                 collapsed={collapsed}
                 performer={performer}
                 pluginConfig={pluginConfig}
                 scenesQueryResult={scenesQueryResult}
+                studiosQueryResult={studiosQueryResult}
               />
               <ItemTopTags
                 collapsed={collapsed}
