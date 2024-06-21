@@ -9,6 +9,7 @@ import ItemTopTags from "./components/ItemTopTags";
 import ItemTotalContent from "./components/ItemTotalContent";
 import ItemTotalPlayDuration from "./components/ItemTotalPlayDuration";
 import "./styles.scss";
+import { default as cx } from "classnames";
 
 const { PluginApi } = window;
 const { GQL, React } = PluginApi;
@@ -79,7 +80,7 @@ PluginApi.patch.after(
 
       // Compile the user's config with config defaults
       const pluginConfig: PDEFinalConfigMap = {
-        // For topTagsCount, set to 3 if the value is undefined or 0.
+        additionalStyling: getConfigProp(userConfig?.additionalStyling, false),
         appearsMostWithGendered: getConfigProp(
           userConfig?.appearsMostWithGendered,
           true
@@ -91,6 +92,7 @@ PluginApi.patch.after(
           showAllDetails || false
         ),
         topNetworkOn: getConfigProp(userConfig?.topNetworkOn, true),
+        // For topTagsCount, set to 3 if the value is undefined or 0.
         topTagsCount: userConfig?.topTagsCount || 3,
         topTagsOn: getConfigProp(userConfig?.topTagsOn, true),
       };
@@ -100,10 +102,18 @@ PluginApi.patch.after(
       if (showDetails) {
         return [
           <>
-            <DetailGroup>{children}</DetailGroup>
+            <DetailGroup
+              className={cx({
+                "detail-group-pde-themed": pluginConfig.additionalStyling,
+              })}
+            >
+              {children}
+            </DetailGroup>
             <DetailGroup
               id="pde__entities"
-              className="performer-details-extended detail-group-tops"
+              className={cx("performer-details-extended", "detail-group-tops", {
+                "detail-group-pde-themed": pluginConfig.additionalStyling,
+              })}
             >
               <ItemAverageRating
                 collapsed={collapsed}
@@ -133,7 +143,13 @@ PluginApi.patch.after(
             </DetailGroup>
             <DetailGroup
               id="pde__numbers"
-              className="performer-details-extended detail-group-numbers"
+              className={cx(
+                "performer-details-extended",
+                "detail-group-numbers",
+                {
+                  "detail-group-pde-themed": pluginConfig.additionalStyling,
+                }
+              )}
             >
               <ItemTotalContent
                 collapsed={collapsed}
