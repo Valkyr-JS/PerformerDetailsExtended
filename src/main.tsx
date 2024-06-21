@@ -103,7 +103,7 @@ PluginApi.patch.after(
             <DetailGroup>{children}</DetailGroup>
             <DetailGroup
               id="pde__entities"
-              className="performer-details-extended"
+              className="performer-details-extended detail-group-tops"
             >
               <ItemAverageRating
                 collapsed={collapsed}
@@ -133,7 +133,7 @@ PluginApi.patch.after(
             </DetailGroup>
             <DetailGroup
               id="pde__numbers"
-              className="performer-details-extended"
+              className="performer-details-extended detail-group-numbers"
             >
               <ItemTotalContent
                 collapsed={collapsed}
