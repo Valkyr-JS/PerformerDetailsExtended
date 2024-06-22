@@ -15,7 +15,7 @@ const DetailItem = ({
 
   return (
     <div className={classes.join(" ")}>
-      <span className={"detail-item-title " + id}>
+      <span className={"detail-item-title " + id} data-value={props.dataValue}>
         {title}
         {colon}
       </span>
@@ -23,7 +23,10 @@ const DetailItem = ({
         <span className={"performer-" + id}>
           {props.value}
           {additionalData ? (
-            <span className={"additional-data performer-" + additionalData.id}>
+            <span
+              className={"additional-data performer-" + additionalData.id}
+              data-value={additionalData.dataValue}
+            >
               {additionalData.value}
             </span>
           ) : null}
@@ -53,5 +56,9 @@ export interface DetailItemProps {
     id: string;
     /** The value displayed in brackets next to the `value`. */
     value: string;
+    /** Adds a `data-value` attribute to `span.additional-data`. */
+    dataValue?: string | number;
   };
+  /** Adds a `data-value` attribute to `span.detail-item-value`. */
+  dataValue?: string | number;
 }
