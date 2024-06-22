@@ -15,6 +15,8 @@ const ItemTotalPlayDuration: React.FC<ItemTotalPlayDurationProps> = ({
     playDuration += scene.play_duration || 0;
   }
 
+  if (playDuration === 0) return null;
+
   return (
     <DetailItem
       collapsed={collapsed}
