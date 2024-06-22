@@ -62,8 +62,9 @@ const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
       )
         return null;
 
+      const highestCount = genderedPartners[0].count;
       const topPartners = genderedPartners
-        .filter((p) => p.count === genderedPartners[0].count)
+        .filter((p) => p.count === highestCount)
         .sort((a, b) => a.data.name.localeCompare(b.data.name, "en"));
 
       const topPartnersData = topPartners.map((p) => {
@@ -75,8 +76,11 @@ const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
         return { name: p.data.name, scenesLink };
       });
 
-      const genderWord = " (" + getGenderFromEnum(g) + ")";
-      const id = genderWord.toLowerCase().split(" ").join("-");
+      const genderWord = getGenderFromEnum(g);
+      const genderSuffix = genderWord ? " (" + genderWord + ")" : "";
+      const id = genderWord
+        ? "-" + genderWord.toLowerCase().split(" ").join("-")
+        : "";
       const scenesText =
         topPartners[0].count +
         " " +
@@ -112,11 +116,12 @@ const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
       return (
         <DetailItem
           collapsed={props.collapsed}
-          id={"appears-most-with-" + id}
-          title={"Appears Most With " + genderWord}
+          id={"appears-most-with" + id}
+          title={"Appears Most With " + genderSuffix}
           value={value}
           wide={true}
           additionalData={{
+            dataValue: highestCount,
             id: "scene-count",
             value: scenesText,
           }}
@@ -147,6 +152,7 @@ const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
       wide={true}
       additionalData={{
         id: "scene-count",
+        dataValue: topPartner.count,
         value: scenesText,
       }}
     />

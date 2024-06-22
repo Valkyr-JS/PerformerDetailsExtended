@@ -203,6 +203,7 @@ const ItemTopStudio: React.FC<ItemTopStudioProps> = ({
             value={nwValue}
             wide={true}
             additionalData={{
+              dataValue: highestNwValue,
               id: "top-network-scenes",
               value: nwScenesText,
             }}
@@ -221,6 +222,7 @@ const ItemTopStudio: React.FC<ItemTopStudioProps> = ({
         value={value}
         wide={true}
         additionalData={{
+          dataValue: highestValue,
           id: "top-studio-scenes",
           value: scenesText,
         }}

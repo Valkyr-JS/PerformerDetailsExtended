@@ -9,10 +9,15 @@ const ItemScenesOrganized: React.FC<ItemScenesOrganizedProps> = (props) => {
 
   const organizedScenes = scenes.filter((sc) => sc.organized).length;
 
+  const percentage = Math.round(
+    (organizedScenes / totalScenes + Number.EPSILON) * 100
+  );
+
   // Only show the additional data if it is more than 0
   const additionalData = organizedScenes
     ? {
         id: "scenes-organized-number",
+        dataValue: organizedScenes,
         value: organizedScenes + " of " + totalScenes,
       }
     : undefined;
@@ -20,11 +25,10 @@ const ItemScenesOrganized: React.FC<ItemScenesOrganizedProps> = (props) => {
   return (
     <DetailItem
       collapsed={props.collapsed}
+      dataValue={percentage}
       id="scenes-organized"
       title="Scenes Organized"
-      value={
-        Math.round((organizedScenes / totalScenes + Number.EPSILON) * 100) + "%"
-      }
+      value={percentage + "%"}
       wide={true}
       additionalData={additionalData}
     />
