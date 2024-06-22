@@ -17,6 +17,14 @@ const ItemTotalPlayDuration: React.FC<ItemTotalPlayDurationProps> = ({
 
   if (playDuration === 0) return null;
 
+  // Only show the additional data if it is more than 0
+  const additionalData = playCount
+    ? {
+        id: "total-play-count",
+        value: `${playCount} ${playCount === 1 ? "play" : "plays"}`,
+      }
+    : undefined;
+
   return (
     <DetailItem
       collapsed={collapsed}
@@ -24,10 +32,7 @@ const ItemTotalPlayDuration: React.FC<ItemTotalPlayDurationProps> = ({
       title="Total Play Duration"
       value={createDuration(playDuration)}
       wide={true}
-      additionalData={{
-        id: "total-play-count",
-        value: `${playCount} ${playCount === 1 ? "play" : "plays"}`,
-      }}
+      additionalData={additionalData}
     />
   );
 };
