@@ -1,18 +1,19 @@
-/** Purposefully target all detail groups. */
+@use "sass:math";
+$detail-item-title-color: #868791;
+$detail-additional-data-opacity: 0.65;
+$detail-group-padding-y: 1rem;
+$detail-group-padding-small-y: 0.5rem;
+
+// Purposefully target all detail groups.
 .detail-header .detail-group {
-  padding-bottom: 0.5rem;
+  padding-bottom: $detail-group-padding-small-y;
 }
 
-.detail-header {
-  .detail-group-tops,
-  .detail-group-numbers {
-    padding-top: 0.5rem;
-  }
-}
+.detail-group.performer-details-extended {
+  padding-top: $detail-group-padding-small-y;
 
-/** Add bottom padding back to last group to match native styling. */
-.detail-header .detail-group-numbers {
-  padding-bottom: 1rem;
+  // Add bottom padding back to last group to match native styling.
+  padding-bottom: $detail-group-padding-y;
 }
 
 .performer-details-extended {
@@ -20,20 +21,20 @@
     display: none !important;
   }
 
-  /** Display item values horizontally instead of vertically. */
+  // Display item values horizontally instead of vertically.
   .inner-wrapper {
     display: inline-flex;
     align-items: center;
   }
 
-  /** Horizontal spacing between separator and text. */
+  // Horizontal spacing between separator and text.
   .separator {
     margin: 0 5px;
   }
 
   .detail-item-value {
     .additional-data {
-      opacity: 0.65;
+      opacity: $detail-additional-data-opacity;
 
       &::before {
         content: " (";
@@ -50,18 +51,33 @@
 }
 
 @media (max-width: 576px) {
-  /** Purposefully target all detail groups. */
+  // Purposefully target all detail groups.
   .detail-header .detail-group {
-    padding-bottom: 0.5rem;
+    padding-bottom: $detail-group-padding-small-y;
   }
 
-  /** Add bottom padding back to last group to match native styling. */
-  .detail-header .detail-group-numbers {
-    padding-bottom: 1rem;
+  // Add bottom padding back to last group to match native styling.
+  .detail-header .performer-details-extended {
+    padding-bottom: $detail-group-padding-y;
   }
 }
 
-/* ----------------------- Optional additional styling ---------------------- */
+/* -------------------------------------------------------------------------- */
+/*                              Optional styling                              */
+/* -------------------------------------------------------------------------- */
 
 .detail-group-pde-themed {
+  // Separator lines between detail groups, with increased padding
+  ~ .detail-group-pde-themed {
+    border-top: 1px solid $detail-item-title-color;
+    padding-bottom: $detail-group-padding-y;
+    padding-top: $detail-group-padding-y;
+  }
+
+  @media (max-width: 576px) {
+    .detail-item {
+      // Allow data to be displayed in columns if space allows.
+      min-width: 50%;
+    }
+  }
 }

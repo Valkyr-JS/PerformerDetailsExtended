@@ -110,8 +110,8 @@ PluginApi.patch.after(
               {children}
             </DetailGroup>
             <DetailGroup
-              id="pde__entities"
-              className={cx("performer-details-extended", "detail-group-tops", {
+              id="performerDetailsExtended"
+              className={cx("performer-details-extended", {
                 "detail-group-pde-themed": pluginConfig.additionalStyling,
               })}
             >
@@ -134,23 +134,6 @@ PluginApi.patch.after(
                 scenesQueryResult={scenesQueryResult}
                 studiosQueryResult={studiosQueryResult}
               />
-              <ItemTopTags
-                collapsed={collapsed}
-                performer={performer}
-                pluginConfig={pluginConfig}
-                scenesQueryResult={scenesQueryResult}
-              />
-            </DetailGroup>
-            <DetailGroup
-              id="pde__numbers"
-              className={cx(
-                "performer-details-extended",
-                "detail-group-numbers",
-                {
-                  "detail-group-pde-themed": pluginConfig.additionalStyling,
-                }
-              )}
-            >
               <ItemTotalContent
                 collapsed={collapsed}
                 scenesQueryResult={scenesQueryResult}
@@ -171,6 +154,12 @@ PluginApi.patch.after(
                 collapsed={collapsed}
                 scenesQueryResult={scenesQueryResult}
                 statsQueryResult={statsQueryResult}
+              />
+              <ItemTopTags
+                collapsed={collapsed}
+                performer={performer}
+                pluginConfig={pluginConfig}
+                scenesQueryResult={scenesQueryResult}
               />
             </DetailGroup>
           </>,
