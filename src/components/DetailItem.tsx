@@ -15,11 +15,11 @@ const DetailItem = ({
 
   return (
     <div className={classes.join(" ")}>
-      <span className={"detail-item-title " + id} data-value={props.dataValue}>
+      <span className={"detail-item-title " + id}>
         {title}
         {colon}
       </span>
-      <span className={"detail-item-value " + id}>
+      <span className={"detail-item-value " + id} data-value={props.dataValue}>
         <span className={"performer-" + id}>
           {props.value}
           {additionalData ? (
