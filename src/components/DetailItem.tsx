@@ -8,14 +8,17 @@ const DetailItem = ({
   title,
   ...props
 }: DetailItemProps) => {
-  const titleText = !props.collapsed ? title + ":" : title;
+  const colon = !props.collapsed ? ":" : null;
 
   const classes = ["detail-item", id];
   if (props.wide) classes.push("detail-item-wide");
 
   return (
     <div className={classes.join(" ")}>
-      <span className={"detail-item-title " + id}>{titleText}</span>
+      <span className={"detail-item-title " + id}>
+        {title}
+        {colon}
+      </span>
       <span className={"detail-item-value " + id}>
         <span className={"performer-" + id}>
           {props.value}
