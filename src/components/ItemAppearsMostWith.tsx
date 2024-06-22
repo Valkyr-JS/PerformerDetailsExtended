@@ -122,7 +122,6 @@ const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
           wide={true}
           additionalData={{
             id: "scene-count",
-            dataValue: highestCount,
             value: scenesText,
           }}
         />
