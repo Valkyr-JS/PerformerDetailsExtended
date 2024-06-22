@@ -72,7 +72,8 @@ PluginApi.patch.after(
       const statsQueryResult = qStats.data.stats;
       const studiosQueryResult = qStudios.data.findStudios;
 
-      const { showAllDetails } = configurationQueryResult.ui;
+      const { compactExpandedDetails, showAllDetails } =
+        configurationQueryResult.ui;
 
       const userConfig =
         configurationQueryResult.plugins.PerformerDetailsExtended;
@@ -95,6 +96,9 @@ PluginApi.patch.after(
         topTagsOn: getConfigProp(userConfig?.topTagsOn, true),
       };
 
+      /** Display as collapsed if currently collapsed, or compacr details is
+       * `true` in the native config. */
+      const isCollapsed = collapsed || !!compactExpandedDetails;
       const showDetails = !collapsed || pluginConfig.showWhenCollapsed;
 
       if (showDetails) {
@@ -106,26 +110,26 @@ PluginApi.patch.after(
               className="performer-details-extended"
             >
               <ItemAverageRating
-                collapsed={collapsed}
+                collapsed={isCollapsed}
                 configurationQueryResult={configurationQueryResult}
                 performer={performer}
                 scenesQueryResult={scenesQueryResult}
               />
               <ItemAppearsMostWith
-                collapsed={collapsed}
+                collapsed={isCollapsed}
                 performer={performer}
                 pluginConfig={pluginConfig}
                 scenesQueryResult={scenesQueryResult}
               />
               <ItemTopStudio
-                collapsed={collapsed}
+                collapsed={isCollapsed}
                 performer={performer}
                 pluginConfig={pluginConfig}
                 scenesQueryResult={scenesQueryResult}
                 studiosQueryResult={studiosQueryResult}
               />
               <ItemTopTags
-                collapsed={collapsed}
+                collapsed={isCollapsed}
                 performer={performer}
                 pluginConfig={pluginConfig}
                 scenesQueryResult={scenesQueryResult}
@@ -136,23 +140,23 @@ PluginApi.patch.after(
               className="performer-details-extended"
             >
               <ItemTotalContent
-                collapsed={collapsed}
+                collapsed={isCollapsed}
                 scenesQueryResult={scenesQueryResult}
               />
               <ItemTotalPlayDuration
-                collapsed={collapsed}
+                collapsed={isCollapsed}
                 scenesQueryResult={scenesQueryResult}
               />
               <ItemScenesTimespan
-                collapsed={collapsed}
+                collapsed={isCollapsed}
                 scenesQueryResult={scenesQueryResult}
               />
               <ItemScenesOrganized
-                collapsed={collapsed}
+                collapsed={isCollapsed}
                 scenesQueryResult={scenesQueryResult}
               />
               <ItemOCount
-                collapsed={collapsed}
+                collapsed={isCollapsed}
                 scenesQueryResult={scenesQueryResult}
                 statsQueryResult={statsQueryResult}
               />
