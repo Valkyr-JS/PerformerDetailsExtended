@@ -23,12 +23,14 @@ const ItemOCount: React.FC<ItemOCountProps> = (props) => {
   return (
     <DetailItem
       collapsed={props.collapsed}
+      dataValue={oCount}
       id="o-count"
       title="O Count"
       value={oCount}
       wide={true}
       additionalData={{
         id: "o-count-of-total",
+        dataValue: percentage,
         value: additionalValue,
       }}
     />

@@ -8,19 +8,25 @@ const DetailItem = ({
   title,
   ...props
 }: DetailItemProps) => {
-  const titleText = !props.collapsed ? title + ":" : title;
+  const colon = !props.collapsed ? ":" : null;
 
   const classes = ["detail-item", id];
   if (props.wide) classes.push("detail-item-wide");
 
   return (
     <div className={classes.join(" ")}>
-      <span className={"detail-item-title " + id}>{titleText}</span>
-      <span className={"detail-item-value " + id}>
+      <span className={"detail-item-title " + id}>
+        {title}
+        {colon}
+      </span>
+      <span className={"detail-item-value " + id} data-value={props.dataValue}>
         <span className={"performer-" + id}>
           {props.value}
           {additionalData ? (
-            <span className={"additional-data performer-" + additionalData.id}>
+            <span
+              className={"additional-data performer-" + additionalData.id}
+              data-value={additionalData.dataValue}
+            >
               {additionalData.value}
             </span>
           ) : null}
@@ -50,5 +56,9 @@ export interface DetailItemProps {
     id: string;
     /** The value displayed in brackets next to the `value`. */
     value: string;
+    /** Adds a `data-value` attribute to `span.additional-data`. */
+    dataValue?: string | number;
   };
+  /** Adds a `data-value` attribute to `span.detail-item-value`. */
+  dataValue?: string | number;
 }

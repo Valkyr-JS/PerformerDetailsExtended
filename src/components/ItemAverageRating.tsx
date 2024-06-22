@@ -31,11 +31,12 @@ const ItemAverageRating: React.FC<ItemAverageRatingProps> = (props) => {
       ? averageRating100 / 10
       : averageRating100 / 20;
 
-  const additionalValue = `${sceneRatings.length} of ${scenes.length} scenes rated`;
+  const additionalValue = `${sceneRatings.length} of ${scenes.length} rated`;
 
   return (
     <DetailItem
       collapsed={props.collapsed}
+      dataValue={rating}
       id="average-rating"
       title="Average Scene Rating"
       value={rating}

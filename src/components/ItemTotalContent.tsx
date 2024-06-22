@@ -5,6 +5,9 @@ const { React } = window.PluginApi;
 const ItemTotalContent: React.FC<ItemTotalContentProps> = (props) => {
   const { duration, filesize } = props.scenesQueryResult;
 
+  // Only show the data if filesize is more than 0
+  if (filesize === 0) return null;
+
   return (
     <DetailItem
       collapsed={props.collapsed}
@@ -13,6 +16,7 @@ const ItemTotalContent: React.FC<ItemTotalContentProps> = (props) => {
       value={createDuration(duration)}
       wide={true}
       additionalData={{
+        dataValue: filesize,
         id: "total-filesize",
         value: createFilesize(filesize),
       }}
