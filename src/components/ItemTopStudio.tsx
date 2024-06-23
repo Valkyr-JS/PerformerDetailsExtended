@@ -1,4 +1,3 @@
-import { createOverflowText } from "../helpers";
 import DetailItem from "./DetailItem";
 import OverflowPopover from "./OverflowPopover";
 const { React } = window.PluginApi;
