@@ -68,10 +68,7 @@ const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
         .sort((a, b) => a.data.name.localeCompare(b.data.name, "en"));
 
       const topPartnersData = topPartners.map((p) => {
-        const scenesLink = makePerformerScenesUrl(performer, {
-          id: p.data.id,
-          label: p.data.name,
-        });
+        const scenesLink = linkToPartnerProfile(performer, p.data.id);
 
         return { name: p.data.name, scenesLink };
       });
@@ -138,10 +135,7 @@ const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
 
   const scenesText =
     topPartner.count + " " + (topPartner.count === 1 ? "scene" : "scenes");
-  const scenesLink = makePerformerScenesUrl(performer, {
-    id: topPartner.data.id,
-    label: topPartner.data.name,
-  });
+  const scenesLink = linkToPartnerProfile(performer, topPartner.data.id);
 
   return (
     <DetailItem
@@ -171,3 +165,15 @@ interface ItemAppearsMostWithProps {
   /** The `findScenes` data object returned from the GQL query. */
   scenesQueryResult: FindScenesResultType;
 }
+
+/** Create a link to a given partner's page, filtering scenes to only include
+ * both performers. */
+const linkToPartnerProfile = (
+  performer: Performer,
+  targetID: Performer["id"]
+) =>
+  `/performers/${targetID}/scenes?c=("type":"performers","value":("items":%5B("id":"${
+    performer.id
+  }","label":"${encodeURIComponent(
+    performer.name
+  )}")%5D,"excluded":%5B%5D),"modifier":"INCLUDES")`;
