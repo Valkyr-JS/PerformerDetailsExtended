@@ -6,6 +6,8 @@ $detail-group-padding-small-y: 0.5rem;
 $detail-item-padding-x: 2rem;
 $tag-margin: 5px;
 
+$charspace: 5px;
+
 // Purposefully target all detail groups.
 .detail-header .detail-group {
   padding-bottom: $detail-group-padding-small-y;
@@ -31,7 +33,7 @@ $tag-margin: 5px;
 
   // Horizontal spacing between separator and text.
   .separator {
-    margin: 0 5px;
+    margin: 0 $charspace;
   }
 
   .detail-item-value {
@@ -49,6 +51,11 @@ $tag-margin: 5px;
     .hoverable {
       border-bottom: 1px dotted white;
     }
+  }
+
+  .overflow-popover {
+    display: inline-block;
+    margin-left: $charspace;
   }
 }
 
