@@ -1,6 +1,12 @@
 /** Stash only creates config items when they are changed. By default they are
  * `undefined`. */
 interface PDEConfigMap {
+  /** By default the plugin adds the minimum amount of styling in order to blend
+   * with the native Stash interface, as well as to be compatible with theme
+   * plugins. When enabled, these additional styles improve the layout of the
+   * performer details panel as a whole, though it may be incompatible with
+   * theme plugins. */
+  additionalStyling?: boolean;
   /** Show a "Appears Most With" metadata item for each gender that the
    * performer has worked with. If false, only one item showing the Appears Most
    * With performer overall will be displayed. */
@@ -34,6 +40,7 @@ interface PDEConfigResult extends ConfigResult {
 
 /** Matches `PDEConfigMap` but with required properties. */
 interface PDEFinalConfigMap extends PDEConfigMap {
+  additionalStyling: boolean;
   appearsMostWithGendered: boolean;
   maximumTops: number;
   minimumAppearances: number;

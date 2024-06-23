@@ -9,6 +9,7 @@ import ItemTopTags from "./components/ItemTopTags";
 import ItemTotalContent from "./components/ItemTotalContent";
 import ItemTotalPlayDuration from "./components/ItemTotalPlayDuration";
 import "./styles.scss";
+import { default as cx } from "classnames";
 
 const { PluginApi } = window;
 const { GQL, React } = PluginApi;
@@ -80,7 +81,7 @@ PluginApi.patch.after(
 
       // Compile the user's config with config defaults
       const pluginConfig: PDEFinalConfigMap = {
-        // For topTagsCount, set to 3 if the value is undefined or 0.
+        additionalStyling: getConfigProp(userConfig?.additionalStyling, false),
         appearsMostWithGendered: getConfigProp(
           userConfig?.appearsMostWithGendered,
           true
@@ -92,6 +93,7 @@ PluginApi.patch.after(
           showAllDetails || false
         ),
         topNetworkOn: getConfigProp(userConfig?.topNetworkOn, true),
+        // For topTagsCount, set to 3 if the value is undefined or 0.
         topTagsCount: userConfig?.topTagsCount || 3,
         topTagsOn: getConfigProp(userConfig?.topTagsOn, true),
       };
@@ -104,10 +106,18 @@ PluginApi.patch.after(
       if (showDetails) {
         return [
           <>
-            <DetailGroup>{children}</DetailGroup>
             <DetailGroup
-              id="pde__entities"
-              className="performer-details-extended"
+              className={cx({
+                "detail-group-pde-themed": pluginConfig.additionalStyling,
+              })}
+            >
+              {children}
+            </DetailGroup>
+            <DetailGroup
+              id="performerDetailsExtended"
+              className={cx("performer-details-extended", {
+                "detail-group-pde-themed": pluginConfig.additionalStyling,
+              })}
             >
               <ItemAverageRating
                 collapsed={isCollapsed}
@@ -128,17 +138,6 @@ PluginApi.patch.after(
                 scenesQueryResult={scenesQueryResult}
                 studiosQueryResult={studiosQueryResult}
               />
-              <ItemTopTags
-                collapsed={isCollapsed}
-                performer={performer}
-                pluginConfig={pluginConfig}
-                scenesQueryResult={scenesQueryResult}
-              />
-            </DetailGroup>
-            <DetailGroup
-              id="pde__numbers"
-              className="performer-details-extended"
-            >
               <ItemTotalContent
                 collapsed={isCollapsed}
                 scenesQueryResult={scenesQueryResult}
@@ -159,6 +158,12 @@ PluginApi.patch.after(
                 collapsed={isCollapsed}
                 scenesQueryResult={scenesQueryResult}
                 statsQueryResult={statsQueryResult}
+              />
+              <ItemTopTags
+                collapsed={collapsed}
+                performer={performer}
+                pluginConfig={pluginConfig}
+                scenesQueryResult={scenesQueryResult}
               />
             </DetailGroup>
           </>,

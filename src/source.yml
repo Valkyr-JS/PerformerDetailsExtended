@@ -8,6 +8,10 @@ ui:
   css:
     - PerformerDetailsExtended.css
 settings:
+  additionalStyling:
+    displayName: Enable additional panel styling
+    description: By default the plugin adds the minimum amount of styling in order to blend with the native Stash interface, as well as to be compatible with theme plugins. When enabled, these additional styles improve the layout of the performer details panel as a whole, though it may be incompatible with theme plugins.
+    type: BOOLEAN
   appearsMostWithGendered:
     displayName: '"Appears Most With" by gender'
     description: Show an "Appears Most With" metadata item for each gender that the performer has worked with. If false, only one item showing the performer they work with most overall will be displayed.
