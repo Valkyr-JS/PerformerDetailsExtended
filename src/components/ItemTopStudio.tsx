@@ -1,5 +1,5 @@
-import { createOverflowText } from "../helpers";
 import DetailItem from "./DetailItem";
+import OverflowPopover from "./OverflowPopover";
 const { React } = window.PluginApi;
 
 const ItemTopStudio: React.FC<ItemTopStudioProps> = ({
@@ -50,16 +50,10 @@ const ItemTopStudio: React.FC<ItemTopStudioProps> = ({
     .filter((st) => st.count === highestValue)
     .sort((a, b) => a.data.name.localeCompare(b.data.name, "en"));
 
-  const topStudioData = topStudios.map((st) => {
-    const scenesLink = `/studios/${
-      st.data.id
-    }/scenes?c=("type":"performers","value":("items":%5B("id":"${
-      performer.id
-    }","label":"${encodeURIComponent(
-      performer.name
-    )}")%5D,"excluded":%5B%5D),"modifier":"INCLUDES")`;
-    return { scenesLink, name: st.data.name };
-  });
+  const topStudioData = topStudios.map((st) => ({
+    scenesLink: linkToStudioProfile(performer, st.data.id),
+    data: st.data,
+  }));
 
   const scenesText = highestValue + (highestValue === 1 ? " scene" : " scenes");
   const maxLinks =
@@ -68,22 +62,23 @@ const ItemTopStudio: React.FC<ItemTopStudioProps> = ({
   let links = [];
   for (let i = 0; i < maxLinks; i++) {
     links.push(
-      <a href={topStudioData[i].scenesLink}>{topStudioData[i].name}</a>
+      <a href={topStudioData[i].scenesLink}>{topStudioData[i].data.name}</a>
     );
     if (i !== maxLinks - 1) links.push(" / ");
   }
 
   if (topStudioData.length > maxLinks) {
-    const names = topStudioData.map((st) => st.name);
-    const title = createOverflowText(names, maxLinks);
+    const hoverContent = topStudioData.map((st) => ({
+      content: st.data.name,
+      link: linkToStudioProfile(performer, st.data.id),
+    }));
 
     links.push(
-      <>
-        {" "}
-        <span className="top-meta-overflow hoverable" title={title}>
+      <OverflowPopover items={hoverContent} overflowAt={maxLinks}>
+        <span className="top-meta-overflow hoverable">
           and {topStudioData.length - maxLinks} more
         </span>
-      </>
+      </OverflowPopover>
     );
   }
 
@@ -158,7 +153,7 @@ const ItemTopStudio: React.FC<ItemTopStudioProps> = ({
         }","label":"${encodeURIComponent(
           performer.name
         )}")%5D,"excluded":%5B%5D),"modifier":"INCLUDES")`;
-        return { scenesLink, name: st.data.name };
+        return { scenesLink, data: st.data };
       });
 
       const nwScenesText =
@@ -171,22 +166,25 @@ const ItemTopStudio: React.FC<ItemTopStudioProps> = ({
       let nwLinks = [];
       for (let i = 0; i < nwMaxLinks; i++) {
         nwLinks.push(
-          <a href={topNetworkData[i].scenesLink}>{topNetworkData[i].name}</a>
+          <a href={topNetworkData[i].scenesLink}>
+            {topNetworkData[i].data.name}
+          </a>
         );
         if (i !== nwMaxLinks - 1) nwLinks.push(" / ");
       }
 
       if (topNetworkData.length > nwMaxLinks) {
-        const names = topNetworkData.map((nw) => nw.name);
-        const title = createOverflowText(names, maxLinks);
+        const nwHoverContent = topNetworkData.map((nw) => ({
+          content: nw.data.name,
+          link: linkToStudioProfile(performer, nw.data.id),
+        }));
 
         nwLinks.push(
-          <>
-            {" "}
-            <span className="top-meta-overflow hoverable" title={title}>
-              and {topNetworkData.length - maxLinks} more
+          <OverflowPopover items={nwHoverContent} overflowAt={nwMaxLinks}>
+            <span className="top-meta-overflow hoverable">
+              and {topNetworkData.length - nwMaxLinks} more
             </span>
-          </>
+          </OverflowPopover>
         );
       }
 
@@ -251,3 +249,12 @@ interface IstudioData {
   count: number;
   data: Studio;
 }
+
+/** Create a link to a given studio's page, filtering scenes to only include
+ * this performer. */
+const linkToStudioProfile = (performer: Performer, studioID: Studio["id"]) =>
+  `/studios/${studioID}/scenes?c=("type":"performers","value":("items":%5B("id":"${
+    performer.id
+  }","label":"${encodeURIComponent(
+    performer.name
+  )}")%5D,"excluded":%5B%5D),"modifier":"INCLUDES")`;
