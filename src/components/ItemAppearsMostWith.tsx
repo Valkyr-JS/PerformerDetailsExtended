@@ -1,8 +1,8 @@
 import { createOverflowText, getGenderFromEnum } from "../helpers";
 import { GENDERS } from "../common/constants";
 import DetailItem from "./DetailItem";
+import OverflowPopover from "./OverflowPopover";
 const { React } = window.PluginApi;
-const { makePerformerScenesUrl } = window.PluginApi.utils.NavUtils;
 
 const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
   performer,
@@ -95,16 +95,20 @@ const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
       }
 
       if (topPartners.length > maxLinks) {
-        const names = topPartners.map((p) => p.data.name);
-        const title = createOverflowText(names, maxLinks);
+        const hoverContent = topPartners.map((p) => ({
+          content: p.data.name,
+          link: linkToPartnerProfile(performer, p.data.id),
+        }));
 
         links.push(
-          <>
-            {" "}
-            <span className="top-meta-overflow hoverable" title={title}>
+          <OverflowPopover
+            items={hoverContent}
+            overflowAt={topPartners.length - maxLinks}
+          >
+            <span className="top-meta-overflow hoverable">
               and {topPartners.length - maxLinks} more
             </span>
-          </>
+          </OverflowPopover>
         );
       }
 
