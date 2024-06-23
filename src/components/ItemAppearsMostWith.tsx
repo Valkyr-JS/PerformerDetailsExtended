@@ -1,4 +1,4 @@
-import { createOverflowText, getGenderFromEnum } from "../helpers";
+import { getGenderFromEnum } from "../helpers";
 import { GENDERS } from "../common/constants";
 import DetailItem from "./DetailItem";
 import OverflowPopover from "./OverflowPopover";
@@ -101,10 +101,7 @@ const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
         }));
 
         links.push(
-          <OverflowPopover
-            items={hoverContent}
-            overflowAt={topPartners.length - maxLinks}
-          >
+          <OverflowPopover items={hoverContent} overflowAt={maxLinks}>
             <span className="top-meta-overflow hoverable">
               and {topPartners.length - maxLinks} more
             </span>

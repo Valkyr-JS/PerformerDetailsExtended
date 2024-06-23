@@ -19,15 +19,17 @@ const OverflowPopover: React.FC<OverflowPopoverProps> = (props) => {
         textAlign: "left",
       }}
     >
-      {props.items.map((item) => (
-        <li>
-          {typeof item.link !== "undefined" ? (
-            <a href={item.link}>{item.content}</a>
-          ) : (
-            item.content
-          )}
-        </li>
-      ))}
+      {props.items.map((item, i) =>
+        i < props.overflowAt ? null : (
+          <li>
+            {typeof item.link !== "undefined" ? (
+              <a href={item.link}>{item.content}</a>
+            ) : (
+              item.content
+            )}
+          </li>
+        )
+      )}
     </ul>
   );
 
