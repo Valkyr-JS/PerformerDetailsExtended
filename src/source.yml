@@ -36,10 +36,6 @@ settings:
     displayName: '"Top Tags" blacklist'
     description: A comma-separated list of tag names that should be blacklisted from the "Top Tags" item. For example — blowjob, missionary, girl/boy.
     type: STRING
-  topTagsBlacklistChildren:
-    displayName: 'Include child tags in "Top Tags" blacklist'
-    description: Child tags of those in the blacklist will also be removed from the "Top Tags" blacklist.
-    type: BOOLEAN
   topTagsCount:
     displayName: Number of top tags
     description: The number of tags to show under "Top Tags". The default value is 3.
