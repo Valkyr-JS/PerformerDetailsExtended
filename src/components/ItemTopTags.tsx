@@ -76,15 +76,7 @@ const ItemTopTags: React.FC<ItemTopTagsProps> = ({
     const tagCount = tags[i].count;
     const tagData = tags[i].data;
 
-    const link = `/scenes?c=("type":"performers","value":("items":%5B("id":"${
-      performer.id
-    }","label":"${encodeURIComponent(
-      performer.name
-    )}")%5D,"excluded":%5B%5D),"modifier":"INCLUDES")&c=("type":"tags","value":("items":%5B("id":"${
-      tagData.id
-    }","label":"${encodeURIComponent(
-      tagData.name
-    )}")%5D,"excluded":%5B%5D,"depth":0),"modifier":"INCLUDES")`;
+    const link = linkToTagProfile(performer, tagData.id);
 
     value.push(
       <TagItem
@@ -123,3 +115,12 @@ interface ItemTopTagsProps {
   /** The `findScenes` data object returned from the GQL query. */
   scenesQueryResult: FindScenesResultType;
 }
+
+/** Create a link to a given tag page, filtering scenes to only include the
+ * performer. */
+const linkToTagProfile = (performer: Performer, tagID: Tag["id"]) =>
+  `/tags/${tagID}/scenes?c=("type":"performers","value":("items":%5B("id":"${
+    performer.id
+  }","label":"${encodeURIComponent(
+    performer.name
+  )}")%5D,"excluded":%5B%5D),"modifier":"INCLUDES")`;
