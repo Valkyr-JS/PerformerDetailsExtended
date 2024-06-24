@@ -1,6 +1,6 @@
 {
   "name": "performer-details-extended",
-  "version": "0.1.0",
+  "version": "0.4.0",
   "description": "Displays metadata about frequent scene partners, most prominent tags, etc. in your library, on performer pages.",
   "scripts": {
     "build": "webpack --config webpack.prod.js",
