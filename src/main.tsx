@@ -94,6 +94,10 @@ PluginApi.patch.after(
         ),
         topNetworkOn: getConfigProp(userConfig?.topNetworkOn, true),
         topTagsBlacklist: getConfigProp(userConfig?.topTagsBlacklist, ""),
+        topTagsBlacklistChildren: getConfigProp(
+          userConfig?.topTagsBlacklistChildren,
+          false
+        ),
         // For topTagsCount, set to 3 if the value is undefined or 0.
         topTagsCount: userConfig?.topTagsCount || 3,
         topTagsOn: getConfigProp(userConfig?.topTagsOn, true),
