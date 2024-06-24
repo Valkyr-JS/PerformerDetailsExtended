@@ -35,6 +35,12 @@ PluginApi.patch.after(
       },
     });
 
+    const qAllTags = GQL.useFindTagsQuery({
+      variables: {
+        filter: { per_page: -1, sort: "id" },
+      },
+    });
+
     const qStudios = GQL.useFindStudiosQuery({
       variables: {
         filter: { per_page: -1, sort: "id" },
@@ -61,6 +67,7 @@ PluginApi.patch.after(
     const dataLoaded =
       !!qScenes.data &&
       qScenes.data.findScenes.scenes.length &&
+      !!qAllTags.data &&
       !!qConfig.data &&
       !!qStats.data &&
       !!qStudios.data &&
@@ -70,6 +77,7 @@ PluginApi.patch.after(
       const configurationQueryResult = qConfig.data
         .configuration as PDEConfigResult;
       const scenesQueryResult = qScenes.data.findScenes;
+      const allTagsQueryResult = qAllTags.data.findTags;
       const statsQueryResult = qStats.data.stats;
       const studiosQueryResult = qStudios.data.findStudios;
 
@@ -94,6 +102,10 @@ PluginApi.patch.after(
         ),
         topNetworkOn: getConfigProp(userConfig?.topNetworkOn, true),
         topTagsBlacklist: getConfigProp(userConfig?.topTagsBlacklist, ""),
+        topTagsBlacklistChildren: getConfigProp(
+          userConfig?.topTagsBlacklistChildren,
+          false
+        ),
         // For topTagsCount, set to 3 if the value is undefined or 0.
         topTagsCount: userConfig?.topTagsCount || 3,
         topTagsOn: getConfigProp(userConfig?.topTagsOn, true),
@@ -165,6 +177,7 @@ PluginApi.patch.after(
                 performer={performer}
                 pluginConfig={pluginConfig}
                 scenesQueryResult={scenesQueryResult}
+                allTagsQueryResult={allTagsQueryResult}
               />
             </DetailGroup>
           </>,

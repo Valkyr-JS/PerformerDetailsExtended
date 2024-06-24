@@ -18,6 +18,9 @@ interface IPluginApi {
     useFindStudiosQuery(args: { variables: QueryFindStudiosArgs }): {
       data: { findStudios: Query["findStudios"] };
     };
+    useFindTagsQuery(args: { variables: QueryFindTagsArgs }): {
+      data: { findTags: Query["findTags"] };
+    };
     useStatsQuery(): { data: { stats: StatsResultType } };
   };
   Event: {

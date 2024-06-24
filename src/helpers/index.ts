@@ -78,3 +78,41 @@ export const createOverflowText = (arr: string[], overflowAt: number) => {
 
   return overflow;
 };
+
+/** Returns a boolean identifying whether a given tag is a descendant of another
+ * tag. */
+export const tagIsDescendantOf = (
+  allTagData: FindTagsResultType,
+  tagName?: string,
+  ancestorName?: string
+): boolean => {
+  /**
+   * ! Ideally this needs refactoring if/when more tag data becomes available in
+   * the `findScenes` query. That query doesn't return full tag data, so only
+   * basic parent data is returned. In order for this to work, the full data for
+   * the specific tag needs to be taken from a `findTags` query. This works for
+   * now but could be quite slow and intensive.
+   */
+
+  const tag = allTagData.tags.find((tg) => tg.name === tagName);
+  const ancestor = allTagData.tags.find((tg) => tg.name === ancestorName);
+
+  // Only run check if data for both tags is available
+  if (tag && ancestor) {
+    // If the tag has no parents, it's not a descendant
+    if (tag.parent_count === 0) return false;
+
+    // Loop through each parent tag
+    for (const parent of tag.parents) {
+      if (parent.id === ancestor.id) return true;
+      else
+        return tagIsDescendantOf(
+          allTagData,
+          allTagData.tags.find((tg) => tg.name === parent.name)?.name,
+          allTagData.tags.find((tg) => tg.name === ancestor.name)?.name
+        );
+    }
+  }
+
+  return false;
+};

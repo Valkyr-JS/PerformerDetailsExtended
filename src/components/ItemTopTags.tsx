@@ -1,9 +1,19 @@
+import { tagIsDescendantOf } from "../helpers";
 import DetailItem from "./DetailItem";
 import TagItem from "./TagItem";
 const { React } = window.PluginApi;
 
-const ItemTopTags: React.FC<ItemTopTagsProps> = ({ performer, ...props }) => {
-  const { topTagsBlacklist, topTagsCount, topTagsOn } = props.pluginConfig;
+const ItemTopTags: React.FC<ItemTopTagsProps> = ({
+  allTagsQueryResult,
+  performer,
+  ...props
+}) => {
+  const {
+    topTagsBlacklist,
+    topTagsBlacklistChildren,
+    topTagsCount,
+    topTagsOn,
+  } = props.pluginConfig;
 
   // Do not render the item if the user has turned it off in the config.
   if (!topTagsOn) return null;
@@ -23,6 +33,18 @@ const ItemTopTags: React.FC<ItemTopTagsProps> = ({ performer, ...props }) => {
     sc.tags.forEach((tag) => {
       // Check if the tag is in the blacklist. If so, skip it.
       if (blacklist.findIndex((t) => t === tag.name.trim()) !== -1) return;
+
+      // If blacklisting child tags is active, check if this tag is a descendant
+      // of a blacklisted tag.
+      if (topTagsBlacklistChildren) {
+        for (const blTag of blacklist) {
+          if (allTagsQueryResult.tags.find((tg) => tg.name === blTag)) {
+            if (tagIsDescendantOf(allTagsQueryResult, tag.name, blTag)) {
+              return;
+            }
+          }
+        }
+      }
 
       // Check if the tag already exists in the array
       const tagIndex = tags.findIndex((t) => t.data.id === tag.id);
@@ -90,6 +112,8 @@ const ItemTopTags: React.FC<ItemTopTagsProps> = ({ performer, ...props }) => {
 export default ItemTopTags;
 
 interface ItemTopTagsProps {
+  /** The `findTags` data object returned from the unfiltered GQL query. */
+  allTagsQueryResult: FindTagsResultType;
   /** Identifies whether the PerformerDetailsPanel is currently collapsed. */
   collapsed: PropsPerformerDetailsPanelDetailGroup["collapsed"];
   /** The current Stash performer. */
