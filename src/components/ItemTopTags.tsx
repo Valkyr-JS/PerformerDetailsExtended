@@ -9,6 +9,9 @@ const ItemTopTags: React.FC<ItemTopTagsProps> = ({ performer, ...props }) => {
   // Do not render the item if the user has turned it off in the config.
   if (!topTagsOn) return null;
 
+  // Create blacklist array
+  const blacklist = topTagsBlacklist.split(",").map((tag) => tag.trim());
+
   // Create an array of tag data from all scenes
   const tags: {
     count: number;
@@ -19,6 +22,9 @@ const ItemTopTags: React.FC<ItemTopTagsProps> = ({ performer, ...props }) => {
   props.scenesQueryResult.scenes.forEach((sc) => {
     // Check each tag in the scene
     sc.tags.forEach((tag) => {
+      // Check if the tag is in the blacklist. If so, skip it.
+      if (blacklist.findIndex((t) => t === tag.name.trim()) !== -1) return;
+
       // Check if the tag already exists in the array
       const tagIndex = tags.findIndex((t) => t.data.id === tag.id);
 
