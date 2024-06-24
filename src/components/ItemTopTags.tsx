@@ -3,7 +3,8 @@ import TagItem from "./TagItem";
 const { React } = window.PluginApi;
 
 const ItemTopTags: React.FC<ItemTopTagsProps> = ({ performer, ...props }) => {
-  const { topTagsCount, topTagsOn } = props.pluginConfig;
+  const { topTagsBlacklist, topTagsCount, topTagsOn } = props.pluginConfig;
+  console.log("topTagsBlacklist: ", topTagsBlacklist);
 
   // Do not render the item if the user has turned it off in the config.
   if (!topTagsOn) return null;

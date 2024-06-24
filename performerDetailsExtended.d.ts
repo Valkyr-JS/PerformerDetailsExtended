@@ -27,6 +27,9 @@ interface PDEConfigMap {
   /** Toggle displaying the "Top Network" item on or off. Default
    * is on. */
   topNetworkOn?: boolean;
+  /** A comma-separated list of tag names that should be blacklisted from the
+   * "Top Tags" item. For example — blowjob, missionary, girl/boy. */
+  topTagsBlacklist?: string;
   /** The number of tags to show under "Top Tags". Default is 3. */
   topTagsCount?: number;
   /** Toggle displaying the "Top Tags" item on or off. Default is on. */
@@ -46,6 +49,7 @@ interface PDEFinalConfigMap extends PDEConfigMap {
   minimumAppearances: number;
   showWhenCollapsed: boolean;
   topNetworkOn: boolean;
+  topTagsBlacklist: string;
   topTagsCount: number;
   topTagsOn: boolean;
 }

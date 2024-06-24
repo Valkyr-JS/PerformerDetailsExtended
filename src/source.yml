@@ -32,6 +32,10 @@ settings:
     displayName: Show "Top Network" item
     description: Toggle displaying the "Top Network" item on or off. Default is on.
     type: BOOLEAN
+  topTagsBlacklist:
+    displayName: '"Top Tags" blacklist'
+    description: A comma-separated list of tag names that should be blacklisted from the "Top Tags" item. For example — blowjob, missionary, girl/boy.
+    type: STRING
   topTagsCount:
     displayName: Number of top tags
     description: The number of tags to show under "Top Tags". The default value is 3.

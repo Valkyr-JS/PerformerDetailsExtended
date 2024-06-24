@@ -8,8 +8,8 @@ import ItemTopStudio from "./components/ItemTopStudio";
 import ItemTopTags from "./components/ItemTopTags";
 import ItemTotalContent from "./components/ItemTotalContent";
 import ItemTotalPlayDuration from "./components/ItemTotalPlayDuration";
-import "./styles.scss";
 import { default as cx } from "classnames";
+import "./styles.scss";
 
 const { PluginApi } = window;
 const { GQL, React } = PluginApi;
@@ -93,6 +93,7 @@ PluginApi.patch.after(
           showAllDetails || false
         ),
         topNetworkOn: getConfigProp(userConfig?.topNetworkOn, true),
+        topTagsBlacklist: getConfigProp(userConfig?.topTagsBlacklist, ""),
         // For topTagsCount, set to 3 if the value is undefined or 0.
         topTagsCount: userConfig?.topTagsCount || 3,
         topTagsOn: getConfigProp(userConfig?.topTagsOn, true),
