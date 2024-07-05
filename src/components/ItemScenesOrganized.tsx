@@ -17,18 +17,18 @@ const ItemScenesOrganized: React.FC<ItemScenesOrganizedProps> = (props) => {
   const additionalData = organizedScenes
     ? {
         id: "scenes-organized-number",
-        dataValue: organizedScenes,
-        value: organizedScenes + " of " + totalScenes,
+        dataValue: percentage,
+        value: percentage + "%" + " of " + totalScenes,
       }
     : undefined;
 
   return (
     <DetailItem
       collapsed={props.collapsed}
-      dataValue={percentage}
+      dataValue={organizedScenes}
       id="scenes-organized"
       title="Scenes Organized"
-      value={percentage + "%"}
+      value={organizedScenes}
       wide={true}
       additionalData={additionalData}
     />
