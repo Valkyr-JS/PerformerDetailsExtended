@@ -16,7 +16,7 @@ const ItemScenesTimespan: React.FC<ItemScenesTimespanProps> = ({
 
   // Filter out scenes with no date
   const { scenes } = scenesQueryResult;
-  const datedScenes = scenes.filter((sc) => typeof sc.date !== "undefined");
+  const datedScenes = scenes.filter(({ date }) => !!date);
 
   // Require a minimum of two scenes to render this item.
   if (datedScenes.length < 2) return null;
