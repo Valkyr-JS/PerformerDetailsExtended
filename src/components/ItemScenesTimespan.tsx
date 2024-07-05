@@ -2,10 +2,8 @@ import DetailItem from "./DetailItem";
 const { PluginApi } = window;
 const { React } = PluginApi;
 
-const ItemScenesTimespan: React.FC<ItemScenesTimespanProps> = ({
-  collapsed,
-  scenesQueryResult,
-}) => {
+const ItemScenesTimespan: React.FC<ItemScenesTimespanProps> = (props) => {
+  const { scenesTimespanReverse } = props.pluginConfig;
   // Wait for PluginApi components to load before rendering.
   const componentsLoading = PluginApi.hooks.useLoadComponents([
     PluginApi.loadableComponents.SceneCard,
@@ -15,7 +13,7 @@ const ItemScenesTimespan: React.FC<ItemScenesTimespanProps> = ({
   const { HoverPopover, SceneCard } = PluginApi.components;
 
   // Filter out scenes with no date
-  const { scenes } = scenesQueryResult;
+  const { scenes } = props.scenesQueryResult;
   const datedScenes = scenes.filter(({ date }) => !!date);
 
   // Require a minimum of two scenes to render this item.
@@ -24,30 +22,33 @@ const ItemScenesTimespan: React.FC<ItemScenesTimespanProps> = ({
   const earliestScene = datedScenes[0];
   const latestScene = datedScenes[datedScenes.length - 1];
 
+  const firstScene = scenesTimespanReverse ? latestScene : earliestScene;
+  const secondScene = scenesTimespanReverse ? earliestScene : latestScene;
+
   return (
     <DetailItem
-      collapsed={collapsed}
+      collapsed={props.collapsed}
       id="scenes-timespan"
       title="Scenes Timespan"
       value={
         <div className="inner-wrapper">
           <HoverPopover
             placement="bottom"
-            content={<SceneCard scene={earliestScene} compact={true} />}
+            content={<SceneCard scene={firstScene} compact={true} />}
             leaveDelay={100}
           >
             <span className="hoverable">
-              {earliestScene.date?.split("-").join("/")}
+              {firstScene.date?.split("-").join("/")}
             </span>
           </HoverPopover>
           <span className="separator">–</span>
           <HoverPopover
             placement="bottom"
-            content={<SceneCard scene={latestScene} compact={true} />}
+            content={<SceneCard scene={secondScene} compact={true} />}
             leaveDelay={100}
           >
             <span className="hoverable">
-              {latestScene.date?.split("-").join("/")}
+              {secondScene.date?.split("-").join("/")}
             </span>
           </HoverPopover>
         </div>
@@ -62,6 +63,8 @@ export default ItemScenesTimespan;
 interface ItemScenesTimespanProps {
   /** Identifies whether the PerformerDetailsPanel is currently collapsed. */
   collapsed: PropsPerformerDetailsPanelDetailGroup["collapsed"];
+  /** The plugin config data. */
+  pluginConfig: PDEFinalConfigMap;
   /** The `findScenes` data object returned from the GQL query. */
   scenesQueryResult: FindScenesResultType;
 }

@@ -96,6 +96,10 @@ PluginApi.patch.after(
         ),
         maximumTops: getConfigProp(userConfig?.maximumTops, 3),
         minimumAppearances: getConfigProp(userConfig?.minimumAppearances, 2),
+        scenesTimespanReverse: getConfigProp(
+          userConfig?.scenesTimespanReverse,
+          false
+        ),
         showWhenCollapsed: getConfigProp(
           userConfig?.showWhenCollapsed,
           showAllDetails || false
@@ -161,6 +165,7 @@ PluginApi.patch.after(
               />
               <ItemScenesTimespan
                 collapsed={isCollapsed}
+                pluginConfig={pluginConfig}
                 scenesQueryResult={scenesQueryResult}
               />
               <ItemScenesOrganized
@@ -173,11 +178,11 @@ PluginApi.patch.after(
                 statsQueryResult={statsQueryResult}
               />
               <ItemTopTags
+                allTagsQueryResult={allTagsQueryResult}
                 collapsed={collapsed}
                 performer={performer}
                 pluginConfig={pluginConfig}
                 scenesQueryResult={scenesQueryResult}
-                allTagsQueryResult={allTagsQueryResult}
               />
             </DetailGroup>
           </>,

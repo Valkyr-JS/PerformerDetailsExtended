@@ -24,6 +24,10 @@ settings:
     displayName: Minimum number of appearances
     description: The minimum number of appearances a performer needs to have had with a partner/studio/network in order to show the data. The default value is 2.
     type: NUMBER
+  scenesTimespanReverse:
+    displayName: Reverse Scenes Timespan
+    description: When enabled, the Scenes Timespan will display as "newest scene - oldest scene", instead of the default "oldest scene - newest scene".
+    type: BOOLEAN
   showWhenCollapsed:
     displayName: Show when collapsed
     description: When enabled, the plugin data will always be displayed, irrelevant of whether the performer details panel is collapsed or not. If disabled, it will follow the same settings as Interface > Detail Page > Show all details.
