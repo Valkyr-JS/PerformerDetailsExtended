@@ -19,6 +19,9 @@ interface PDEConfigMap {
    * partner/studio/network in order to show the data. The default value is
    * 2. */
   minimumAppearances?: number;
+  /** When enabled, Scene Timespan will display as "newest scene - oldest
+   * scene", instead of the default "oldest scene - newest scene". */
+  scenesTimespanReverse?: boolean;
   /** When enabled, the plugin data will always be displayed, irrelevant of
    * whether the performer details panel is collapsed or not. If disabled, it
    * will follow the same settings as Interface > Detail Page > Show all
@@ -50,6 +53,7 @@ interface PDEFinalConfigMap extends PDEConfigMap {
   appearsMostWithGendered: boolean;
   maximumTops: number;
   minimumAppearances: number;
+  scenesTimespanReverse: boolean;
   showWhenCollapsed: boolean;
   topNetworkOn: boolean;
   topTagsBlacklist: string;
