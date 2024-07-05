@@ -125,6 +125,7 @@ $charspace: 5px;
       width: auto;
 
       // Wide items
+      &.details,
       &.piercings,
       &.stash_ids,
       &.tags,
