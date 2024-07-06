@@ -7,6 +7,12 @@ interface PDEConfigMap {
    * performer details panel as a whole, though it may be incompatible with
    * theme plugins. */
   additionalStyling?: boolean;
+  /** A comma-separated list of tag names that should be blacklisted from the
+   * "Appears Most With" item. For example — compilations, pmv, remastered. */
+  appearsMostWithTagsBlacklist?: string;
+  /** When enabled, child tags of those in the blacklist will also be removed
+   * from the "Appears Most With" blacklist. */
+  appearsMostWithTagsBlacklistChildren?: boolean;
   /** Show a "Appears Most With" metadata item for each gender that the
    * performer has worked with. If false, only one item showing the Appears Most
    * With performer overall will be displayed. */
@@ -33,8 +39,8 @@ interface PDEConfigMap {
   /** A comma-separated list of tag names that should be blacklisted from the
    * "Top Tags" item. For example — blowjob, missionary, girl/boy. */
   topTagsBlacklist?: string;
-  /** Child tags of those in the blacklist will also be removed from the "Top
-   * Tags" blacklist. */
+  /** When enabled, child tags of those in the blacklist will also be removed
+   * from the "Top Tags" blacklist. */
   topTagsBlacklistChildren?: boolean;
   /** The number of tags to show under "Top Tags". Default is 3. */
   topTagsCount?: number;
@@ -50,6 +56,8 @@ interface PDEConfigResult extends ConfigResult {
 /** Matches `PDEConfigMap` but with required properties. */
 interface PDEFinalConfigMap extends PDEConfigMap {
   additionalStyling: boolean;
+  appearsMostWithTagsBlacklist: string;
+  appearsMostWithTagsBlacklistChildren: boolean;
   appearsMostWithGendered: boolean;
   maximumTops: number;
   minimumAppearances: number;

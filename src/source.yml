@@ -12,6 +12,14 @@ settings:
     displayName: Enable recommended styling
     description: By default the plugin adds the minimum amount of styling in order to blend with the native Stash interface, as well as to be compatible with theme plugins. When enabled, these additional styles improve the layout of the performer details panel as a whole, though it may be incompatible with theme plugins.
     type: BOOLEAN
+  appearsMostWithTagsBlacklist:
+    displayName: '"Appears Most With" tags blacklist'
+    description: A comma-separated list of tag names that should be blacklisted from the "Appears Most With" item. For example — compilations, pmv, remastered.
+    type: STRING
+  appearsMostWithTagsBlacklistChildren:
+    displayName: 'Include child tags in "Appears Most With" tags blacklist'
+    description: When enabled, child tags of those in the blacklist will also be removed from the "Appears Most With" blacklist.
+    type: BOOLEAN
   appearsMostWithGendered:
     displayName: Split "Appears Most With" by gender
     description: Show an "Appears Most With" metadata item for each gender that the performer has worked with. If false, only one item showing the performer they work with most overall will be displayed.
@@ -42,7 +50,7 @@ settings:
     type: STRING
   topTagsBlacklistChildren:
     displayName: 'Include child tags in "Top Tags" blacklist'
-    description: Child tags of those in the blacklist will also be removed from the "Top Tags" blacklist.
+    description: When enabled, child tags of those in the blacklist will also be removed from the "Top Tags" blacklist.
     type: BOOLEAN
   topTagsCount:
     displayName: Number of top tags

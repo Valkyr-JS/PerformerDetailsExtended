@@ -90,6 +90,14 @@ PluginApi.patch.after(
       // Compile the user's config with config defaults
       const pluginConfig: PDEFinalConfigMap = {
         additionalStyling: getConfigProp(userConfig?.additionalStyling, false),
+        appearsMostWithTagsBlacklist: getConfigProp(
+          userConfig?.appearsMostWithTagsBlacklist,
+          ""
+        ),
+        appearsMostWithTagsBlacklistChildren: getConfigProp(
+          userConfig?.appearsMostWithTagsBlacklistChildren,
+          false
+        ),
         appearsMostWithGendered: getConfigProp(
           userConfig?.appearsMostWithGendered,
           true
@@ -143,6 +151,7 @@ PluginApi.patch.after(
                 scenesQueryResult={scenesQueryResult}
               />
               <ItemAppearsMostWith
+                allTagsQueryResult={allTagsQueryResult}
                 collapsed={isCollapsed}
                 performer={performer}
                 pluginConfig={pluginConfig}
