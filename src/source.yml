@@ -1,6 +1,6 @@
 name: Performer Details Extended
 description: Displays metadata about frequent scene partners, most prominent tags, etc. in your library, on performer pages.
-url: https://github.com/Valkyr-JS/performer-details-extended
+url: https://github.com/Valkyr-JS/PerformerDetailsExtended
 version: 0.4.0
 ui:
   javascript:
