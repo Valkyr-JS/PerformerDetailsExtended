@@ -46,6 +46,11 @@ interface PDEConfigMap {
   topTagsCount?: number;
   /** Toggle displaying the "Top Tags" item on or off. Default is on. */
   topTagsOn?: boolean;
+  /** When enabled, the "Total Play Count" item will be displayed. Also, the
+   * "Total Play Duration" item will show the performer's playtime as a
+   * percentage total library playtime, instead of total performer play count.
+   * Default is off. */
+  totalPlayCountOn?: boolean;
 }
 
 interface PDEConfigResult extends ConfigResult {
@@ -68,6 +73,7 @@ interface PDEFinalConfigMap extends PDEConfigMap {
   topTagsBlacklistChildren: boolean;
   topTagsCount: number;
   topTagsOn: boolean;
+  totalPlayCountOn: boolean;
 }
 
 interface PluginsConfig {
