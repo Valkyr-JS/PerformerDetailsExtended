@@ -60,3 +60,7 @@ settings:
     displayName: Show "Top Tags" item
     description: When enabled, the "Top Tags" item will be displayed. Default is on.
     type: BOOLEAN
+  totalPlayCountOn:
+    displayName: Show "Total Play Count" item
+    description: When enabled, the "Total Play Count" item will be displayed. Also, the "Total Play Duration" item will show the performer's playtime as a percentage total library playtime, instead of total performer play count. Default is off.
+    type: BOOLEAN

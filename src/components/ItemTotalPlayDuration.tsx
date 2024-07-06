@@ -6,7 +6,10 @@ const { React } = window.PluginApi;
 const ItemTotalPlayDuration: React.FC<ItemTotalPlayDurationProps> = ({
   collapsed,
   scenesQueryResult,
+  ...props
 }) => {
+  const { totalPlayCountOn } = props.pluginConfig;
+  const { total_play_duration } = props.statsQueryResult;
   let playCount = 0;
   let playDuration = 0;
 
@@ -17,8 +20,17 @@ const ItemTotalPlayDuration: React.FC<ItemTotalPlayDurationProps> = ({
 
   if (playDuration === 0) return null;
 
-  // Only show the additional data if it is more than 0
-  const additionalData = playCount
+  // Create additional duration data for use if Total Play Count is switched on.
+  const percentage =
+    Math.round((playDuration / total_play_duration + Number.EPSILON) * 10000) /
+    100;
+  const additionalDurationData = {
+    id: "duration-percentage",
+    value: `${percentage}% of ${createDuration(total_play_duration)}`,
+  };
+
+  // Only show the additional duration data if it is more than 0
+  const additionalCountData = playCount
     ? {
         dataValue: playCount,
         id: "total-play-count",
@@ -26,6 +38,11 @@ const ItemTotalPlayDuration: React.FC<ItemTotalPlayDurationProps> = ({
       }
     : undefined;
 
+  // If the Total Play Count item is displayed, show the additional duration
+  // data here. Otherwise display limited count data.
+  const additionalData = totalPlayCountOn
+    ? additionalDurationData
+    : additionalCountData;
   return (
     <DetailItem
       collapsed={collapsed}
@@ -44,6 +61,10 @@ export default ItemTotalPlayDuration;
 interface ItemTotalPlayDurationProps {
   /** Identifies whether the PerformerDetailsPanel is currently collapsed. */
   collapsed: PropsPerformerDetailsPanelDetailGroup["collapsed"];
+  /** The plugin config data. */
+  pluginConfig: PDEFinalConfigMap;
   /** The `findScenes` data object returned from the GQL query. */
   scenesQueryResult: FindScenesResultType;
+  /** The `stats` data object returned from the GQL query. */
+  statsQueryResult: StatsResultType;
 }

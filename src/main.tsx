@@ -121,6 +121,7 @@ PluginApi.patch.after(
         // For topTagsCount, set to 3 if the value is undefined or 0.
         topTagsCount: userConfig?.topTagsCount || 3,
         topTagsOn: getConfigProp(userConfig?.topTagsOn, true),
+        totalPlayCountOn: getConfigProp(userConfig?.totalPlayCountOn, false),
       };
 
       /** Display as collapsed if currently collapsed, or compacr details is
@@ -170,7 +171,9 @@ PluginApi.patch.after(
               />
               <ItemTotalPlayDuration
                 collapsed={isCollapsed}
+                pluginConfig={pluginConfig}
                 scenesQueryResult={scenesQueryResult}
+                statsQueryResult={statsQueryResult}
               />
               <ItemScenesTimespan
                 collapsed={isCollapsed}
@@ -206,5 +209,5 @@ PluginApi.patch.after(
 /** Returns the given property from the user's config, or the default value if
  * the user hasn't explicitly set it. */
 function getConfigProp<T>(value: T | undefined, defaultValue: T) {
-  return typeof value !== "undefined" ? value : defaultValue;
+  return value ?? defaultValue;
 }
