@@ -1,15 +1,26 @@
-import { getGenderFromEnum } from "../helpers";
+import { getGenderFromEnum, tagIsDescendantOf } from "../helpers";
 import { GENDERS } from "../common/constants";
 import DetailItem from "./DetailItem";
 import OverflowPopover from "./OverflowPopover";
 const { React } = window.PluginApi;
 
 const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
+  allTagsQueryResult,
   performer,
   ...props
 }) => {
-  const { appearsMostWithGendered, maximumTops, minimumAppearances } =
-    props.pluginConfig;
+  const {
+    appearsMostWithTagsBlacklist,
+    appearsMostWithTagsBlacklistChildren,
+    appearsMostWithGendered,
+    maximumTops,
+    minimumAppearances,
+  } = props.pluginConfig;
+
+  // Create blacklist array
+  const blacklist = appearsMostWithTagsBlacklist
+    .split(",")
+    .map((tag) => tag.trim());
 
   // Create an array of performer data from all scenes
   const partners: {
@@ -17,8 +28,39 @@ const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
     data: Performer;
   }[] = [];
 
-  // Check each scene
-  props.scenesQueryResult.scenes.forEach((sc) => {
+  // Filter out scenes with only one performer
+  const partneredScenes = props.scenesQueryResult.scenes.filter(
+    (sc) => sc.performers.length > 1
+  );
+
+  // Filter scenes to those that don't include blacklisted tags
+  const filteredScenes = !appearsMostWithTagsBlacklist
+    ? partneredScenes
+    : partneredScenes.filter(({ tags }) => {
+        const noBlacklistedTags = !tags
+          .map((tag) => {
+            // Check if the tag is in the blacklist. If so, skip it.
+            if (blacklist.findIndex((t) => t === tag.name.trim()) !== -1)
+              return false;
+
+            // If blacklisting child tags is active, check if this tag is a
+            // descendant of a blacklisted tag.
+            if (appearsMostWithTagsBlacklistChildren) {
+              for (const blTag of blacklist) {
+                if (allTagsQueryResult.tags.find((tg) => tg.name === blTag)) {
+                  if (tagIsDescendantOf(allTagsQueryResult, tag.name, blTag)) {
+                    return false;
+                  }
+                }
+              }
+            }
+            return true;
+          })
+          .includes(false);
+        return noBlacklistedTags;
+      });
+
+  filteredScenes.forEach((sc) => {
     // Check each performer in the scene
     sc.performers.forEach((pf) => {
       // Check this is not the featured performer
@@ -157,6 +199,8 @@ const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
 export default ItemAppearsMostWith;
 
 interface ItemAppearsMostWithProps {
+  /** The `findTags` data object returned from the unfiltered GQL query. */
+  allTagsQueryResult: FindTagsResultType;
   /** Identifies whether the PerformerDetailsPanel is currently collapsed. */
   collapsed: PropsPerformerDetailsPanelDetailGroup["collapsed"];
   /** The current Stash performer. */
