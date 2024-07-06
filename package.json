@@ -1,5 +1,5 @@
 {
-  "name": "performer-details-extended",
+  "name": "performerdetailsextended",
   "version": "0.4.0",
   "description": "Displays metadata about frequent scene partners, most prominent tags, etc. in your library, on performer pages.",
   "scripts": {
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Valkyr-JS/performer-details-extended.git"
+    "url": "git+https://github.com/Valkyr-JS/PerformerDetailsExtended.git"
   },
   "author": "Valkyr-JS",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/Valkyr-JS/performer-details-extended/issues"
+    "url": "https://github.com/Valkyr-JS/PerformerDetailsExtended/issues"
   },
-  "homepage": "https://github.com/Valkyr-JS/performer-details-extended#readme",
+  "homepage": "https://github.com/Valkyr-JS/PerformerDetailsExtended#readme",
   "devDependencies": {
     "@types/react": "^18.3.3",
     "@types/react-bootstrap": "^0.32.36",
