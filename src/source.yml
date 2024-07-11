@@ -1,5 +1,5 @@
 name: Performer Details Extended
-description: Displays metadata about frequent scene partners, most prominent tags, etc. in your library, on performer pages.
+description: Displays additional metadata on performer pages, such as their most regular scene partners, top studio, and total play duration. Requires Stash v0.27+, or the development build.
 url: https://github.com/Valkyr-JS/PerformerDetailsExtended
 version: 0.5.0
 ui:

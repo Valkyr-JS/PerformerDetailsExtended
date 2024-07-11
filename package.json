@@ -1,7 +1,7 @@
 {
   "name": "performerdetailsextended",
   "version": "0.5.0",
-  "description": "Displays metadata about frequent scene partners, most prominent tags, etc. in your library, on performer pages.",
+  "description": "Displays additional metadata on performer pages, such as their most regular scene partners, top studio, and total play duration.",
   "scripts": {
     "build": "webpack --config webpack.prod.js",
     "dev": "webpack --config webpack.dev.js",
