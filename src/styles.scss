@@ -1,4 +1,5 @@
 @use "sass:math";
+$body-color: #f5f8fa;
 $detail-item-title-color: #868791;
 $detail-additional-data-opacity: 0.65;
 $detail-group-padding-y: 1rem;
@@ -49,7 +50,7 @@ $charspace: 5px;
     }
 
     .hoverable {
-      border-bottom: 1px dotted white;
+      border-bottom: 1px dotted $body-color;
     }
   }
 
