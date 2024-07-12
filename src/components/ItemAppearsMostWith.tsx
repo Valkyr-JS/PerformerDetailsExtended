@@ -198,26 +198,82 @@ const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
     });
   }
 
-  const topPartner = partners[0];
+  const highestCount = partners[0].count;
+  const topPartners = partners
+    .filter((p) => p.count === highestCount)
+    .sort((a, b) => a.data.name.localeCompare(b.data.name, "en"));
 
-  // If the top partner's count is less than the minimum required, don't return
-  // a component.
-  if (topPartner.count < minimumAppearances) return null;
+  const topPartnersData = topPartners.map((p) => {
+    const scenesLink = linkToPartnerProfile(performer, p.data.id);
+    return { data: p.data, scenesLink };
+  });
 
   const scenesText =
-    topPartner.count + " " + (topPartner.count === 1 ? "scene" : "scenes");
-  const scenesLink = linkToPartnerProfile(performer, topPartner.data.id);
+    topPartners[0].count +
+    " " +
+    (topPartners[0].count === 1 ? "scene" : "scenes");
+
+  const maxLinks =
+    topPartners.length < maximumTops ? topPartners.length : maximumTops;
+
+  let links = [];
+  for (let i = 0; i < maxLinks; i++) {
+    const popoverContent = (
+      <div className="performer-tag-container row">
+        <a
+          href={linkToPartnerProfile(performer, topPartnersData[i].data.id)}
+          className="performer-tag col m-auto zoom-2"
+        >
+          <img
+            className="image-thumbnail"
+            alt={topPartnersData[i].data.name ?? ""}
+            src={topPartnersData[i].data.image_path ?? ""}
+          />
+        </a>
+      </div>
+    );
+
+    links.push(
+      <HoverPopover
+        className="performer-count"
+        content={popoverContent}
+        placement="bottom"
+      >
+        <a href={topPartnersData[i].scenesLink}>
+          {topPartnersData[i].data.name}
+        </a>
+      </HoverPopover>
+    );
+    if (i !== maxLinks - 1) links.push(" / ");
+  }
+
+  if (topPartners.length > maxLinks) {
+    const hoverContent = topPartners.map((p) => ({
+      data: p.data,
+      link: linkToPartnerProfile(performer, p.data.id),
+    }));
+
+    links.push(
+      <OverflowPopover items={hoverContent} overflowAt={maxLinks}>
+        <span className="top-meta-overflow hoverable">
+          and {topPartners.length - maxLinks} more
+        </span>
+      </OverflowPopover>
+    );
+  }
+
+  const value = <div className="inner-wrapper">{...links}</div>;
 
   return (
     <DetailItem
       collapsed={props.collapsed}
-      id={"appears-most-with"}
-      title={"Appears Most With"}
-      value={<a href={scenesLink}>{topPartner.data.name}</a>}
+      id="appears-most-with"
+      title="Appears Most With"
+      value={value}
       wide={true}
       additionalData={{
+        dataValue: highestCount,
         id: "scene-count",
-        dataValue: topPartner.count,
         value: scenesText,
       }}
     />
