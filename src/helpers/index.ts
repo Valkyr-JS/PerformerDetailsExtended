@@ -1,3 +1,27 @@
+/** Create a link to a given partner's page, filtering scenes to only include
+ * both performers. */
+export const linkToPartnerProfile = (
+  performer: Performer,
+  targetID: Performer["id"]
+) =>
+  `/performers/${targetID}/scenes?c=("type":"performers","value":("items":%5B("id":"${
+    performer.id
+  }","label":"${encodeURIComponent(
+    performer.name
+  )}")%5D,"excluded":%5B%5D),"modifier":"INCLUDES")`;
+
+/** Create a link to a given studio's page, filtering scenes to only include
+ * this performer. */
+export const linkToStudioProfile = (
+  performer: Performer,
+  studioID: Studio["id"]
+) =>
+  `/studios/${studioID}/scenes?c=("type":"performers","value":("items":%5B("id":"${
+    performer.id
+  }","label":"${encodeURIComponent(
+    performer.name
+  )}")%5D,"excluded":%5B%5D),"modifier":"INCLUDES")`;
+
 /** Converts the given seconds into a uniform string showing an amount of time.
  * */
 export const createDuration = (seconds: number): string => {

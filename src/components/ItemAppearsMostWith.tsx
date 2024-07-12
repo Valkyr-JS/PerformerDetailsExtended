@@ -1,8 +1,13 @@
-import { getGenderFromEnum, tagIsDescendantOf } from "../helpers";
+import {
+  getGenderFromEnum,
+  linkToPartnerProfile,
+  tagIsDescendantOf,
+} from "../helpers";
 import { GENDERS } from "../common/constants";
 import DetailItem from "./DetailItem";
 import OverflowPopover from "./OverflowPopover";
 const { React } = window.PluginApi;
+const { HoverPopover } = window.PluginApi.components;
 
 const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
   allTagsQueryResult,
@@ -112,7 +117,7 @@ const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
       const topPartnersData = topPartners.map((p) => {
         const scenesLink = linkToPartnerProfile(performer, p.data.id);
 
-        return { name: p.data.name, scenesLink };
+        return { data: p.data, scenesLink };
       });
 
       const genderWord = getGenderFromEnum(g);
@@ -130,20 +135,47 @@ const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
 
       let links = [];
       for (let i = 0; i < maxLinks; i++) {
+        const popoverContent = (
+          <div className="performer-tag-container row">
+            <a
+              href={linkToPartnerProfile(performer, topPartnersData[i].data.id)}
+              className="performer-tag col m-auto zoom-2"
+            >
+              <img
+                className="image-thumbnail"
+                alt={topPartnersData[i].data.name ?? ""}
+                src={topPartnersData[i].data.image_path ?? ""}
+              />
+            </a>
+          </div>
+        );
+
         links.push(
-          <a href={topPartnersData[i].scenesLink}>{topPartnersData[i].name}</a>
+          <HoverPopover
+            className="performer-count"
+            content={popoverContent}
+            placement="bottom"
+          >
+            <a href={topPartnersData[i].scenesLink}>
+              {topPartnersData[i].data.name}
+            </a>
+          </HoverPopover>
         );
         if (i !== maxLinks - 1) links.push(" / ");
       }
 
       if (topPartners.length > maxLinks) {
         const hoverContent = topPartners.map((p) => ({
-          content: p.data.name,
+          data: p.data,
           link: linkToPartnerProfile(performer, p.data.id),
         }));
 
         links.push(
-          <OverflowPopover items={hoverContent} overflowAt={maxLinks}>
+          <OverflowPopover
+            items={hoverContent}
+            overflowAt={maxLinks}
+            type="performer"
+          >
             <span className="top-meta-overflow hoverable">
               and {topPartners.length - maxLinks} more
             </span>
@@ -151,7 +183,7 @@ const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
         );
       }
 
-      const value = <>{...links}</>;
+      const value = <div className="inner-wrapper">{...links}</div>;
 
       return (
         <DetailItem
@@ -170,26 +202,86 @@ const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
     });
   }
 
-  const topPartner = partners[0];
+  const highestCount = partners[0].count;
+  const topPartners = partners
+    .filter((p) => p.count === highestCount)
+    .sort((a, b) => a.data.name.localeCompare(b.data.name, "en"));
 
-  // If the top partner's count is less than the minimum required, don't return
-  // a component.
-  if (topPartner.count < minimumAppearances) return null;
+  const topPartnersData = topPartners.map((p) => {
+    const scenesLink = linkToPartnerProfile(performer, p.data.id);
+    return { data: p.data, scenesLink };
+  });
 
   const scenesText =
-    topPartner.count + " " + (topPartner.count === 1 ? "scene" : "scenes");
-  const scenesLink = linkToPartnerProfile(performer, topPartner.data.id);
+    topPartners[0].count +
+    " " +
+    (topPartners[0].count === 1 ? "scene" : "scenes");
+
+  const maxLinks =
+    topPartners.length < maximumTops ? topPartners.length : maximumTops;
+
+  let links = [];
+  for (let i = 0; i < maxLinks; i++) {
+    const popoverContent = (
+      <div className="performer-tag-container row">
+        <a
+          href={linkToPartnerProfile(performer, topPartnersData[i].data.id)}
+          className="performer-tag col m-auto"
+        >
+          <img
+            className="image-thumbnail"
+            alt={topPartnersData[i].data.name ?? ""}
+            src={topPartnersData[i].data.image_path ?? ""}
+          />
+        </a>
+      </div>
+    );
+
+    links.push(
+      <HoverPopover
+        className="performer-count"
+        content={popoverContent}
+        placement="bottom"
+      >
+        <a href={topPartnersData[i].scenesLink}>
+          {topPartnersData[i].data.name}
+        </a>
+      </HoverPopover>
+    );
+    if (i !== maxLinks - 1) links.push(" / ");
+  }
+
+  if (topPartners.length > maxLinks) {
+    const hoverContent = topPartners.map((p) => ({
+      data: p.data,
+      link: linkToPartnerProfile(performer, p.data.id),
+    }));
+
+    links.push(
+      <OverflowPopover
+        items={hoverContent}
+        overflowAt={maxLinks}
+        type="performer"
+      >
+        <span className="top-meta-overflow hoverable">
+          and {topPartners.length - maxLinks} more
+        </span>
+      </OverflowPopover>
+    );
+  }
+
+  const value = <div className="inner-wrapper">{...links}</div>;
 
   return (
     <DetailItem
       collapsed={props.collapsed}
-      id={"appears-most-with"}
-      title={"Appears Most With"}
-      value={<a href={scenesLink}>{topPartner.data.name}</a>}
+      id="appears-most-with"
+      title="Appears Most With"
+      value={value}
       wide={true}
       additionalData={{
+        dataValue: highestCount,
         id: "scene-count",
-        dataValue: topPartner.count,
         value: scenesText,
       }}
     />
@@ -210,15 +302,3 @@ interface ItemAppearsMostWithProps {
   /** The `findScenes` data object returned from the GQL query. */
   scenesQueryResult: FindScenesResultType;
 }
-
-/** Create a link to a given partner's page, filtering scenes to only include
- * both performers. */
-const linkToPartnerProfile = (
-  performer: Performer,
-  targetID: Performer["id"]
-) =>
-  `/performers/${targetID}/scenes?c=("type":"performers","value":("items":%5B("id":"${
-    performer.id
-  }","label":"${encodeURIComponent(
-    performer.name
-  )}")%5D,"excluded":%5B%5D),"modifier":"INCLUDES")`;

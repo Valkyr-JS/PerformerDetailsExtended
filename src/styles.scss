@@ -26,10 +26,12 @@ $charspace: 5px;
     display: none !important;
   }
 
-  // Display item values horizontally instead of vertically.
+  // Display popover item values horizontally instead of vertically.
   .inner-wrapper {
-    display: inline-flex;
-    align-items: center;
+    &,
+    > div {
+      display: inline;
+    }
   }
 
   // Horizontal spacing between separator and text.
@@ -69,6 +71,22 @@ $charspace: 5px;
   // Add bottom padding back to last group to match native styling.
   .detail-header .performer-details-extended {
     padding-bottom: $detail-group-padding-y;
+  }
+}
+
+// Studio tags don't exist in Stash. Build on performer-tag classes
+.studio-tag-container {
+  a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+
+  .image-thumbnail {
+    width: 150px;
+    object-fit: contain;
+    object-position: center;
   }
 }
 
