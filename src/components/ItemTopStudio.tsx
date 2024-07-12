@@ -2,6 +2,7 @@ import { linkToStudioProfile } from "../helpers";
 import DetailItem from "./DetailItem";
 import OverflowPopover from "./OverflowPopover";
 const { React } = window.PluginApi;
+const { HoverPopover } = window.PluginApi.components;
 
 const ItemTopStudio: React.FC<ItemTopStudioProps> = ({
   performer,
@@ -61,9 +62,31 @@ const ItemTopStudio: React.FC<ItemTopStudioProps> = ({
     topStudioData.length < maximumTops ? topStudioData.length : maximumTops;
 
   let links = [];
+
   for (let i = 0; i < maxLinks; i++) {
+    const popoverContent = (
+      <div className="performer-tag-container row studio-tag-container">
+        <a
+          href={linkToStudioProfile(performer, topStudioData[i].data.id)}
+          className="performer-tag col m-auto"
+        >
+          <img
+            className="image-thumbnail"
+            alt={topStudioData[i].data.name ?? ""}
+            src={topStudioData[i].data.image_path ?? ""}
+          />
+        </a>
+      </div>
+    );
+
     links.push(
-      <a href={topStudioData[i].scenesLink}>{topStudioData[i].data.name}</a>
+      <HoverPopover
+        className="performer-count"
+        content={popoverContent}
+        placement="bottom"
+      >
+        <a href={topStudioData[i].scenesLink}>{topStudioData[i].data.name}</a>
+      </HoverPopover>
     );
     if (i !== maxLinks - 1) links.push(" / ");
   }
@@ -75,7 +98,7 @@ const ItemTopStudio: React.FC<ItemTopStudioProps> = ({
     }));
 
     links.push(
-      <OverflowPopover items={hoverContent} overflowAt={maxLinks}>
+      <OverflowPopover items={hoverContent} overflowAt={maxLinks} type="studio">
         <span className="top-meta-overflow hoverable">
           and {topStudioData.length - maxLinks} more
         </span>
@@ -83,7 +106,7 @@ const ItemTopStudio: React.FC<ItemTopStudioProps> = ({
     );
   }
 
-  const value = <>{...links}</>;
+  const value = <div className="inner-wrapper">{...links}</div>;
 
   /* ------------------------------ Network data ------------------------------ */
 
@@ -166,10 +189,31 @@ const ItemTopStudio: React.FC<ItemTopStudioProps> = ({
 
       let nwLinks = [];
       for (let i = 0; i < nwMaxLinks; i++) {
+        const popoverContent = (
+          <div className="performer-tag-container row studio-tag-container">
+            <a
+              href={linkToStudioProfile(performer, topNetworkData[i].data.id)}
+              className="performer-tag col m-auto"
+            >
+              <img
+                className="image-thumbnail"
+                alt={topNetworkData[i].data.name ?? ""}
+                src={topNetworkData[i].data.image_path ?? ""}
+              />
+            </a>
+          </div>
+        );
+
         nwLinks.push(
-          <a href={topNetworkData[i].scenesLink}>
-            {topNetworkData[i].data.name}
-          </a>
+          <HoverPopover
+            className="performer-count"
+            content={popoverContent}
+            placement="bottom"
+          >
+            <a href={topNetworkData[i].scenesLink}>
+              {topNetworkData[i].data.name}
+            </a>
+          </HoverPopover>
         );
         if (i !== nwMaxLinks - 1) nwLinks.push(" / ");
       }
@@ -181,7 +225,11 @@ const ItemTopStudio: React.FC<ItemTopStudioProps> = ({
         }));
 
         nwLinks.push(
-          <OverflowPopover items={nwHoverContent} overflowAt={nwMaxLinks}>
+          <OverflowPopover
+            items={nwHoverContent}
+            overflowAt={nwMaxLinks}
+            type="studio"
+          >
             <span className="top-meta-overflow hoverable">
               and {topNetworkData.length - nwMaxLinks} more
             </span>
@@ -189,7 +237,7 @@ const ItemTopStudio: React.FC<ItemTopStudioProps> = ({
         );
       }
 
-      const nwValue = <>{...nwLinks}</>;
+      const nwValue = <div className="inner-wrapper">{...nwLinks}</div>;
 
       // Don't return the network unless it is different from the top studio and
       // its count is at least the minimum required.

@@ -1,3 +1,4 @@
+import { default as cx } from "classnames";
 const { PluginApi } = window;
 const { React } = PluginApi;
 
@@ -12,9 +13,15 @@ const OverflowPopover: React.FC<OverflowPopoverProps> = (props) => {
 
   const content = (
     <>
-      {props.items.map(({ data, link }, i) =>
-        i < props.overflowAt ? null : (
-          <div className="performer-tag-container row">
+      {props.items.map(({ data, link }, i) => {
+        const containerClasses = cx("performer-tag-container", "row", {
+          // Class added for styling studio tags, which don't exist in native
+          // Stash.
+          ["studio-tag-container"]: props.type === "studio",
+        });
+
+        return i < props.overflowAt ? null : (
+          <div className={containerClasses}>
             <a href={link} className="performer-tag col m-auto">
               <img
                 className="image-thumbnail"
@@ -28,8 +35,8 @@ const OverflowPopover: React.FC<OverflowPopoverProps> = (props) => {
               </a>
             </span>
           </div>
-        )
-      )}
+        );
+      })}
     </>
   );
 
@@ -46,10 +53,24 @@ const OverflowPopover: React.FC<OverflowPopoverProps> = (props) => {
 
 export default OverflowPopover;
 
-interface OverflowPopoverProps extends React.PropsWithChildren {
+type OverflowPopoverProps =
+  | PerformerOverflowPopoverProps
+  | StudioOverflowPopoverProps;
+
+interface StudioOverflowPopoverProps extends React.PropsWithChildren {
   overflowAt: number;
   items: {
-    data: Performer | Studio;
+    data: Studio;
     link: string;
   }[];
+  type: "studio";
+}
+
+interface PerformerOverflowPopoverProps extends React.PropsWithChildren {
+  overflowAt: number;
+  items: {
+    data: Performer;
+    link: string;
+  }[];
+  type: "performer";
 }

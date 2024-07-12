@@ -171,7 +171,11 @@ const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
         }));
 
         links.push(
-          <OverflowPopover items={hoverContent} overflowAt={maxLinks}>
+          <OverflowPopover
+            items={hoverContent}
+            overflowAt={maxLinks}
+            type="performer"
+          >
             <span className="top-meta-overflow hoverable">
               and {topPartners.length - maxLinks} more
             </span>
@@ -222,7 +226,7 @@ const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
       <div className="performer-tag-container row">
         <a
           href={linkToPartnerProfile(performer, topPartnersData[i].data.id)}
-          className="performer-tag col m-auto zoom-2"
+          className="performer-tag col m-auto"
         >
           <img
             className="image-thumbnail"
@@ -254,7 +258,11 @@ const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
     }));
 
     links.push(
-      <OverflowPopover items={hoverContent} overflowAt={maxLinks}>
+      <OverflowPopover
+        items={hoverContent}
+        overflowAt={maxLinks}
+        type="performer"
+      >
         <span className="top-meta-overflow hoverable">
           and {topPartners.length - maxLinks} more
         </span>
