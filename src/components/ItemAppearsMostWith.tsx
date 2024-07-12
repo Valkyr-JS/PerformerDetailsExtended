@@ -3,6 +3,7 @@ import { GENDERS } from "../common/constants";
 import DetailItem from "./DetailItem";
 import OverflowPopover from "./OverflowPopover";
 const { React } = window.PluginApi;
+const { HoverPopover } = window.PluginApi.components;
 
 const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
   allTagsQueryResult,
@@ -112,7 +113,7 @@ const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
       const topPartnersData = topPartners.map((p) => {
         const scenesLink = linkToPartnerProfile(performer, p.data.id);
 
-        return { name: p.data.name, scenesLink };
+        return { data: p.data, scenesLink };
       });
 
       const genderWord = getGenderFromEnum(g);
@@ -130,8 +131,31 @@ const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
 
       let links = [];
       for (let i = 0; i < maxLinks; i++) {
+        const popoverContent = (
+          <div className="performer-tag-container row">
+            <a
+              href={`/performers/${topPartnersData[i].data.id}`}
+              className="performer-tag col m-auto zoom-2"
+            >
+              <img
+                className="image-thumbnail"
+                alt={topPartnersData[i].data.name ?? ""}
+                src={topPartnersData[i].data.image_path ?? ""}
+              />
+            </a>
+          </div>
+        );
+
         links.push(
-          <a href={topPartnersData[i].scenesLink}>{topPartnersData[i].name}</a>
+          <HoverPopover
+            className="performer-count"
+            placement="bottom"
+            content={popoverContent}
+          >
+            <a href={topPartnersData[i].scenesLink}>
+              {topPartnersData[i].data.name}
+            </a>
+          </HoverPopover>
         );
         if (i !== maxLinks - 1) links.push(" / ");
       }
@@ -151,7 +175,7 @@ const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
         );
       }
 
-      const value = <>{...links}</>;
+      const value = <div className="inner-wrapper">{...links}</div>;
 
       return (
         <DetailItem

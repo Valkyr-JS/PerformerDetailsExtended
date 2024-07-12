@@ -26,10 +26,13 @@ $charspace: 5px;
     display: none !important;
   }
 
-  // Display item values horizontally instead of vertically.
+  // Display popover item values horizontally instead of vertically.
   .inner-wrapper {
-    display: inline-flex;
-    align-items: center;
+    &,
+    &,
+    > div {
+      display: inline;
+    }
   }
 
   // Horizontal spacing between separator and text.
