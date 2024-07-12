@@ -1,3 +1,4 @@
+import { linkToStudioProfile } from "../helpers";
 import DetailItem from "./DetailItem";
 import OverflowPopover from "./OverflowPopover";
 const { React } = window.PluginApi;
@@ -69,7 +70,7 @@ const ItemTopStudio: React.FC<ItemTopStudioProps> = ({
 
   if (topStudioData.length > maxLinks) {
     const hoverContent = topStudioData.map((st) => ({
-      content: st.data.name,
+      data: st.data,
       link: linkToStudioProfile(performer, st.data.id),
     }));
 
@@ -175,7 +176,7 @@ const ItemTopStudio: React.FC<ItemTopStudioProps> = ({
 
       if (topNetworkData.length > nwMaxLinks) {
         const nwHoverContent = topNetworkData.map((nw) => ({
-          content: nw.data.name,
+          data: nw.data,
           link: linkToStudioProfile(performer, nw.data.id),
         }));
 
@@ -249,12 +250,3 @@ interface IstudioData {
   count: number;
   data: Studio;
 }
-
-/** Create a link to a given studio's page, filtering scenes to only include
- * this performer. */
-const linkToStudioProfile = (performer: Performer, studioID: Studio["id"]) =>
-  `/studios/${studioID}/scenes?c=("type":"performers","value":("items":%5B("id":"${
-    performer.id
-  }","label":"${encodeURIComponent(
-    performer.name
-  )}")%5D,"excluded":%5B%5D),"modifier":"INCLUDES")`;

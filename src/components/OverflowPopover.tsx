@@ -11,26 +11,26 @@ const OverflowPopover: React.FC<OverflowPopoverProps> = (props) => {
   const { HoverPopover } = PluginApi.components;
 
   const content = (
-    <ul
-      style={{
-        listStyle: "none",
-        padding: "0.5rem 1rem",
-        marginBottom: 0,
-        textAlign: "left",
-      }}
-    >
-      {props.items.map((item, i) =>
+    <>
+      {props.items.map(({ data, link }, i) =>
         i < props.overflowAt ? null : (
-          <li>
-            {typeof item.link !== "undefined" ? (
-              <a href={item.link}>{item.content}</a>
-            ) : (
-              item.content
-            )}
-          </li>
+          <div className="performer-tag-container row">
+            <a href={link} className="performer-tag col m-auto">
+              <img
+                className="image-thumbnail"
+                alt={data.name ?? ""}
+                src={data.image_path ?? ""}
+              />
+            </a>
+            <span className="tag-item d-block badge badge-secondary">
+              <a href={link}>
+                <span>{data.name}</span>
+              </a>
+            </span>
+          </div>
         )
       )}
-    </ul>
+    </>
   );
 
   return (
@@ -49,7 +49,7 @@ export default OverflowPopover;
 interface OverflowPopoverProps extends React.PropsWithChildren {
   overflowAt: number;
   items: {
-    content: React.ReactNode;
-    link?: string;
+    data: Performer | Studio;
+    link: string;
   }[];
 }

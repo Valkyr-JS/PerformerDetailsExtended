@@ -1,4 +1,8 @@
-import { getGenderFromEnum, tagIsDescendantOf } from "../helpers";
+import {
+  getGenderFromEnum,
+  linkToPartnerProfile,
+  tagIsDescendantOf,
+} from "../helpers";
 import { GENDERS } from "../common/constants";
 import DetailItem from "./DetailItem";
 import OverflowPopover from "./OverflowPopover";
@@ -134,7 +138,7 @@ const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
         const popoverContent = (
           <div className="performer-tag-container row">
             <a
-              href={`/performers/${topPartnersData[i].data.id}`}
+              href={linkToPartnerProfile(performer, topPartnersData[i].data.id)}
               className="performer-tag col m-auto zoom-2"
             >
               <img
@@ -149,8 +153,8 @@ const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
         links.push(
           <HoverPopover
             className="performer-count"
-            placement="bottom"
             content={popoverContent}
+            placement="bottom"
           >
             <a href={topPartnersData[i].scenesLink}>
               {topPartnersData[i].data.name}
@@ -162,7 +166,7 @@ const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
 
       if (topPartners.length > maxLinks) {
         const hoverContent = topPartners.map((p) => ({
-          content: p.data.name,
+          data: p.data,
           link: linkToPartnerProfile(performer, p.data.id),
         }));
 
@@ -234,15 +238,3 @@ interface ItemAppearsMostWithProps {
   /** The `findScenes` data object returned from the GQL query. */
   scenesQueryResult: FindScenesResultType;
 }
-
-/** Create a link to a given partner's page, filtering scenes to only include
- * both performers. */
-const linkToPartnerProfile = (
-  performer: Performer,
-  targetID: Performer["id"]
-) =>
-  `/performers/${targetID}/scenes?c=("type":"performers","value":("items":%5B("id":"${
-    performer.id
-  }","label":"${encodeURIComponent(
-    performer.name
-  )}")%5D,"excluded":%5B%5D),"modifier":"INCLUDES")`;
