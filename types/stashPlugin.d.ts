@@ -230,3 +230,8 @@ interface IIcon {
   color?: string;
   size?: SizeProp;
 }
+
+interface IratingSystemOptions {
+  starPrecision: "full" | "half" | "quarter" | "tenth";
+  type: "decimal" | "stars";
+}

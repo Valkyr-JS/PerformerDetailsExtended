@@ -1,4 +1,7 @@
-import type { PropsPerformerDetailsPanelDetailGroup } from "@pluginTypes/stashPlugin";
+import type {
+  IratingSystemOptions,
+  PropsPerformerDetailsPanelDetailGroup,
+} from "@pluginTypes/stashPlugin";
 import DetailItem from "./DetailItem";
 const { React } = window.PluginApi;
 
