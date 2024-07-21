@@ -1,4 +1,5 @@
-import { createDuration } from "../helpers";
+import type { PropsPerformerDetailsPanelDetailGroup } from "@pluginTypes/stashPlugin";
+import { createDuration } from "@helpers";
 import DetailItem from "./DetailItem";
 const { React } = window.PluginApi;
 

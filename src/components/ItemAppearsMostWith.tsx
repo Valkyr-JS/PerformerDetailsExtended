@@ -1,9 +1,10 @@
+import type { PropsPerformerDetailsPanelDetailGroup } from "@pluginTypes/stashPlugin";
 import {
   getGenderFromEnum,
   linkToPartnerProfile,
   tagIsDescendantOf,
-} from "../helpers";
-import { GENDERS } from "../common/constants";
+} from "@helpers";
+import { GENDERS } from "@common/constants";
 import DetailItem from "./DetailItem";
 import OverflowPopover from "./OverflowPopover";
 const { React } = window.PluginApi;
