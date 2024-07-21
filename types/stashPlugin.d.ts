@@ -53,7 +53,7 @@ interface IPluginApi {
       data: { findTags: Query["findTags"] };
       loading: boolean;
     };
-    useStatsQuery(): { data: { stats: StatsResultType } };
+    useStatsQuery(): { data: { stats: StatsResultType }; loading: boolean };
   };
   Event: {
     addEventListener: (

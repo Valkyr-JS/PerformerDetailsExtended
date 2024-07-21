@@ -18,10 +18,18 @@ const { GQL, React } = PluginApi;
 /*                               PluginApi patch                              */
 /* -------------------------------------------------------------------------- */
 
-PluginApi.patch.after(
+PluginApi.patch.instead(
   "PerformerDetailsPanel.DetailGroup",
-  function ({ children, collapsed, performer }) {
+  function ({ children, collapsed, performer, ...props }, _, Original) {
     const performerID = performer.id;
+    const originalComponent = (
+      <Original
+        children={children}
+        collapsed={collapsed}
+        performer={performer}
+        {...props}
+      />
+    );
 
     const qScenes = GQL.useFindScenesQuery({
       variables: {
@@ -64,145 +72,141 @@ PluginApi.patch.after(
      * * AND The performer details section is NOT collapsed
      * * UNLESS the user has set to override this behaviour.
      */
-    const dataLoaded =
-      !!qScenes.data &&
-      qScenes.data.findScenes.scenes.length &&
-      !!qAllTags.data &&
-      !!qConfig.data &&
-      !!qStats.data &&
-      !!qStudios.data &&
-      performerID !== null;
+    const dataLoading =
+      qScenes.loading ||
+      qAllTags.loading ||
+      qConfig.loading ||
+      qStats.loading ||
+      qStudios.loading;
 
-    if (dataLoaded) {
-      const configurationQueryResult = qConfig.data
-        .configuration as PDEConfigResult;
-      const scenesQueryResult = qScenes.data.findScenes;
-      const allTagsQueryResult = qAllTags.data.findTags;
-      const statsQueryResult = qStats.data.stats;
-      const studiosQueryResult = qStudios.data.findStudios;
+    if (dataLoading) return [originalComponent];
 
-      const { compactExpandedDetails, showAllDetails } =
-        configurationQueryResult.ui;
+    const configurationQueryResult = qConfig.data
+      .configuration as PDEConfigResult;
+    const scenesQueryResult = qScenes.data.findScenes;
+    const allTagsQueryResult = qAllTags.data.findTags;
+    const statsQueryResult = qStats.data.stats;
+    const studiosQueryResult = qStudios.data.findStudios;
 
-      const userConfig =
-        configurationQueryResult.plugins.PerformerDetailsExtended;
+    const { compactExpandedDetails, showAllDetails } =
+      configurationQueryResult.ui;
 
-      // Compile the user's config with config defaults
-      const pluginConfig: PDEFinalConfigMap = {
-        additionalStyling: getConfigProp(userConfig?.additionalStyling, false),
-        appearsMostWithTagsBlacklist: getConfigProp(
-          userConfig?.appearsMostWithTagsBlacklist,
-          ""
-        ),
-        appearsMostWithTagsBlacklistChildren: getConfigProp(
-          userConfig?.appearsMostWithTagsBlacklistChildren,
-          false
-        ),
-        appearsMostWithGendered: getConfigProp(
-          userConfig?.appearsMostWithGendered,
-          true
-        ),
-        maximumTops: getConfigProp(userConfig?.maximumTops, 3),
-        minimumAppearances: getConfigProp(userConfig?.minimumAppearances, 2),
-        scenesTimespanReverse: getConfigProp(
-          userConfig?.scenesTimespanReverse,
-          false
-        ),
-        showWhenCollapsed: getConfigProp(
-          userConfig?.showWhenCollapsed,
-          showAllDetails || false
-        ),
-        topNetworkOn: getConfigProp(userConfig?.topNetworkOn, true),
-        topTagsBlacklist: getConfigProp(userConfig?.topTagsBlacklist, ""),
-        topTagsBlacklistChildren: getConfigProp(
-          userConfig?.topTagsBlacklistChildren,
-          false
-        ),
-        // For topTagsCount, set to 3 if the value is undefined or 0.
-        topTagsCount: userConfig?.topTagsCount || 3,
-        topTagsOn: getConfigProp(userConfig?.topTagsOn, true),
-        totalPlayCountOn: getConfigProp(userConfig?.totalPlayCountOn, false),
-      };
+    const userConfig =
+      configurationQueryResult.plugins.PerformerDetailsExtended;
 
-      /** Display as collapsed if currently collapsed, or compacr details is
-       * `true` in the native config. */
-      const isCollapsed = collapsed || !!compactExpandedDetails;
-      const showDetails = !collapsed || pluginConfig.showWhenCollapsed;
+    // Compile the user's config with config defaults
+    const pluginConfig: PDEFinalConfigMap = {
+      additionalStyling: getConfigProp(userConfig?.additionalStyling, false),
+      appearsMostWithTagsBlacklist: getConfigProp(
+        userConfig?.appearsMostWithTagsBlacklist,
+        ""
+      ),
+      appearsMostWithTagsBlacklistChildren: getConfigProp(
+        userConfig?.appearsMostWithTagsBlacklistChildren,
+        false
+      ),
+      appearsMostWithGendered: getConfigProp(
+        userConfig?.appearsMostWithGendered,
+        true
+      ),
+      maximumTops: getConfigProp(userConfig?.maximumTops, 3),
+      minimumAppearances: getConfigProp(userConfig?.minimumAppearances, 2),
+      scenesTimespanReverse: getConfigProp(
+        userConfig?.scenesTimespanReverse,
+        false
+      ),
+      showWhenCollapsed: getConfigProp(
+        userConfig?.showWhenCollapsed,
+        showAllDetails || false
+      ),
+      topNetworkOn: getConfigProp(userConfig?.topNetworkOn, true),
+      topTagsBlacklist: getConfigProp(userConfig?.topTagsBlacklist, ""),
+      topTagsBlacklistChildren: getConfigProp(
+        userConfig?.topTagsBlacklistChildren,
+        false
+      ),
+      // For topTagsCount, set to 3 if the value is undefined or 0.
+      topTagsCount: userConfig?.topTagsCount || 3,
+      topTagsOn: getConfigProp(userConfig?.topTagsOn, true),
+      totalPlayCountOn: getConfigProp(userConfig?.totalPlayCountOn, false),
+    };
 
-      if (showDetails) {
-        return [
-          <>
-            <DetailGroup
-              className={cx({
-                "detail-group-pde-themed": pluginConfig.additionalStyling,
-              })}
-            >
-              {children}
-            </DetailGroup>
-            <DetailGroup
-              id="performerDetailsExtended"
-              className={cx("performer-details-extended", {
-                "detail-group-pde-themed": pluginConfig.additionalStyling,
-              })}
-            >
-              <ItemAverageRating
-                collapsed={isCollapsed}
-                configurationQueryResult={configurationQueryResult}
-                performer={performer}
-                scenesQueryResult={scenesQueryResult}
-              />
-              <ItemAppearsMostWith
-                allTagsQueryResult={allTagsQueryResult}
-                collapsed={isCollapsed}
-                performer={performer}
-                pluginConfig={pluginConfig}
-                scenesQueryResult={scenesQueryResult}
-              />
-              <ItemTopStudio
-                collapsed={isCollapsed}
-                performer={performer}
-                pluginConfig={pluginConfig}
-                scenesQueryResult={scenesQueryResult}
-                studiosQueryResult={studiosQueryResult}
-              />
-              <ItemTotalContent
-                collapsed={isCollapsed}
-                scenesQueryResult={scenesQueryResult}
-              />
-              <ItemTotalPlayDuration
-                collapsed={isCollapsed}
-                pluginConfig={pluginConfig}
-                scenesQueryResult={scenesQueryResult}
-                statsQueryResult={statsQueryResult}
-              />
-              <ItemScenesTimespan
-                collapsed={isCollapsed}
-                pluginConfig={pluginConfig}
-                scenesQueryResult={scenesQueryResult}
-              />
-              <ItemScenesOrganized
-                collapsed={isCollapsed}
-                scenesQueryResult={scenesQueryResult}
-              />
-              <ItemOCount
-                collapsed={isCollapsed}
-                scenesQueryResult={scenesQueryResult}
-                statsQueryResult={statsQueryResult}
-              />
-              <ItemTopTags
-                allTagsQueryResult={allTagsQueryResult}
-                collapsed={collapsed}
-                performer={performer}
-                pluginConfig={pluginConfig}
-                scenesQueryResult={scenesQueryResult}
-              />
-            </DetailGroup>
-          </>,
-        ];
-      }
-    }
+    /** Display as collapsed if currently collapsed, or compacr details is
+     * `true` in the native config. */
+    const isCollapsed = collapsed || !!compactExpandedDetails;
+    const showDetails = !collapsed || pluginConfig.showWhenCollapsed;
 
-    return [<div className="detail-group">{children}</div>];
+    if (!showDetails) return [originalComponent];
+
+    return [
+      <>
+        <DetailGroup
+          className={cx({
+            "detail-group-pde-themed": pluginConfig.additionalStyling,
+          })}
+        >
+          {children}
+        </DetailGroup>
+        <DetailGroup
+          id="performerDetailsExtended"
+          className={cx("performer-details-extended", {
+            "detail-group-pde-themed": pluginConfig.additionalStyling,
+          })}
+        >
+          <ItemAverageRating
+            collapsed={isCollapsed}
+            configurationQueryResult={configurationQueryResult}
+            performer={performer}
+            scenesQueryResult={scenesQueryResult}
+          />
+          <ItemAppearsMostWith
+            allTagsQueryResult={allTagsQueryResult}
+            collapsed={isCollapsed}
+            performer={performer}
+            pluginConfig={pluginConfig}
+            scenesQueryResult={scenesQueryResult}
+          />
+          <ItemTopStudio
+            collapsed={isCollapsed}
+            performer={performer}
+            pluginConfig={pluginConfig}
+            scenesQueryResult={scenesQueryResult}
+            studiosQueryResult={studiosQueryResult}
+          />
+          <ItemTotalContent
+            collapsed={isCollapsed}
+            scenesQueryResult={scenesQueryResult}
+          />
+          <ItemTotalPlayDuration
+            collapsed={isCollapsed}
+            pluginConfig={pluginConfig}
+            scenesQueryResult={scenesQueryResult}
+            statsQueryResult={statsQueryResult}
+          />
+          <ItemScenesTimespan
+            collapsed={isCollapsed}
+            pluginConfig={pluginConfig}
+            scenesQueryResult={scenesQueryResult}
+          />
+          <ItemScenesOrganized
+            collapsed={isCollapsed}
+            scenesQueryResult={scenesQueryResult}
+          />
+          <ItemOCount
+            collapsed={isCollapsed}
+            scenesQueryResult={scenesQueryResult}
+            statsQueryResult={statsQueryResult}
+          />
+          <ItemTopTags
+            allTagsQueryResult={allTagsQueryResult}
+            collapsed={collapsed}
+            performer={performer}
+            pluginConfig={pluginConfig}
+            scenesQueryResult={scenesQueryResult}
+          />
+        </DetailGroup>
+      </>,
+    ];
   }
 );
 
