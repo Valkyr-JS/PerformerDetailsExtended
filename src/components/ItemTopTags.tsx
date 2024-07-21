@@ -1,4 +1,5 @@
-import { tagIsDescendantOf } from "../helpers";
+import type { PropsPerformerDetailsPanelDetailGroup } from "@pluginTypes/stashPlugin";
+import { tagIsDescendantOf } from "@helpers";
 import DetailItem from "./DetailItem";
 import TagItem from "./TagItem";
 const { React } = window.PluginApi;

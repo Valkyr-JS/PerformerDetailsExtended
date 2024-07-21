@@ -1,4 +1,5 @@
-import { linkToStudioProfile } from "../helpers";
+import type { PropsPerformerDetailsPanelDetailGroup } from "@pluginTypes/stashPlugin";
+import { linkToStudioProfile } from "@helpers";
 import DetailItem from "./DetailItem";
 import OverflowPopover from "./OverflowPopover";
 const { React } = window.PluginApi;

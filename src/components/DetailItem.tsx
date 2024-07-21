@@ -1,3 +1,4 @@
+import type { PropsPerformerDetailsPanelDetailGroup } from "@pluginTypes/stashPlugin";
 const { React } = window.PluginApi;
 
 /** Initialises and returns the DetailItem component by passing React as an
