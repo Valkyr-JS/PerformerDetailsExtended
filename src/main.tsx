@@ -14,6 +14,7 @@ import "./styles.scss";
 
 const { PluginApi } = window;
 const { GQL, React } = PluginApi;
+const { LoadingIndicator } = PluginApi.components;
 
 /* -------------------------------------------------------------------------- */
 /*                               PluginApi patch                              */
@@ -117,17 +118,27 @@ PluginApi.patch.instead(
     const dataLoading =
       qScenes.loading || qAllTags.loading || qStats.loading || qStudios.loading;
 
-    /** Display as collapsed if currently collapsed, or compacr details is
+    /** Display as collapsed if currently collapsed, or compact details is
      * `true` in the native config. */
     const isCollapsed = collapsed || !!compactExpandedDetails;
     const showDetails = !collapsed || pluginConfig.showWhenCollapsed;
 
-    if (dataLoading && showDetails) return [originalComponent];
+    // Render the original component and a loading indicator until the required
+    // data is available
+    if (dataLoading && showDetails)
+      return [
+        <>
+          {originalComponent}
+          <LoadingIndicator card message="Loading extended details..." />
+        </>,
+      ];
 
     const scenesQueryResult = qScenes.data.findScenes;
     const allTagsQueryResult = qAllTags.data.findTags;
     const statsQueryResult = qStats.data.stats;
     const studiosQueryResult = qStudios.data.findStudios;
+
+    /* -------------------------------- Component ------------------------------- */
 
     return [
       <>
