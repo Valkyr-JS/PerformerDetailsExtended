@@ -1,13 +1,14 @@
-import DetailGroup from "./components/DetailGroup";
-import ItemAverageRating from "./components/ItemAverageRating";
-import ItemAppearsMostWith from "./components/ItemAppearsMostWith";
-import ItemOCount from "./components/ItemOCount";
-import ItemScenesOrganized from "./components/ItemScenesOrganized";
-import ItemScenesTimespan from "./components/ItemScenesTimespan";
-import ItemTopStudio from "./components/ItemTopStudio";
-import ItemTopTags from "./components/ItemTopTags";
-import ItemTotalContent from "./components/ItemTotalContent";
-import ItemTotalPlayDuration from "./components/ItemTotalPlayDuration";
+import DetailGroup from "@components/DetailGroup";
+import ItemAverageRating from "@components/ItemAverageRating";
+import ItemAppearsMostWith from "@components/ItemAppearsMostWith";
+import ItemOCount from "@components/ItemOCount";
+import ItemScenesOrganized from "@components/ItemScenesOrganized";
+import ItemScenesTimespan from "@components/ItemScenesTimespan";
+import ItemTopStudio from "@components/ItemTopStudio";
+import ItemTopTags from "@components/ItemTopTags";
+import ItemTotalContent from "@components/ItemTotalContent";
+import ItemTotalPlayDuration from "@components/ItemTotalPlayDuration";
+import NativeItemFakeTits from "@components/NativeItemFakeTits";
 import { default as cx } from "classnames";
 import "./styles.scss";
 
@@ -96,39 +97,25 @@ PluginApi.patch.instead(
 
     // Compile the user's config with config defaults
     const pluginConfig: PDEFinalConfigMap = {
-      additionalStyling: getConfigProp(userConfig?.additionalStyling, false),
-      appearsMostWithTagsBlacklist: getConfigProp(
-        userConfig?.appearsMostWithTagsBlacklist,
-        ""
-      ),
-      appearsMostWithTagsBlacklistChildren: getConfigProp(
-        userConfig?.appearsMostWithTagsBlacklistChildren,
-        false
-      ),
-      appearsMostWithGendered: getConfigProp(
-        userConfig?.appearsMostWithGendered,
-        true
-      ),
-      maximumTops: getConfigProp(userConfig?.maximumTops, 3),
-      minimumAppearances: getConfigProp(userConfig?.minimumAppearances, 2),
-      scenesTimespanReverse: getConfigProp(
-        userConfig?.scenesTimespanReverse,
-        false
-      ),
-      showWhenCollapsed: getConfigProp(
-        userConfig?.showWhenCollapsed,
-        showAllDetails || false
-      ),
-      topNetworkOn: getConfigProp(userConfig?.topNetworkOn, true),
-      topTagsBlacklist: getConfigProp(userConfig?.topTagsBlacklist, ""),
-      topTagsBlacklistChildren: getConfigProp(
-        userConfig?.topTagsBlacklistChildren,
-        false
-      ),
+      additionalStyling: userConfig?.additionalStyling ?? false,
+      appearsMostWithTagsBlacklist:
+        userConfig?.appearsMostWithTagsBlacklist ?? "",
+      appearsMostWithTagsBlacklistChildren:
+        userConfig?.appearsMostWithTagsBlacklistChildren ?? false,
+      appearsMostWithGendered: userConfig?.appearsMostWithGendered ?? true,
+      maximumTops: userConfig?.maximumTops ?? 3,
+      minimumAppearances: userConfig?.minimumAppearances ?? 2,
+      nativeFakeTitsHeading: userConfig?.nativeFakeTitsHeading,
+      scenesTimespanReverse: userConfig?.scenesTimespanReverse ?? false,
+      showWhenCollapsed:
+        userConfig?.showWhenCollapsed ?? (showAllDetails || false),
+      topNetworkOn: userConfig?.topNetworkOn ?? true,
+      topTagsBlacklist: userConfig?.topTagsBlacklist ?? "",
+      topTagsBlacklistChildren: userConfig?.topTagsBlacklistChildren ?? false,
       // For topTagsCount, set to 3 if the value is undefined or 0.
-      topTagsCount: userConfig?.topTagsCount || 3,
-      topTagsOn: getConfigProp(userConfig?.topTagsOn, true),
-      totalPlayCountOn: getConfigProp(userConfig?.totalPlayCountOn, false),
+      topTagsCount: userConfig?.topTagsCount ?? 3,
+      topTagsOn: userConfig?.topTagsOn ?? true,
+      totalPlayCountOn: userConfig?.totalPlayCountOn ?? false,
     };
 
     /** Display as collapsed if currently collapsed, or compacr details is
@@ -145,7 +132,11 @@ PluginApi.patch.instead(
             "detail-group-pde-themed": pluginConfig.additionalStyling,
           })}
         >
-          {children}
+          {replaceNativeItems(
+            children as React.JSX.Element[],
+            pluginConfig,
+            isCollapsed
+          )}
         </DetailGroup>
         <DetailGroup
           id="performerDetailsExtended"
@@ -210,8 +201,21 @@ PluginApi.patch.instead(
   }
 );
 
-/** Returns the given property from the user's config, or the default value if
- * the user hasn't explicitly set it. */
-function getConfigProp<T>(value: T | undefined, defaultValue: T) {
-  return value ?? defaultValue;
-}
+/** Replace native items as required. */
+const replaceNativeItems = (
+  children: React.JSX.Element[],
+  config: PDEFinalConfigMap,
+  isCollapsed: boolean
+) =>
+  children.map((ch) => {
+    if (ch?.props.id === "fake_tits" && !!config.nativeFakeTitsHeading) {
+      const props = {
+        collapsed: isCollapsed,
+        fullWidth: ch.props.fullWidth as boolean,
+        id: ch.props.id as string,
+        title: config.nativeFakeTitsHeading,
+        value: ch.props.value as string,
+      };
+      return <NativeItemFakeTits {...props} />;
+    } else return ch;
+  });
