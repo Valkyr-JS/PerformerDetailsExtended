@@ -14,6 +14,7 @@ import "./styles.scss";
 
 const { PluginApi } = window;
 const { GQL, React } = PluginApi;
+const { LoadingIndicator } = PluginApi.components;
 
 /* -------------------------------------------------------------------------- */
 /*                               PluginApi patch                              */
@@ -21,16 +22,58 @@ const { GQL, React } = PluginApi;
 
 PluginApi.patch.instead(
   "PerformerDetailsPanel.DetailGroup",
-  function ({ children, collapsed, performer, ...props }, _, Original) {
+  function (props, _, Original) {
+    const { children, collapsed, performer } = props;
     const performerID = performer.id;
+
+    /* ------------------------------ Configuration ----------------------------- */
+
+    // Get config data before doing anything else
+    const qConfig = GQL.useConfigurationQuery();
+    if (qConfig.loading) return [];
+
+    const configurationQueryResult = qConfig.data
+      .configuration as PDEConfigResult;
+    const { compactExpandedDetails, showAllDetails } =
+      configurationQueryResult.ui;
+    const userConfig =
+      configurationQueryResult.plugins.PerformerDetailsExtended;
+
+    // Compile the user's config with config defaults
+    const pluginConfig: PDEFinalConfigMap = {
+      additionalStyling: userConfig?.additionalStyling ?? false,
+      appearsMostWithTagsBlacklist:
+        userConfig?.appearsMostWithTagsBlacklist ?? "",
+      appearsMostWithTagsBlacklistChildren:
+        userConfig?.appearsMostWithTagsBlacklistChildren ?? false,
+      appearsMostWithGendered: userConfig?.appearsMostWithGendered ?? true,
+      maximumTops: userConfig?.maximumTops ?? 3,
+      minimumAppearances: userConfig?.minimumAppearances ?? 2,
+      nativeFakeTitsHeading: userConfig?.nativeFakeTitsHeading,
+      scenesTimespanReverse: userConfig?.scenesTimespanReverse ?? false,
+      showWhenCollapsed:
+        userConfig?.showWhenCollapsed ?? (showAllDetails || false),
+      topNetworkOn: userConfig?.topNetworkOn ?? true,
+      topTagsBlacklist: userConfig?.topTagsBlacklist ?? "",
+      topTagsBlacklistChildren: userConfig?.topTagsBlacklistChildren ?? false,
+      // For topTagsCount, set to 3 if the value is undefined or 0.
+      topTagsCount: userConfig?.topTagsCount ?? 3,
+      topTagsOn: userConfig?.topTagsOn ?? true,
+      totalPlayCountOn: userConfig?.totalPlayCountOn ?? false,
+    };
+
     const originalComponent = (
       <Original
-        children={children}
-        collapsed={collapsed}
-        performer={performer}
         {...props}
+        children={replaceNativeItems(
+          children as React.JSX.Element[],
+          pluginConfig,
+          collapsed
+        )}
       />
     );
+
+    /* --------------------------- Fetch required data -------------------------- */
 
     const qScenes = GQL.useFindScenesQuery({
       variables: {
@@ -64,7 +107,6 @@ PluginApi.patch.instead(
       },
     });
 
-    const qConfig = GQL.useConfigurationQuery();
     const qStats = GQL.useStatsQuery();
 
     /**
@@ -74,70 +116,35 @@ PluginApi.patch.instead(
      * * UNLESS the user has set to override this behaviour.
      */
     const dataLoading =
-      qScenes.loading ||
-      qAllTags.loading ||
-      qConfig.loading ||
-      qStats.loading ||
-      qStudios.loading;
+      qScenes.loading || qAllTags.loading || qStats.loading || qStudios.loading;
 
-    if (dataLoading) return [originalComponent];
+    /** Display as collapsed if currently collapsed, or compact details is
+     * `true` in the native config. */
+    const isCollapsed = collapsed || !!compactExpandedDetails;
+    const showDetails = !collapsed || pluginConfig.showWhenCollapsed;
 
-    const configurationQueryResult = qConfig.data
-      .configuration as PDEConfigResult;
+    // Render the original component and a loading indicator until the required
+    // data is available
+    if (dataLoading && showDetails)
+      return [
+        <>
+          {originalComponent}
+          <LoadingIndicator card message="Loading extended details..." />
+        </>,
+      ];
+
+    if (dataLoading || !showDetails) return [originalComponent];
+
     const scenesQueryResult = qScenes.data.findScenes;
     const allTagsQueryResult = qAllTags.data.findTags;
     const statsQueryResult = qStats.data.stats;
     const studiosQueryResult = qStudios.data.findStudios;
 
-    const { compactExpandedDetails, showAllDetails } =
-      configurationQueryResult.ui;
-
-    const userConfig =
-      configurationQueryResult.plugins.PerformerDetailsExtended;
-
-    // Compile the user's config with config defaults
-    const pluginConfig: PDEFinalConfigMap = {
-      additionalStyling: userConfig?.additionalStyling ?? false,
-      appearsMostWithTagsBlacklist:
-        userConfig?.appearsMostWithTagsBlacklist ?? "",
-      appearsMostWithTagsBlacklistChildren:
-        userConfig?.appearsMostWithTagsBlacklistChildren ?? false,
-      appearsMostWithGendered: userConfig?.appearsMostWithGendered ?? true,
-      maximumTops: userConfig?.maximumTops ?? 3,
-      minimumAppearances: userConfig?.minimumAppearances ?? 2,
-      nativeFakeTitsHeading: userConfig?.nativeFakeTitsHeading,
-      scenesTimespanReverse: userConfig?.scenesTimespanReverse ?? false,
-      showWhenCollapsed:
-        userConfig?.showWhenCollapsed ?? (showAllDetails || false),
-      topNetworkOn: userConfig?.topNetworkOn ?? true,
-      topTagsBlacklist: userConfig?.topTagsBlacklist ?? "",
-      topTagsBlacklistChildren: userConfig?.topTagsBlacklistChildren ?? false,
-      // For topTagsCount, set to 3 if the value is undefined or 0.
-      topTagsCount: userConfig?.topTagsCount ?? 3,
-      topTagsOn: userConfig?.topTagsOn ?? true,
-      totalPlayCountOn: userConfig?.totalPlayCountOn ?? false,
-    };
-
-    /** Display as collapsed if currently collapsed, or compacr details is
-     * `true` in the native config. */
-    const isCollapsed = collapsed || !!compactExpandedDetails;
-    const showDetails = !collapsed || pluginConfig.showWhenCollapsed;
-
-    if (!showDetails) return [originalComponent];
+    /* -------------------------------- Component ------------------------------- */
 
     return [
       <>
-        <DetailGroup
-          className={cx({
-            "detail-group-pde-themed": pluginConfig.additionalStyling,
-          })}
-        >
-          {replaceNativeItems(
-            children as React.JSX.Element[],
-            pluginConfig,
-            isCollapsed
-          )}
-        </DetailGroup>
+        {originalComponent}
         <DetailGroup
           id="performerDetailsExtended"
           className={cx("performer-details-extended", {

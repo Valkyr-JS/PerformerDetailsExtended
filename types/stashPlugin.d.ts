@@ -102,6 +102,7 @@ interface IPluginApi {
 interface StashPluginComponents {
   HoverPopover: (props: IHoverPopover) => React.JSX.Element;
   Icon: (props: IIcon) => FontAwesomeIcon;
+  LoadingIndicator: (props: ILoadingProps) => React.JSX.Element;
   "PerformerDetailsPanel.DetailGroup": (
     props: PropsPerformerDetailsPanelDetailGroup
   ) => React.JSX.Element;
@@ -234,4 +235,11 @@ interface IIcon {
 interface IratingSystemOptions {
   starPrecision: "full" | "half" | "quarter" | "tenth";
   type: "decimal" | "stars";
+}
+
+interface ILoadingProps {
+  message?: JSX.Element | string;
+  inline?: boolean;
+  small?: boolean;
+  card?: boolean;
 }
