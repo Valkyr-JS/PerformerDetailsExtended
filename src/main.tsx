@@ -133,6 +133,8 @@ PluginApi.patch.instead(
         </>,
       ];
 
+    if (dataLoading || !showDetails) return [originalComponent];
+
     const scenesQueryResult = qScenes.data.findScenes;
     const allTagsQueryResult = qAllTags.data.findTags;
     const statsQueryResult = qStats.data.stats;
@@ -142,17 +144,7 @@ PluginApi.patch.instead(
 
     return [
       <>
-        <DetailGroup
-          className={cx({
-            "detail-group-pde-themed": pluginConfig.additionalStyling,
-          })}
-        >
-          {replaceNativeItems(
-            children as React.JSX.Element[],
-            pluginConfig,
-            isCollapsed
-          )}
-        </DetailGroup>
+        {originalComponent}
         <DetailGroup
           id="performerDetailsExtended"
           className={cx("performer-details-extended", {
