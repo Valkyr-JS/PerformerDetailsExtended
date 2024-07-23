@@ -63,13 +63,16 @@ PluginApi.patch.instead(
     };
 
     const originalComponent = (
-      <Original
+      <DetailGroup
         {...props}
         children={replaceNativeItems(
           children as React.JSX.Element[],
           pluginConfig,
           collapsed
         )}
+        className={cx({
+          "detail-group-pde-themed": pluginConfig.additionalStyling,
+        })}
       />
     );
 
