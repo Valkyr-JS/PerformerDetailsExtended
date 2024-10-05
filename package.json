@@ -1,6 +1,6 @@
 {
   "name": "performerdetailsextended",
-  "version": "0.5.0",
+  "version": "1.0.0",
   "description": "Displays additional metadata on performer pages, such as their most regular scene partners, top studio, and total play duration.",
   "scripts": {
     "build": "webpack --config webpack.prod.js",
