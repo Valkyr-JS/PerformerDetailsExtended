@@ -8,7 +8,6 @@ import ItemTopStudio from "@components/ItemTopStudio";
 import ItemTopTags from "@components/ItemTopTags";
 import ItemTotalContent from "@components/ItemTotalContent";
 import ItemTotalPlayDuration from "@components/ItemTotalPlayDuration";
-import NativeItemFakeTits from "@components/NativeItemFakeTits";
 import { default as cx } from "classnames";
 import "./styles.scss";
 
@@ -23,7 +22,7 @@ const { LoadingIndicator } = PluginApi.components;
 PluginApi.patch.instead(
   "PerformerDetailsPanel.DetailGroup",
   function (props, _, Original) {
-    const { children, collapsed, performer } = props;
+    const { collapsed, performer } = props;
     const performerID = performer.id;
 
     /* ------------------------------ Configuration ----------------------------- */
@@ -49,7 +48,6 @@ PluginApi.patch.instead(
       appearsMostWithGendered: userConfig?.appearsMostWithGendered ?? true,
       maximumTops: userConfig?.maximumTops ?? 3,
       minimumAppearances: userConfig?.minimumAppearances ?? 2,
-      nativeFakeTitsHeading: userConfig?.nativeFakeTitsHeading,
       scenesTimespanReverse: userConfig?.scenesTimespanReverse ?? false,
       showWhenCollapsed:
         userConfig?.showWhenCollapsed ?? (showAllDetails || false),
@@ -65,11 +63,6 @@ PluginApi.patch.instead(
     const originalComponent = (
       <DetailGroup
         {...props}
-        children={replaceNativeItems(
-          children as React.JSX.Element[],
-          pluginConfig,
-          collapsed
-        )}
         className={cx({
           "detail-group-pde-themed": pluginConfig.additionalStyling,
         })}
@@ -210,22 +203,3 @@ PluginApi.patch.instead(
     ];
   }
 );
-
-/** Replace native items as required. */
-const replaceNativeItems = (
-  children: React.JSX.Element[],
-  config: PDEFinalConfigMap,
-  isCollapsed: boolean
-) =>
-  children.map((ch) => {
-    if (ch?.props.id === "fake_tits" && !!config.nativeFakeTitsHeading) {
-      const props = {
-        collapsed: isCollapsed,
-        fullWidth: ch.props.fullWidth as boolean,
-        id: ch.props.id as string,
-        title: config.nativeFakeTitsHeading,
-        value: ch.props.value as string,
-      };
-      return <NativeItemFakeTits {...props} />;
-    } else return ch;
-  });
