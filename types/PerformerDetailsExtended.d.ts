@@ -25,9 +25,6 @@ interface PDEConfigMap {
    * partner/studio/network in order to show the data. The default value is
    * 2. */
   minimumAppearances?: number;
-  /** Replaces the "Fake Tits" heading in the native Stash interface with the
-   * provided text. */
-  nativeFakeTitsHeading?: string;
   /** When enabled, Scene Timespan will display as "newest scene - oldest
    * scene", instead of the default "oldest scene - newest scene". */
   scenesTimespanReverse?: boolean;
