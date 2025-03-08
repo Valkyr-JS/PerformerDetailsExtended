@@ -1,14 +1,16 @@
 import type { PropsPerformerDetailsPanelDetailGroup } from "@pluginTypes/stashPlugin";
-import { linkToStudioProfile } from "@helpers";
+import { linkToStudioProfile, setupHoverPopover } from "@helpers";
 import DetailItem from "./DetailItem";
 import OverflowPopover from "./OverflowPopover";
 const { React } = window.PluginApi;
-const { HoverPopover } = window.PluginApi.components;
 
 const ItemTopStudio: React.FC<ItemTopStudioProps> = ({
   performer,
   ...props
 }) => {
+  const HoverPopover = setupHoverPopover();
+  if (!HoverPopover) return null;
+
   const { maximumTops, minimumAppearances, topNetworkOn } = props.pluginConfig;
   const { studios } = props.studiosQueryResult;
   const { scenes } = props.scenesQueryResult;

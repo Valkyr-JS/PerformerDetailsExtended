@@ -2,19 +2,22 @@ import type { PropsPerformerDetailsPanelDetailGroup } from "@pluginTypes/stashPl
 import {
   getGenderFromEnum,
   linkToPartnerProfile,
+  setupHoverPopover,
   tagIsDescendantOf,
 } from "@helpers";
 import { GENDERS } from "@common/constants";
 import DetailItem from "./DetailItem";
 import OverflowPopover from "./OverflowPopover";
 const { React } = window.PluginApi;
-const { HoverPopover } = window.PluginApi.components;
 
 const ItemAppearsMostWith: React.FC<ItemAppearsMostWithProps> = ({
   allTagsQueryResult,
   performer,
   ...props
 }) => {
+  const HoverPopover = setupHoverPopover();
+  if (!HoverPopover) return null;
+
   const {
     appearsMostWithTagsBlacklist,
     appearsMostWithTagsBlacklistChildren,
