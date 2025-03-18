@@ -1,3 +1,5 @@
+const { React } = window.PluginApi;
+
 /** Create a link to a given partner's page, filtering scenes to only include
  * both performers. */
 export const linkToPartnerProfile = (
@@ -139,4 +141,23 @@ export const tagIsDescendantOf = (
   }
 
   return false;
+};
+
+/**
+ * There is an issue with the HoverPopover component which is likely happening
+ * in the PluginApi. The component only loads if called on an page other than
+ * the first. I.e. it doesn't work on a hard refresh or if the performer profile
+ * page is navigated to directly. Bug raised at
+ * https://github.com/stashapp/stash/issues/5479 for the same issue in another
+ * component.
+ */
+export const setupHoverPopover = () => {
+  const [componentsReady, setComponentsReady] = React.useState(false);
+
+  React.useEffect(() => {
+    console.log("Its happened", window.PluginApi.components.HoverPopover);
+    if (!!window.PluginApi.components.HoverPopover) setComponentsReady(true);
+  }, [window.PluginApi.components.HoverPopover]);
+
+  return componentsReady ? window.PluginApi.components.HoverPopover : null;
 };

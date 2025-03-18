@@ -1,5 +1,6 @@
 import type { PropsPerformerDetailsPanelDetailGroup } from "@pluginTypes/stashPlugin";
 import DetailItem from "./DetailItem";
+import { setupHoverPopover } from "@helpers";
 const { PluginApi } = window;
 const { React } = PluginApi;
 
@@ -10,8 +11,10 @@ const ItemScenesTimespan: React.FC<ItemScenesTimespanProps> = (props) => {
     PluginApi.loadableComponents.SceneCard,
   ]);
 
-  if (componentsLoading) return null;
-  const { HoverPopover, SceneCard } = PluginApi.components;
+  const { SceneCard } = PluginApi.components;
+
+  const HoverPopover = setupHoverPopover();
+  if (componentsLoading || !HoverPopover) return null;
 
   // Filter out scenes with no date
   const { scenes } = props.scenesQueryResult;

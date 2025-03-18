@@ -1,15 +1,11 @@
+import { setupHoverPopover } from "@helpers";
 import { default as cx } from "classnames";
 const { PluginApi } = window;
 const { React } = PluginApi;
 
 const OverflowPopover: React.FC<OverflowPopoverProps> = (props) => {
-  // Wait for PluginApi components to load before rendering.
-  const componentsLoading = PluginApi.hooks.useLoadComponents([
-    PluginApi.loadableComponents.SceneCard,
-  ]);
-
-  if (componentsLoading) return null;
-  const { HoverPopover } = PluginApi.components;
+  const HoverPopover = setupHoverPopover();
+  if (!HoverPopover) return null;
 
   const content = (
     <>
